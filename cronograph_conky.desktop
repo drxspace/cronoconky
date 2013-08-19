@@ -1,0 +1,22 @@
+[Desktop Entry]
+Encoding=UTF-8
+Exec=<home_dir>/.conky/cronograph_se/start_crono.sh
+Comment[en_US]=Conky Cronograph Station is an amazing good-looking clock that displays your local weather on your desktop
+Comment=Conky Cronograph Station is an amazing good-looking clock that displays your local weather on your desktop
+Name[en_US]=cronograph_conky.desktop
+Name=Conky Cronograph Station
+GenericName[en_US]=Conky Cronograph Station is an amazing good-looking clock that displays your local weather on your desktop
+GenericName=Conky Cronograph Station is an amazing good-looking clock that displays your local weather on your desktop
+OnlyShowIn=Unity;GNOME;KDE;
+Hidden=false
+NoDisplay=false
+StartupNotify=false
+Terminal=false
+Type=Application
+Icon=cronograph
+X-DBUS-StartupType=none
+X-GNOME-Autostart-Phase=Application
+X-GNOME-Autostart-Delay=
+X-GNOME-Autostart-enabled=true
+X-MATE-Autostart-enabled=true
+X-KDE-SubstituteUID=false
