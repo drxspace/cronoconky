@@ -18,11 +18,13 @@ maximum_width 300
 minimum_size 300 300
 border_inner_margin 0
 border_outer_margin 0
+own_window yes
 own_window_argb_visual yes # In KDE I need to get transparency
+own_window_class "Conky"
 own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_title "Conky Cronograph Station SE"
 own_window_transparent yes
 own_window_type normal
-own_window yes
 
 # — Graphics settings — #
 draw_borders no
