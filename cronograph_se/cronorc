@@ -8,8 +8,7 @@ double_buffer yes
 imlib_cache_size 0
 no_buffers yes
 override_utf8_locale yes
-temperature_unit celsius
-#temperature_unit <temper>
+temperature_unit <temper>
 
 # — Window specifications — #
 alignment top_right
