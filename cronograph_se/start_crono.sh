@@ -8,12 +8,16 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-kill -TERM $(pgrep -f "conky -c.*cronograph_se") 2> /dev/null
-sleep 25
-#     ^^
+kill -SIGTERM $(pgrep -f "conky.*cronorc$") 2> /dev/null
+#sleep 25
+#      ^^
 # Error of failed request:  BadWindow (invalid Window parameter)
-#rm "$(dirname "$0")"/conkyerr.log && $(which conky) -c "$(dirname "$0")"/conkyrc &> "$(dirname "$0")"/conkyerr.log &
-# Alternative, there's also the X-GNOME-Autostart-Delay=<value> property in .desktop autostart file.
-$(which conky) -c "$(dirname "$0")"/conkyrc &> /dev/null &
+# There's also the X-GNOME-Autostart-Delay=25 property in .desktop file to
+# handle this situation
+#rm "$(dirname "$0")"/conkyerr.log && $(which conky) -DD -c "$(dirname "$0")"/cronorc &> "$(dirname "$0")"/conkyerr.log &
+
+#conky -q -c "$(dirname "$0")"/cronorc &
+# With the background property setted to yes I don't need the &
+nice -n 10 conky -q -c "$(dirname "$0")"/cronorc
 
 exit 0

@@ -117,7 +117,7 @@ trimday () {
 
 scriptdir="$(dirname "$0")"
 
-kill -SIGSTOP $(pgrep -f "conky -c.*cronograph_se")
+kill -SIGSTOP $(pgrep -f "conky.*cronorc$")
 
 # Uncomment next line to make use of English units
 #metric=0
@@ -135,7 +135,7 @@ mkdir -p ~/.cache/cronograph
 
 wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl \
 || { > ${scriptdir}/curr_cond; > ${scriptdir}/fore_cond;
-     kill -SIGCONT $(pidof conky);
+     kill -SIGCONT $(pgrep -f "conky.*cronorc$");
      echo -e "ERROR:\tCan't get AccuWeather info.\n\tMaybe you're not online or the server is down." 1>&2 ;
      exit 1; }
 
@@ -159,6 +159,6 @@ trimday $(parseval 'daycode' ~/.cache/cronograph/fore_1st.txt) >> ${scriptdir}/f
 trimday $(parseval 'daycode' ~/.cache/cronograph/fore_2nd.txt) >> ${scriptdir}/fore_cond
 trimday $(parseval 'daycode' ~/.cache/cronograph/fore_3rd.txt) >> ${scriptdir}/fore_cond
 
-kill -SIGCONT $(pgrep -f "conky -c.*cronograph_se")
+kill -SIGCONT $(pgrep -f "conky.*cronorc$")
 
 exit 0
