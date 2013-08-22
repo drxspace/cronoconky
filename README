@@ -27,6 +27,8 @@ INSTALLATION
 
 CHANGES in version 2
 --------------------------------------------------------------------------------
+2013-08-22
+· MEMORY LEAK PROBLEMS WAS FOUND AND CORRECTED
 2013-08-18
 · New icons
 · Changes in the main script: short_units property was added thanks to Sector11

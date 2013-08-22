@@ -59,9 +59,12 @@ short_units yes
 
 # — Lua Load — #
 lua_load $HOME/.conky/cronograph_se/scripts/clock_rings.lua 
-lua_load $HOME/.conky/cronograph_se/scripts/multi_rings.lua
 lua_draw_hook_pre clock_rings
+lua_load $HOME/.conky/cronograph_se/scripts/multi_rings.lua
 lua_draw_hook_post multi_rings
+
+#lua_load $HOME/.conky/cronograph_se/scripts/loadAll.lua
+#lua_draw_hook_pre main
 
 
 TEXT

@@ -26,7 +26,7 @@ Changelog:
 + v1.0		-- Original release (30.09.2009)
 ]]
 
-settings_table = {
+local settings_table = {
 	{
 		-- Edit this table to customise your rings.
 		-- You can create more rings simply by adding more elements to settings_table.
@@ -245,21 +245,21 @@ settings_table = {
 
 -- Use these settings to define the origin and extent of your clock.
 
-clock_r=127
+local clock_r=127
 
 -- "clock_x" and "clock_y" are the coordinates of the centre of the clock, in pixels, from the top left of the Conky window.
 
-clock_x=150
-clock_y=150
+local clock_x=150
+local clock_y=150
 
 -- Colour & alpha of the clock hands
 
-clock_colour=0xF1F1F1
-clock_alpha=1
+local clock_colour=0xF1F1F1
+local clock_alpha=1
 
 -- Do you want to show the seconds hand?
 
-show_seconds=true
+local show_seconds=true
 
 require 'cairo'
 
@@ -341,14 +341,15 @@ end
 function conky_clock_rings()
 	local function setup_rings(cr,pt)
 		local str, value = '', 0
-		str=string.format('${%s %s}',pt['name'],pt['arg'])
+		local pct
+		str = string.format('${%s %s}', pt['name'], pt['arg'])
 		if pt['name'] == '' then
 			str=0
 		else
 			str=conky_parse(str)
 		end
 
-		value=tonumber(str)
+		value = tonumber(str)
 		if value == nil then value = 0 end
 		pct=value/pt['max']
 
@@ -356,21 +357,19 @@ function conky_clock_rings()
 	end
 
 	-- Check that Conky has been running for at least 5s
+	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
+	
+	local cs = cairo_xlib_surface_create(conky_window.display,conky_window.drawable,conky_window.visual, conky_window.width,conky_window.height)
+	local cr = cairo_create(cs)
 
-	if conky_window==nil then return end
-	local cs=cairo_xlib_surface_create(conky_window.display,conky_window.drawable,conky_window.visual, conky_window.width,conky_window.height)
-
-	local cr=cairo_create(cs)
-
-	local updates=conky_parse('${updates}')
-	update_num=tonumber(updates)
-
-	if update_num>5 then
-		for i in pairs(settings_table) do
-			setup_rings(cr,settings_table[i])
-		end
+	for i in pairs(settings_table) do
+		setup_rings(cr, settings_table[i])
 	end
 
-	draw_clock_hands(cr,clock_x,clock_y)
+	draw_clock_hands(cr, clock_x, clock_y)
+
+	cairo_destroy (cr)
+	cairo_surface_destroy (cs)
+	return
 end
 

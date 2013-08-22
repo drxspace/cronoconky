@@ -12,7 +12,7 @@ require 'cairo'
 --------------------------------------------------------------------------------
 --                                                                    clock DATA
 -- HOURS
-clock_h = {
+local clock_h = {
 	{
 		name='time', arg='%H', max_value=12,
 		x=150, y=150,
@@ -31,7 +31,7 @@ clock_h = {
 	}
 }
 -- MINUTES
-clock_m = {
+local clock_m = {
 	{
 		name='time', arg='%M', max_value=60,
 		x=150, y=150,
@@ -50,7 +50,7 @@ clock_m = {
 	}
 }
 -- SECONDS
-clock_s = {
+local clock_s = {
 	{
 		name='time', arg='%S', max_value=60,
 		x=150, y=150,
@@ -71,7 +71,7 @@ clock_s = {
 
 --------------------------------------------------------------------------------
 --                                                                    gauge DATA
-gauge = {
+local gauge = {
 	{
 		name='fs_used_perc', arg='/', max_value=100,
 		x=150, y=75,
@@ -356,20 +356,17 @@ end
 -------------------------------------------------------------------------------
 --                                                            conky_multi_rings
 function conky_multi_rings()
-	if conky_window == nil then
-		return
-	end
+	-- Check that Conky has been running for at least 5s
+	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
 
 	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
 	local display = cairo_create(cs)
 
-	local updates = conky_parse('${updates}')
-	update_num = tonumber(updates)
+	go_clock_rings(display)
+	go_gauge_rings(display)
 
-	if update_num > 5 then
-		go_clock_rings(display)
-		go_gauge_rings(display)
-	end
-
+	cairo_destroy (display)
+	cairo_surface_destroy (cs)
+	return
 end
 
