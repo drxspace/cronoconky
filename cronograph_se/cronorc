@@ -63,8 +63,8 @@ lua_draw_hook_pre clock_rings
 lua_load $HOME/.conky/cronograph_se/scripts/multi_rings.lua
 lua_draw_hook_post multi_rings
 
-#lua_load $HOME/.conky/cronograph_se/scripts/loadAll.lua
-#lua_draw_hook_pre main
+#lua_load $HOME/.conky/cronograph_se/scripts/lua_loader.lua
+#lua_draw_hook_pre lua_loader
 
 
 TEXT

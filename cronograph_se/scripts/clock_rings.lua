@@ -26,6 +26,8 @@ Changelog:
 + v1.0		-- Original release (30.09.2009)
 ]]
 
+require 'cairo'
+
 local settings_table = {
 	{
 		-- Edit this table to customise your rings.
@@ -261,13 +263,11 @@ local clock_alpha=1
 
 local show_seconds=true
 
-require 'cairo'
-
-function rgb_to_r_g_b(colour,alpha)
+local function rgb_to_r_g_b(colour,alpha)
 	return ((colour / 0x10000) % 0x100) / 255., ((colour / 0x100) % 0x100) / 255., (colour % 0x100) / 255., alpha
 end
 
-function draw_ring(cr,t,pt)
+local function draw_ring(cr,t,pt)
 	local w,h=conky_window.width,conky_window.height
 
 	local xc,yc,ring_r,ring_w,sa,ea=pt['x'],pt['y'],pt['radius'],pt['thickness'],pt['start_angle'],pt['end_angle']
@@ -291,7 +291,7 @@ function draw_ring(cr,t,pt)
 	cairo_stroke(cr)
 end
 
-function draw_clock_hands(cr,xc,yc)
+local function draw_clock_hands(cr,xc,yc)
 	local secs,mins,hours,secs_arc,mins_arc,hours_arc
 	local xh,yh,xm,ym,xs,ys
 

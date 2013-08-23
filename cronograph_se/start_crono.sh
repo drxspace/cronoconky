@@ -17,6 +17,6 @@
 
 #conky -q -c "$(dirname "$0")"/cronorc &
 # With the background property setted to yes I don't need the &
-nice -n 10 conky -q -c "$(dirname "$0")"/cronorc
+nice -n 5 conky -q -c "$(dirname "$0")"/cronorc
 
 exit 0

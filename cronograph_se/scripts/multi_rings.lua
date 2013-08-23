@@ -141,7 +141,7 @@ local gauge = {
 --                                                                 rgb_to_r_g_b
 -- converts color in hexa to decimal
 --
-function rgb_to_r_g_b(colour, alpha)
+local function rgb_to_r_g_b(colour, alpha)
 	return ((colour / 0x10000) % 0x100) / 255., ((colour / 0x100) % 0x100) / 255., (colour % 0x100) / 255., alpha
 end
 
@@ -149,7 +149,7 @@ end
 --                                                            angle_to_position
 -- convert degree to rad and rotate (0 degree is top/north)
 --
-function angle_to_position(start_angle, current_angle)
+local function angle_to_position(start_angle, current_angle)
 	local pos = current_angle + start_angle
 	return ((pos * (2 * math.pi / 360)) - (math.pi / 2))
 end
@@ -158,7 +158,7 @@ end
 --                                                              draw_clock_ring
 -- displays clock
 --
-function draw_clock_ring(display, data, value)
+local function draw_clock_ring(display, data, value)
 	local max_value = data['max_value']
 	local x, y = data['x'], data['y']
 	local graph_radius = data['graph_radius']
@@ -220,7 +220,7 @@ end
 --                                                              draw_gauge_ring
 -- displays gauges
 --
-function draw_gauge_ring(display, data, value)
+local function draw_gauge_ring(display, data, value)
 	local max_value = data['max_value']
 	local x, y = data['x'], data['y']
 	local graph_radius = data['graph_radius']
@@ -315,7 +315,7 @@ end
 --                                                               go_clock_rings
 -- loads data and displays clock
 --
-function go_clock_rings(display)
+local function go_clock_rings(display)
 	local function load_clock_rings(display, data)
 		local str, value = '', 0
 		str = string.format('${%s %s}', data['name'], data['arg'])
@@ -339,7 +339,7 @@ end
 --                                                               go_gauge_rings
 -- loads data and displays gauges
 --
-function go_gauge_rings(display)
+local function go_gauge_rings(display)
 	local function load_gauge_rings(display, data)
 		local str, value = '', 0
 		str = string.format('${%s %s}', data['name'], data['arg'])
