@@ -79,9 +79,9 @@ read -p "Do you want to continue? [Y/n]: " ANS
 
 # Building needed packages list
 NeedPacks=""
-[[ -z $(which conky) ]] && NeedPacks="conky-std"
-[[ -z $(which hddtemp) ]] && NeedPacks=$NeedPacks" hddtemp"
-[[ -z $(which sensors) ]] && NeedPacks=$NeedPacks" lm-sensors"
+[[ -z $(which conky) ]] && NeedPacks="conky-std "
+[[ -z $(which hddtemp) ]] && NeedPacks=$NeedPacks"hddtemp "
+[[ -z $(which sensors) ]] && NeedPacks=$NeedPacks"lm-sensors"
 
 if [[ -n $NeedPacks ]]; then
 	echo -e "\nFirst we need to install some packages. This action requires root
@@ -90,7 +90,7 @@ Packages that would be installed are: \033[1m$NeedPacks\033[0m"
 	read -p "Do you want to continue? [Y/n]: " ANS
 	[[ ${ANS:-Y} != [Yy] ]] && finale 2
 	sudo echo "Installing needed packages. Please wait a moment..." || finale 3
-	sudo apt-get -qq install --no-install-recommends conky-std hddtemp lm-sensors 2> /dev/null || finale 3
+	sudo apt-get -qq install --no-install-recommends $NeedPacks 2> /dev/null || finale 3
 else
 	kill -SIGTERM $(pidof conky) 2>/dev/null
 fi
