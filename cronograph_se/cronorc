@@ -107,12 +107,14 @@ ${goto 192}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/accuweather/fore_c
 ${voffset -3}${goto 80}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${goto 134}${execi 600 sed -n '5p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${goto 188}${execi 600 sed -n '6p' $HOME/.conky/cronograph_se/accuweather/fore_cond}
 ${voffset -2}${goto 88}${execi 600 sed -n '7p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${goto 143}${execi 600 sed -n '8p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${goto 196}${execi 600 sed -n '9p' $HOME/.conky/cronograph_se/accuweather/fore_cond}
 #
-${if_empty ${battery}} # We assume that there's no battary
+${if_empty ${battery}}
+# We assume that there's no battery
 ${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
 ${else}
-${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
+${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
+${else}$${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_se/images/Green.png -p 129,18 -s 40x40}
 ${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_se/images/Yellow.png -p 129,18 -s 40x40}
 ${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_se/images/Orange.png -p 129,18 -s 40x40}
-${else}${image $HOME/.conky/cronograph_se/images/Red.png -p 129,18 -s 40x40}${endif}${endif}${endif}
+${else}${image $HOME/.conky/cronograph_se/images/Red.png -p 129,18 -s 40x40}${endif}${endif}${endif}${endif}
 ${endif}
 ${execpi 1 cat $HOME/.conky/cronograph_se/scripts/blinkingLED}

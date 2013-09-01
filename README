@@ -27,6 +27,9 @@ INSTALLATION
 
 CHANGES in version 2
 --------------------------------------------------------------------------------
+2013-09-01
+· Tweak blinkingLed script
+· Minor changes in the led colors of the cronorc script
 2013-08-27
 · Installer package updated
 2013-08-22
