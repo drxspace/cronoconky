@@ -94,7 +94,7 @@ local settings_table = {
 		arg='',
 		max=100,
 		bg_colour=0x000000,
-		bg_alpha=0.5,
+		bg_alpha=0.3,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=150,

@@ -8,5 +8,4 @@ function conky_lua_loader ()
 	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
 	conky_clock_rings ()
 	conky_multi_rings ()
-	return
 end
