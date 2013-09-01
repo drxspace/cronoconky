@@ -112,7 +112,7 @@ ${if_empty ${battery}}
 ${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
 ${else}
 ${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
-${else}$${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_se/images/Green.png -p 129,18 -s 40x40}
+${else}${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_se/images/Green.png -p 129,18 -s 40x40}
 ${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_se/images/Yellow.png -p 129,18 -s 40x40}
 ${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_se/images/Orange.png -p 129,18 -s 40x40}
 ${else}${image $HOME/.conky/cronograph_se/images/Red.png -p 129,18 -s 40x40}${endif}${endif}${endif}${endif}
