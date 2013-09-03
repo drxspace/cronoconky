@@ -27,6 +27,8 @@ INSTALLATION
 
 CHANGES in version 2
 --------------------------------------------------------------------------------
+2013-09-03
+· Sudden application shutdown corrected
 2013-09-01
 · Tweak blinkingLed script
 · Minor changes in the led colors of the cronorc script

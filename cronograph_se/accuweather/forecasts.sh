@@ -116,8 +116,7 @@ trimday () {
 }
 
 scriptdir="$(dirname "$0")"
-
-kill -SIGSTOP $(pgrep -f "conky.*cronorc$")
+PID=$(pgrep -f "^conky.*cronorc$")
 
 # Uncomment next line to make use of English units
 #metric=0
@@ -133,11 +132,10 @@ accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${m
 # Store temporary data here
 mkdir -p ~/.cache/cronograph
 
-wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl \
-|| { > ${scriptdir}/curr_cond; > ${scriptdir}/fore_cond;
-     kill -SIGCONT $(pgrep -f "conky.*cronorc$");
-     echo -e "ERROR:\tCan't get AccuWeather info.\n\tMaybe you're not online or the server is down." 1>&2 ;
-     exit 1; }
+wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || \
+{ > ${scriptdir}/curr_cond; > ${scriptdir}/fore_cond;
+  echo -e "ERROR:\tCan't get AccuWeather info.\n\tMaybe you're not online or the server is down." 1>&2 ;
+  exit 1; }
 
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' ~/.cache/cronograph/accuw.xml
 sed '/currentconditions/,/\/currentconditions/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/curr_cond.txt
@@ -145,10 +143,10 @@ sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' ~/.cac
 sed -e '/day number="3"/,/day number="4"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_2nd.txt
 sed -e '/day number="4"/,/day number="5"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_3rd.txt
 
+kill -SIGSTOP $PID
 echo $(parseval 'temperature' ~/.cache/cronograph/curr_cond.txt)° > ${scriptdir}/curr_cond
 getImgChr $(parseval 'weathericon' ~/.cache/cronograph/curr_cond.txt) >> ${scriptdir}/curr_cond
 parseval 'weathertext' ~/.cache/cronograph/curr_cond.txt  | tr "[:lower:]" "[:upper:]" >> ${scriptdir}/curr_cond
-
 getImgChr $(parseval 'weathericon' ~/.cache/cronograph/fore_1st.txt) > ${scriptdir}/fore_cond
 getImgChr $(parseval 'weathericon' ~/.cache/cronograph/fore_2nd.txt) >> ${scriptdir}/fore_cond
 getImgChr $(parseval 'weathericon' ~/.cache/cronograph/fore_3rd.txt) >> ${scriptdir}/fore_cond
@@ -158,7 +156,6 @@ getImgChr $(parseval 'weathericon' ~/.cache/cronograph/fore_3rd.txt) >> ${script
 trimday $(parseval 'daycode' ~/.cache/cronograph/fore_1st.txt) >> ${scriptdir}/fore_cond
 trimday $(parseval 'daycode' ~/.cache/cronograph/fore_2nd.txt) >> ${scriptdir}/fore_cond
 trimday $(parseval 'daycode' ~/.cache/cronograph/fore_3rd.txt) >> ${scriptdir}/fore_cond
-
-kill -SIGCONT $(pgrep -f "conky.*cronorc$")
+kill -SIGCONT $PID
 
 exit 0

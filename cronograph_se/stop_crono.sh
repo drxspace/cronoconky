@@ -8,6 +8,6 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-kill -SIGTERM $(pgrep -f "conky.*cronorc$") 2> /dev/null
+kill -9 $(pgrep -f "^conky.*cronorc$") 2> /dev/null
 
 exit $?
