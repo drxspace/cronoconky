@@ -116,13 +116,12 @@ trimday () {
 }
 
 scriptdir="$(dirname "$0")"
-PID=$(pgrep -f "^conky.*cronorc$")
 
 # Uncomment next line to make use of English units
 #metric=0
 
-accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.965148&slon=23.504138"
-# Delete the above line, uncomment the next line and follow the info tip 
+accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.971572&slon=23.726735"
+# Delete the above line, uncomment the third from here line and follow the info tip 
 # to constract your Accuweather url address by inputing the right coordinates of
 # your place/position.
 #accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.971572&slon=23.726735"
@@ -143,7 +142,7 @@ sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' ~/.cac
 sed -e '/day number="3"/,/day number="4"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_2nd.txt
 sed -e '/day number="4"/,/day number="5"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_3rd.txt
 
-kill -SIGSTOP $PID
+pkill -SIGSTOP -f "^conky.*cronorc$"
 echo $(parseval 'temperature' ~/.cache/cronograph/curr_cond.txt)° > ${scriptdir}/curr_cond
 getImgChr $(parseval 'weathericon' ~/.cache/cronograph/curr_cond.txt) >> ${scriptdir}/curr_cond
 parseval 'weathertext' ~/.cache/cronograph/curr_cond.txt  | tr "[:lower:]" "[:upper:]" >> ${scriptdir}/curr_cond
@@ -156,6 +155,6 @@ getImgChr $(parseval 'weathericon' ~/.cache/cronograph/fore_3rd.txt) >> ${script
 trimday $(parseval 'daycode' ~/.cache/cronograph/fore_1st.txt) >> ${scriptdir}/fore_cond
 trimday $(parseval 'daycode' ~/.cache/cronograph/fore_2nd.txt) >> ${scriptdir}/fore_cond
 trimday $(parseval 'daycode' ~/.cache/cronograph/fore_3rd.txt) >> ${scriptdir}/fore_cond
-kill -SIGCONT $PID
+pkill -SIGCONT -f "^conky.*cronorc$"
 
 exit 0
