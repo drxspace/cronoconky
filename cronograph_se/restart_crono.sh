@@ -8,7 +8,7 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-kill -9 $(pgrep -f "^conky.*cronorc$") 2> /dev/null
+pkill -SIGTERM --oldest --exact --full "^conky.*cronorc$" 2> /dev/null
 sleep 5
 nice -n 5 conky -q -c "$(dirname "$0")"/cronorc
 
