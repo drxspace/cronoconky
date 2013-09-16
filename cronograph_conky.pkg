@@ -139,9 +139,9 @@ The default unit is degree Celsius."
 read -p "Celsius or Fahrenheit? [C/f]: " ANS
 echo -e "Setting the temperature unit..."
 if [[ ${ANS:-C} == [Cc] ]]; then
-	sed -i 's/<temper>/celsius/' "${CONKYDIR}"/"${CRONODIR}"/conkyrc
+	sed -i 's/<temper>/celsius/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
 else	
-	sed -i 's/<temper>/fahrenheit/' "${CONKYDIR}"/"${CRONODIR}"/conkyrc
+	sed -i 's/<temper>/fahrenheit/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
 	sed -i 's/^#metric/metric/' "${CONKYDIR}"/"${CRONODIR}"/accuweather/forecasts.sh
 fi	
 
