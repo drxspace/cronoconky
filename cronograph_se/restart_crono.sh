@@ -9,9 +9,9 @@
 #
 
 pkill -SIGTERM --oldest --exact --full "^conky.*cronorc$" 2> /dev/null && {
-	rm -f "$(dirname "$0")"/accuweather/{curr_cond,fore_cond,}
-	sleep 5;
-	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc;
+	rm -f "$(dirname "$0")"/accuweather/*_cond
+	sleep 5
+	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc
 }
 
 exit 0

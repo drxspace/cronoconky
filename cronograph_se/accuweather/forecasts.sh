@@ -115,12 +115,20 @@ trimday () {
 	echo ${day:0:3}
 }
 
+# disperr function writes an error on the log file and then exits the script
+disperr () {
+	cat /dev/null > ${scriptdir}/curr_cond
+	cat /dev/null > ${scriptdir}/fore_cond
+	echo -e "$1" >> ${scriptdir}/errors.log
+	exit 1
+}
+
 scriptdir="$(dirname "$0")"
 
 # Uncomment next line to make use of English units
 #metric=0
 
-accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.971572&slon=23.726735"
+accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.965148&slon=23.504138"
 # Delete the above line, uncomment the next line and follow the info tip 
 # to constract your Accuweather url address by inputing the right coordinates of
 # your place/position.
@@ -131,11 +139,10 @@ accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${m
 # Store temporary data here
 mkdir -p ~/.cache/cronograph
 
-wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || {
-	> ${scriptdir}/curr_cond; > ${scriptdir}/fore_cond;
-	echo -e "ERROR:\tCan't get AccuWeather info.\n\tMaybe you're not online or the server is down." 1>&2 ;
-	exit 1;
-}
+wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
+	disperr "$(date -R)\tERROR: Could not contact AccuWeather site. Maybe you're not online or the server wasn't ready."
+[[ -f ~/.cache/cronograph/accuw.xml ]] ||
+	disperr "$(date -R)\tERROR: Could not create weather info file."
 
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' ~/.cache/cronograph/accuw.xml
 sed '/currentconditions/,/\/currentconditions/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/curr_cond.txt
