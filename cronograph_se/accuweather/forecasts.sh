@@ -145,7 +145,7 @@ wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl ||
 [[ -f ~/.cache/cronograph/accuw.xml ]] ||
 	logerr "$(date -R)\tERROR: Could not create weather info file."
 
-Failure=$(grep "<txtshort>" ~/.cache/cronograph/accuw.xml)
+Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
 [[ -n ${Failure} ]] &&
 	logerr "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")"
 
