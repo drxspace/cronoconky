@@ -115,8 +115,8 @@ trimday () {
 	echo ${day:0:3}
 }
 
-# disperr function writes an error on the log file and then exits the script
-disperr () {
+# logerr function writes an error on the log file and then exits the script
+logerr () {
 	cat /dev/null > ${scriptdir}/curr_cond
 	cat /dev/null > ${scriptdir}/fore_cond
 	echo -e "$1" >> ${scriptdir}/errors.log
@@ -140,9 +140,14 @@ accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${m
 mkdir -p ~/.cache/cronograph
 
 wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
-	disperr "$(date -R)\tERROR: Could not contact AccuWeather site. Maybe you're not online or the server wasn't ready."
+	logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready."
+
 [[ -f ~/.cache/cronograph/accuw.xml ]] ||
-	disperr "$(date -R)\tERROR: Could not create weather info file."
+	logerr "$(date -R)\tERROR: Could not create weather info file."
+
+Failure=$(grep "<txtshort>" ~/.cache/cronograph/accuw.xml)
+[[ -n ${Failure} ]] &&
+	logerr "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")"
 
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' ~/.cache/cronograph/accuw.xml
 sed '/currentconditions/,/\/currentconditions/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/curr_cond.txt
