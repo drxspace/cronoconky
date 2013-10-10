@@ -30,6 +30,8 @@ CHANGES in version 2
 2013-10-10
 · The restart_crono.sh script has changed in order to remove old *_cond files
 · Changes in the forecasts.sh in order to create an error log file
+  Read carefully the info tip inside this script so that you set correctly the
+  accuWurl variable.
 2013-09-03
 · Sudden application shutdown corrected
 2013-09-01
