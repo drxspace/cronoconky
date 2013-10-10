@@ -128,12 +128,12 @@ scriptdir="$(dirname "$0")"
 # Uncomment next line to make use of English units
 #metric=0
 
-accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.965148&slon=23.504138"
+accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.9&slon=23.5"
 # Delete the above line, uncomment the next line and follow the info tip 
 # to constract your Accuweather url address by inputing the right coordinates of
 # your place/position.
-#accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.971572&slon=23.726735"
-#                                                                                               ^^^^^^^^^      ^^^^^^^^^
+#accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.9&slon=23.7"
+#                                                                                               ^^^^      ^^^^
 # INFO: Use Google Maps to locate your place and find out your coordinates (slat, slon) that you should place here
 
 # Store temporary data here
