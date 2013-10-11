@@ -69,8 +69,8 @@ lua_draw_hook_post multi_rings
 
 
 TEXT
-# Update weather info every (300/60=) 5 min
-${execi 300 bash $HOME/.conky/cronograph_se/accuweather/forecasts.sh}
+# Update weather info every (600/60=) 10 min
+${execi 600 bash $HOME/.conky/cronograph_se/accuweather/forecasts.sh}
 #
 ${voffset 25}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
