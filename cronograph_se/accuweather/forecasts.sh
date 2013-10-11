@@ -142,10 +142,14 @@ mkdir -p ~/.cache/cronograph
 wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
 	logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready."
 
-[[ -f ~/.cache/cronograph/accuw.xml ]] ||
-	logerr "$(date -R)\tERROR: Could not create weather info file."
-
 Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
+if [[ -n ${Failure} ]]; then
+	# Try one more time after 1 min.
+	sleep 60
+	wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
+		logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready."
+	Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
+fi
 [[ -n ${Failure} ]] &&
 	logerr "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")"
 
