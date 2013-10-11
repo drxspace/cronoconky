@@ -139,20 +139,24 @@ accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${m
 # Store temporary data here
 mkdir -p ~/.cache/cronograph
 
+echo "Contacting server..." 1>&2
 wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
-	logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready."
+	logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
 
+echo "Checking results..." 1>&2
 Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
 if [[ -n ${Failure} ]]; then
 	# Try one more time after 1 min.
+	echo ${Failure} 1>&2
 	sleep 60
 	wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
-		logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready."
+		logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
 	Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
 fi
 [[ -n ${Failure} ]] &&
-	logerr "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")"
+	logerr "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
 
+echo "Processing data..." 1>&2
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' ~/.cache/cronograph/accuw.xml
 sed '/currentconditions/,/\/currentconditions/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/curr_cond.txt
 sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_1st.txt
