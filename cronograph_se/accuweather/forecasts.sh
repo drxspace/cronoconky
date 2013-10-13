@@ -115,9 +115,9 @@ trimday () {
 	echo ${day:0:3}
 }
 
-# logerr function clears the cond files so that nothing would be displayed on
+# errexit function clears the cond files so that nothing would be displayed on
 # the clock, writes an error on the stderr file and then exits the script
-logerr () {
+errexit () {
 	cat /dev/null > ${scriptdir}/curr_cond
 	cat /dev/null > ${scriptdir}/fore_cond
 	echo -e "$1" 1>&2
@@ -142,7 +142,7 @@ mkdir -p ~/.cache/cronograph
 
 echo "forecasts.sh: Contacting server..." 1>&2
 wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
-	logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
+	errexit "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
 
 echo "forecasts.sh: Checking results..." 1>&2
 Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
@@ -151,11 +151,11 @@ if [[ -n ${Failure} ]]; then
 	echo "${Failure} ...giving 2nd try" 1>&2
 	sleep 60
 	wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
-		logerr "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
+		errexit "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
 	Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
+	[[ -n ${Failure} ]] &&
+		errexit "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
 fi
-[[ -n ${Failure} ]] &&
-	logerr "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
 
 echo "forecasts.sh: Processing data..." 1>&2
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' ~/.cache/cronograph/accuw.xml
