@@ -129,12 +129,12 @@ scriptdir="$(dirname "$0")"
 # Uncomment next line to make use of English units
 #metric=0
 
-accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.9&slon=23.5"
+accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=37.98&slon=23.73&metric=${metric:-1}"
 # Delete the above line, uncomment the next line and follow the info tip 
 # to constract your Accuweather url address by inputing the right coordinates of
 # your place/position.
-#accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?metric=${metric:-1}&slat=37.9&slon=23.7"
-#                                                                                               ^^^^      ^^^^
+#accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=37.98&slon=23.73&metric=${metric:-1}"
+#                                                                           ^^^^^      ^^^^^
 # INFO: Use Google Maps to locate your place and find out your coordinates (slat, slon) that you should place here
 
 # Store temporary data here
@@ -148,7 +148,7 @@ echo "forecasts.sh: Checking results..." 1>&2
 Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
 if [[ -n ${Failure} ]]; then
 	# Try one more time after 1 min.
-	echo "${Failure} ...giving 2nd try" 1>&2
+	echo "...giving a 2nd try after 60 secs" 1>&2
 	sleep 60
 	wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
 		errexit "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
