@@ -146,16 +146,8 @@ wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl ||
 
 echo "forecasts.sh: Checking results..." 1>&2
 Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
-if [[ -n ${Failure} ]]; then
-	# Try one more time after 1 min.
-	echo "...giving a 2nd try after 60 secs" 1>&2
-	sleep 60
-	wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
-		errexit "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
-	Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
-	[[ -n ${Failure} ]] &&
-		errexit "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
-fi
+[[ -n ${Failure} ]] &&
+	errexit "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
 
 echo "forecasts.sh: Processing data..." 1>&2
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' ~/.cache/cronograph/accuw.xml
