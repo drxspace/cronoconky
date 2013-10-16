@@ -126,26 +126,38 @@ errexit () {
 
 scriptdir="$(dirname "$0")"
 
+# INFO: Use Google Maps to locate your place and find out your coordinates (slat, slon) that you should place below
+Latitude='37.98'
+Longitude='23.73'
+
 # Uncomment next line to make use of English units
 #metric=0
 
-accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=37.98&slon=23.73&metric=${metric:-1}"
-# Delete the above line, uncomment the next line and follow the info tip 
-# to constract your Accuweather url address by inputing the right coordinates of
-# your place/position.
-#accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=37.98&slon=23.73&metric=${metric:-1}"
-#                                                                           ^^^^^      ^^^^^
-# INFO: Use Google Maps to locate your place and find out your coordinates (slat, slon) that you should place here
+accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
 
 # Store temporary data here
 mkdir -p ~/.cache/cronograph
 
-echo "forecasts.sh: Contacting server..." 1>&2
-wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl || 
+echo "forecasts.sh: Contacting the server..." 1>&2
+wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl ||
 	errexit "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
 
-echo "forecasts.sh: Checking results..." 1>&2
+echo "forecasts.sh: Checking the results..." 1>&2
 Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
+
+if [[ -n ${Failure} ]]; then
+	echo "forecasts.sh: Faking the coordinates..." 1>&2
+	Latitude=${Latitude}1111
+	Longitude=${Longitude}1111
+
+	echo "forecasts.sh: Contacting the server for a second time..." 1>&2
+	wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl ||
+		errexit "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
+
+	echo "forecasts.sh: Checking the results again..." 1>&2
+	Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
+fi
+
 [[ -n ${Failure} ]] &&
 	errexit "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
 
