@@ -147,8 +147,8 @@ Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
 
 if [[ -n ${Failure} ]]; then
 	echo "forecasts.sh: Faking the coordinates..." 1>&2
-	Latitude=${Latitude}1111
-	Longitude=${Longitude}1111
+	Latitude=${Latitude}0001
+	Longitude=${Longitude}0001
 
 	echo "forecasts.sh: Contacting the server for a second time..." 1>&2
 	wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl ||
