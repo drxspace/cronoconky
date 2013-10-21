@@ -106,7 +106,7 @@ getImgChr () {
 
 # parseval function parses the value of the specified tag
 parseval () {
-	sed -n "s|<$1>\(.*\)</$1>|\1|p" $2
+	sed -n "s|<$1>\(.*\)</$1>|\1|p" $2 | sed "s/^[[:space:]]*//"
 }
 
 # trimday function returns a 3 letters word for the given day name
