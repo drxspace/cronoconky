@@ -305,8 +305,8 @@ local function draw_clock_hands(cr,xc,yc)
 
 	-- Draw hour hand
 
-	xh=xc+0.75*clock_r*math.sin(hours_arc)
-	yh=yc-0.75*clock_r*math.cos(hours_arc)
+	xh=xc+0.70*clock_r*math.sin(hours_arc)
+	yh=yc-0.70*clock_r*math.cos(hours_arc)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xh,yh)
 
