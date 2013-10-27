@@ -104,16 +104,17 @@ local settings_table = {
 		end_angle=360
 	},
 	{
+		-- center tick
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFFFF,
-		bg_alpha=1.0,
+		bg_colour=0xF0F080,
+		bg_alpha=0.8,
 		fg_colour=0xFFFFFF,
-		fg_alpha=0.0,
+		fg_alpha=1.0,
 		x=150, y=150,
 		radius=1,
-		thickness=10,
+		thickness=14,
 		start_angle=0,
 		end_angle=360
 	},
@@ -294,6 +295,7 @@ end
 local function draw_clock_hands(cr,xc,yc)
 	local secs,mins,hours,secs_arc,mins_arc,hours_arc
 	local xh,yh,xm,ym,xs,ys
+	local xxh,yyh,xxm,yym,xxs,yys
 
 	secs=os.date("%S")
 	mins=os.date("%M")
@@ -307,8 +309,14 @@ local function draw_clock_hands(cr,xc,yc)
 
 	xh=xc+0.70*clock_r*math.sin(hours_arc)
 	yh=yc-0.70*clock_r*math.cos(hours_arc)
+	xxh=xc-0.10*clock_r*math.sin(hours_arc)
+	yyh=yc+0.10*clock_r*math.cos(hours_arc)
+
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xh,yh)
+
+	cairo_move_to(cr,xc,yc)
+	cairo_line_to(cr,xxh,yyh)
 
 	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
 	cairo_set_line_width(cr,5)
@@ -319,8 +327,14 @@ local function draw_clock_hands(cr,xc,yc)
 
 	xm=xc+0.95*clock_r*math.sin(mins_arc)
 	ym=yc-0.95*clock_r*math.cos(mins_arc)
+	xxm=xc-0.12*clock_r*math.sin(mins_arc)
+	yym=yc+0.12*clock_r*math.cos(mins_arc)
+
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xm,ym)
+
+	cairo_move_to(cr,xc,yc)
+	cairo_line_to(cr,xxm,yym)
 
 	cairo_set_line_width(cr,3)
 	cairo_stroke(cr)
@@ -330,8 +344,14 @@ local function draw_clock_hands(cr,xc,yc)
 	if show_seconds then
 		xs=xc+clock_r*math.sin(secs_arc)
 		ys=yc-clock_r*math.cos(secs_arc)
+		xxs=xc-0.15*clock_r*math.sin(secs_arc)
+		yys=yc+0.15*clock_r*math.cos(secs_arc)
+
 		cairo_move_to(cr,xc,yc)
 		cairo_line_to(cr,xs,ys)
+
+		cairo_move_to(cr,xc,yc)
+		cairo_line_to(cr,xxs,yys)
 
 		cairo_set_line_width(cr,1)
 		cairo_stroke(cr)
@@ -358,7 +378,7 @@ function conky_clock_rings()
 
 	-- Check that Conky has been running for at least 5s
 	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
-	
+
 	local cs = cairo_xlib_surface_create(conky_window.display,conky_window.drawable,conky_window.visual, conky_window.width,conky_window.height)
 	local cr = cairo_create(cs)
 
