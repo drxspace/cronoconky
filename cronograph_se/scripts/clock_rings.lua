@@ -93,7 +93,7 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x000000,
+		bg_colour=0x222222,
 		bg_alpha=0.3,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
@@ -119,7 +119,7 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		name='',
+		name='cpu-outline',
 		arg='',
 		max=100,
 		bg_colour=0xFFFFFF,
@@ -133,7 +133,7 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		name='',
+		name='cpu-inside',
 		arg='',
 		max=100,
 		bg_colour=0x000000,
@@ -147,7 +147,7 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		name='',
+		name='cpu-inside-dot',
 		arg='',
 		max=100,
 		bg_colour=0xFFFFFF,
@@ -257,7 +257,8 @@ local clock_y=150
 
 -- Colour & alpha of the clock hands
 
-local clock_colour=0xF1F1F1
+local hands_colour=0xF1F1F1
+local secs_colour=0x830000
 local clock_alpha=1
 
 -- Do you want to show the seconds hand?
@@ -320,7 +321,7 @@ local function draw_clock_hands(cr,xc,yc)
 
 	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
 	cairo_set_line_width(cr,5)
-	cairo_set_source_rgba(cr,rgb_to_r_g_b(clock_colour,clock_alpha))
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(hands_colour,clock_alpha))
 	cairo_stroke(cr)
 
 	-- Draw minute hand
@@ -354,6 +355,7 @@ local function draw_clock_hands(cr,xc,yc)
 		cairo_line_to(cr,xxs,yys)
 
 		cairo_set_line_width(cr,1)
+		cairo_set_source_rgba(cr,rgb_to_r_g_b(secs_colour,clock_alpha))
 		cairo_stroke(cr)
 	end
 end
