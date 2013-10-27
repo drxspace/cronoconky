@@ -27,6 +27,8 @@ INSTALLATION
 
 CHANGES in version 2
 --------------------------------------------------------------------------------
+2013-10-27
+· Tweak/change multi_rings.lua to draw nicer hands
 2013-10-10
 · The restart_crono.sh script has changed in order to remove old *_cond files
 · Changes in the forecasts.sh in order to create an error log file
