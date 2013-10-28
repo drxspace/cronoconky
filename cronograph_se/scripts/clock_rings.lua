@@ -243,7 +243,7 @@ local settings_table = {
 		thickness=2,
 		start_angle=0,
 		end_angle=360
-	}
+	},
 }
 
 -- Use these settings to define the origin and extent of your clock.
@@ -390,8 +390,12 @@ function conky_clock_rings()
 
 	draw_clock_hands(cr, clock_x, clock_y)
 
-	cairo_destroy (cr)
-	cairo_surface_destroy (cs)
+	cairo_destroy(cr)
+	cairo_surface_destroy(cs)
+	cr = nil
+	cs = nil
+
 	return
 end
+
 
