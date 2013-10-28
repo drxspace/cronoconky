@@ -108,10 +108,10 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xF0F080,
-		bg_alpha=0.8,
+		bg_colour=0x888888,
+		bg_alpha=1.0,
 		fg_colour=0xFFFFFF,
-		fg_alpha=1.0,
+		fg_alpha=0.0,
 		x=150, y=150,
 		radius=1,
 		thickness=14,
@@ -257,7 +257,7 @@ local clock_y=150
 
 -- Colour & alpha of the clock hands
 
-local hands_colour=0xF1F1F1
+local hands_colour=0xF0F0F0
 local secs_colour=0x830000
 local clock_alpha=1
 
@@ -308,8 +308,8 @@ local function draw_clock_hands(cr,xc,yc)
 
 	-- Draw hour hand
 
-	xh=xc+0.70*clock_r*math.sin(hours_arc)
-	yh=yc-0.70*clock_r*math.cos(hours_arc)
+	xh=xc+0.65*clock_r*math.sin(hours_arc)
+	yh=yc-0.65*clock_r*math.cos(hours_arc)
 	xxh=xc-0.10*clock_r*math.sin(hours_arc)
 	yyh=yc+0.10*clock_r*math.cos(hours_arc)
 
@@ -320,14 +320,14 @@ local function draw_clock_hands(cr,xc,yc)
 	cairo_line_to(cr,xxh,yyh)
 
 	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
-	cairo_set_line_width(cr,5)
+	cairo_set_line_width(cr,7)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(hands_colour,clock_alpha))
 	cairo_stroke(cr)
 
 	-- Draw minute hand
 
-	xm=xc+0.95*clock_r*math.sin(mins_arc)
-	ym=yc-0.95*clock_r*math.cos(mins_arc)
+	xm=xc+0.90*clock_r*math.sin(mins_arc)
+	ym=yc-0.90*clock_r*math.cos(mins_arc)
 	xxm=xc-0.12*clock_r*math.sin(mins_arc)
 	yym=yc+0.12*clock_r*math.cos(mins_arc)
 
@@ -337,14 +337,14 @@ local function draw_clock_hands(cr,xc,yc)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xxm,yym)
 
-	cairo_set_line_width(cr,3)
+	cairo_set_line_width(cr,5)
 	cairo_stroke(cr)
 
 	-- Draw seconds hand
 
 	if show_seconds then
-		xs=xc+clock_r*math.sin(secs_arc)
-		ys=yc-clock_r*math.cos(secs_arc)
+		xs=xc+0.95*clock_r*math.sin(secs_arc)
+		ys=yc-0.95*clock_r*math.cos(secs_arc)
 		xxs=xc-0.15*clock_r*math.sin(secs_arc)
 		yys=yc+0.15*clock_r*math.cos(secs_arc)
 
@@ -354,7 +354,7 @@ local function draw_clock_hands(cr,xc,yc)
 		cairo_move_to(cr,xc,yc)
 		cairo_line_to(cr,xxs,yys)
 
-		cairo_set_line_width(cr,1)
+		cairo_set_line_width(cr,2)
 		cairo_set_source_rgba(cr,rgb_to_r_g_b(secs_colour,clock_alpha))
 		cairo_stroke(cr)
 	end
