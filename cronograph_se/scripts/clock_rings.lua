@@ -308,8 +308,8 @@ local function draw_clock_hands(cr,xc,yc)
 
 	-- Draw hour hand
 
-	xh=xc+0.60*clock_r*math.sin(hours_arc)
-	yh=yc-0.60*clock_r*math.cos(hours_arc)
+	xh=xc+0.58*clock_r*math.sin(hours_arc)
+	yh=yc-0.58*clock_r*math.cos(hours_arc)
 	xxh=xc-0.10*clock_r*math.sin(hours_arc)
 	yyh=yc+0.10*clock_r*math.cos(hours_arc)
 
@@ -320,7 +320,7 @@ local function draw_clock_hands(cr,xc,yc)
 	cairo_line_to(cr,xxh,yyh)
 
 	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
-	cairo_set_line_width(cr,7)
+	cairo_set_line_width(cr,8)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(hands_colour,clock_alpha))
 	cairo_stroke(cr)
 
