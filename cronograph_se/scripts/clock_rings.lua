@@ -308,8 +308,8 @@ local function draw_clock_hands(cr,xc,yc)
 
 	-- Draw hour hand
 
-	xh=xc+0.65*clock_r*math.sin(hours_arc)
-	yh=yc-0.65*clock_r*math.cos(hours_arc)
+	xh=xc+0.60*clock_r*math.sin(hours_arc)
+	yh=yc-0.60*clock_r*math.cos(hours_arc)
 	xxh=xc-0.10*clock_r*math.sin(hours_arc)
 	yyh=yc+0.10*clock_r*math.cos(hours_arc)
 
@@ -326,8 +326,8 @@ local function draw_clock_hands(cr,xc,yc)
 
 	-- Draw minute hand
 
-	xm=xc+0.90*clock_r*math.sin(mins_arc)
-	ym=yc-0.90*clock_r*math.cos(mins_arc)
+	xm=xc+0.82*clock_r*math.sin(mins_arc)
+	ym=yc-0.82*clock_r*math.cos(mins_arc)
 	xxm=xc-0.12*clock_r*math.sin(mins_arc)
 	yym=yc+0.12*clock_r*math.cos(mins_arc)
 
@@ -343,8 +343,8 @@ local function draw_clock_hands(cr,xc,yc)
 	-- Draw seconds hand
 
 	if show_seconds then
-		xs=xc+0.95*clock_r*math.sin(secs_arc)
-		ys=yc-0.95*clock_r*math.cos(secs_arc)
+		xs=xc+0.90*clock_r*math.sin(secs_arc)
+		ys=yc-0.90*clock_r*math.cos(secs_arc)
 		xxs=xc-0.15*clock_r*math.sin(secs_arc)
 		yys=yc+0.15*clock_r*math.cos(secs_arc)
 
@@ -397,5 +397,4 @@ function conky_clock_rings()
 
 	return
 end
-
 
