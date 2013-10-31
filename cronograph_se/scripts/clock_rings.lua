@@ -119,7 +119,8 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		name='cpu-outline',
+		-- cpu-outline
+		name='',
 		arg='',
 		max=100,
 		bg_colour=0xFFFFFF,
@@ -133,7 +134,8 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		name='cpu-inside',
+		-- cpu-inside
+		name='',
 		arg='',
 		max=100,
 		bg_colour=0x000000,
@@ -147,7 +149,8 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		name='cpu-inside-dot',
+		-- cpu-inside-dot
+		name='',
 		arg='',
 		max=100,
 		bg_colour=0xFFFFFF,
@@ -243,7 +246,7 @@ local settings_table = {
 		thickness=2,
 		start_angle=0,
 		end_angle=360
-	},
+	}
 }
 
 -- Use these settings to define the origin and extent of your clock.
@@ -308,8 +311,8 @@ local function draw_clock_hands(cr,xc,yc)
 
 	-- Draw hour hand
 
-	xh=xc+0.58*clock_r*math.sin(hours_arc)
-	yh=yc-0.58*clock_r*math.cos(hours_arc)
+	xh=xc+0.65*clock_r*math.sin(hours_arc)
+	yh=yc-0.65*clock_r*math.cos(hours_arc)
 	xxh=xc-0.10*clock_r*math.sin(hours_arc)
 	yyh=yc+0.10*clock_r*math.cos(hours_arc)
 

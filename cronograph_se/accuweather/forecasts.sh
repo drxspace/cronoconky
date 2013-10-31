@@ -120,7 +120,7 @@ trimday () {
 errexit () {
 	cat /dev/null > ${scriptdir}/curr_cond
 	cat /dev/null > ${scriptdir}/fore_cond
-	echo -e "$1" 1>&2
+	echo -e "$1" >&2
 	exit 1
 }
 
@@ -135,33 +135,37 @@ Longitude='23.73'
 
 accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
 
-# Store temporary data here
+# Store temporary data in this directory
 mkdir -p ~/.cache/cronograph
 
-echo "forecasts.sh: Contacting the server..." 1>&2
-wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl ||
-	errexit "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
+echo -e "forecasts.sh: Contacting the server at url...\n\t${accuWurl}" >&2
+wget -q -O ~/.cache/cronograph/accuw.xml "${accuWurl}" ||
+	errexit "ERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
 
-echo "forecasts.sh: Checking the results..." 1>&2
+echo "forecasts.sh: Checking the results..." >&2
 Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
 
 if [[ -n ${Failure} ]]; then
-	echo "forecasts.sh: Faking the coordinates..." 1>&2
-	Latitude=${Latitude}0001
-	Longitude=${Longitude}0001
+	echo ${Failure} >&2
+	echo "forecasts.sh: Faking the coordinates..." >&2
+#	Latitude+="0001"
+#	Longitude+="0001"
+	Latitude=$(bc <<< "${Latitude} + 0.01")
+	Longitude=$(bc <<< "${Longitude} + 0.01")
+	accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
 
-	echo "forecasts.sh: Contacting the server for a second time..." 1>&2
-	wget -q -O ~/.cache/cronograph/accuw.xml $accuWurl ||
-		errexit "$(date -R)\tERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
+	echo -e "forecasts.sh: Contacting the server for a second time at url...\n\t${accuWurl}" >&2
+	wget -q -O ~/.cache/cronograph/accuw.xml "${accuWurl}" ||
+		errexit "ERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
 
-	echo "forecasts.sh: Checking the results again..." 1>&2
+	echo "forecasts.sh: Checking the results again..." >&2
 	Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
 fi
 
 [[ -n ${Failure} ]] &&
-	errexit "$(date -R)\tERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
+	errexit "ERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
 
-echo "forecasts.sh: Processing data..." 1>&2
+echo "forecasts.sh: Processing data..." >&2
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' ~/.cache/cronograph/accuw.xml
 sed '/currentconditions/,/\/currentconditions/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/curr_cond.txt
 sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_1st.txt
