@@ -78,7 +78,8 @@ ${voffset 18}${goto 64}${font hooge 05_53:size=10:bold}${time %H:%M}${font}${vof
 ${voffset 1}${goto 64}${uptime_short}${goto 184}${time %Y}${font}
 #
 ${voffset -7}${goto 145}${font hooge 05_53:size=6:bold:italic}HD${font}
-${voffset 15}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp /dev/sdb}" != "N/A"}/${hddtemp}${endif}
+${voffset 15}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}${endif}
+# ${hddtemp /dev/sda}
 # sudo chmod +s `which hddtemp`
 #
 ${voffset 31}${goto 65}\
