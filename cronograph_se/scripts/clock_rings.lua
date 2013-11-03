@@ -104,17 +104,17 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- center tick
+		-- center-bullet-bg
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x888888,
-		bg_alpha=1.0,
+		bg_colour=0x808080,
+		bg_alpha=0.6,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=150,
 		radius=1,
-		thickness=14,
+		thickness=23,
 		start_angle=0,
 		end_angle=360
 	},
@@ -250,22 +250,18 @@ local settings_table = {
 }
 
 -- Use these settings to define the origin and extent of your clock.
-
-local clock_r=127
+local clock_r=128
 
 -- "clock_x" and "clock_y" are the coordinates of the centre of the clock, in pixels, from the top left of the Conky window.
-
 local clock_x=150
 local clock_y=150
 
 -- Colour & alpha of the clock hands
-
 local hands_colour=0xF0F0F0
 local secs_colour=0x830000
 local clock_alpha=1
 
 -- Do you want to show the seconds hand?
-
 local show_seconds=true
 
 local function rgb_to_r_g_b(colour,alpha)
@@ -283,14 +279,12 @@ local function draw_ring(cr,t,pt)
 	local t_arc=t*(angle_f-angle_0)
 
 	-- Draw background ring
-
 	cairo_arc(cr,xc,yc,ring_r,angle_0,angle_f)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(bgc,bga))
 	cairo_set_line_width(cr,ring_w)
 	cairo_stroke(cr)
 
 	-- Draw indicator ring
-
 	cairo_arc(cr,xc,yc,ring_r,angle_0,angle_0+t_arc)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(fgc,fga))
 	cairo_stroke(cr)
@@ -310,57 +304,51 @@ local function draw_clock_hands(cr,xc,yc)
 	hours_arc=(2*math.pi/12)*hours+mins_arc/12
 
 	-- Draw hour hand
-
 	xh=xc+0.65*clock_r*math.sin(hours_arc)
 	yh=yc-0.65*clock_r*math.cos(hours_arc)
 	xxh=xc-0.10*clock_r*math.sin(hours_arc)
 	yyh=yc+0.10*clock_r*math.cos(hours_arc)
-
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xh,yh)
-
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xxh,yyh)
-
 	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
 	cairo_set_line_width(cr,8)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(hands_colour,clock_alpha))
 	cairo_stroke(cr)
 
 	-- Draw minute hand
-
 	xm=xc+0.82*clock_r*math.sin(mins_arc)
 	ym=yc-0.82*clock_r*math.cos(mins_arc)
 	xxm=xc-0.12*clock_r*math.sin(mins_arc)
 	yym=yc+0.12*clock_r*math.cos(mins_arc)
-
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xm,ym)
-
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xxm,yym)
-
 	cairo_set_line_width(cr,5)
 	cairo_stroke(cr)
 
 	-- Draw seconds hand
-
 	if show_seconds then
 		xs=xc+0.90*clock_r*math.sin(secs_arc)
 		ys=yc-0.90*clock_r*math.cos(secs_arc)
 		xxs=xc-0.15*clock_r*math.sin(secs_arc)
 		yys=yc+0.15*clock_r*math.cos(secs_arc)
-
 		cairo_move_to(cr,xc,yc)
 		cairo_line_to(cr,xs,ys)
-
 		cairo_move_to(cr,xc,yc)
 		cairo_line_to(cr,xxs,yys)
-
 		cairo_set_line_width(cr,2)
 		cairo_set_source_rgba(cr,rgb_to_r_g_b(secs_colour,clock_alpha))
 		cairo_stroke(cr)
 	end
+
+	-- Draw center dot/screw
+	cairo_arc(cr,xc,yc,1,0,360)
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(0x101010,1.0))
+	cairo_set_line_width(cr,3)
+	cairo_stroke(cr)
 end
 
 function conky_clock_rings()
@@ -369,15 +357,13 @@ function conky_clock_rings()
 		local pct
 		str = string.format('${%s %s}', pt['name'], pt['arg'])
 		if pt['name'] == '' then
-			str=0
+			str = 0
+			value = 0
 		else
 			str=conky_parse(str)
+			value = tonumber(str)
 		end
-
-		value = tonumber(str)
-		if value == nil then value = 0 end
 		pct=value/pt['max']
-
 		draw_ring(cr,pct,pt)
 	end
 
