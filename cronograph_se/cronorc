@@ -101,8 +101,13 @@ ${voffset 12}${goto 84}${font ConkyWeather:size=18}${execi 600 sed -n '1p' $HOME
 ${goto 138}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/accuweather/fore_cond}\
 ${goto 192}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${font}
 #
-${voffset -3}${goto 80}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${goto 134}${execi 600 sed -n '5p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${goto 188}${execi 600 sed -n '6p' $HOME/.conky/cronograph_se/accuweather/fore_cond}
-${voffset -2}${goto 88}${execi 600 sed -n '7p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${goto 143}${execi 600 sed -n '8p' $HOME/.conky/cronograph_se/accuweather/fore_cond}${goto 196}${execi 600 sed -n '9p' $HOME/.conky/cronograph_se/accuweather/fore_cond}
+${voffset -3}${goto 80}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/accuweather/fore_cond}\
+${goto 134}${execi 600 sed -n '5p' $HOME/.conky/cronograph_se/accuweather/fore_cond}\
+${goto 188}${execi 600 sed -n '6p' $HOME/.conky/cronograph_se/accuweather/fore_cond}
+#
+${voffset -2}${goto 88}${execi 600 sed -n '7p' $HOME/.conky/cronograph_se/accuweather/fore_cond}\
+${goto 143}${execi 600 sed -n '8p' $HOME/.conky/cronograph_se/accuweather/fore_cond}\
+${goto 196}${execi 600 sed -n '9p' $HOME/.conky/cronograph_se/accuweather/fore_cond}
 #
 ${if_empty ${battery}}
 # We assume that there's no battery
