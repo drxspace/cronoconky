@@ -90,12 +90,12 @@ ${goto 91}${cpu cpu0}%${goto 221}${memperc}%
 ${voffset 5}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${font}
 #
 ${voffset 22}${goto 84}${font hooge 05_53:size=10:bold}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/accuweather/curr_cond}\
-${voffset -30}${goto 123}${font ConkyWeather:size=40}\
+${voffset -20}${goto 123}${font ConkyWeather:size=40}\
 ${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/accuweather/curr_cond} > 35}${color4}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/accuweather/curr_cond}${color}${else}\
 ${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/accuweather/curr_cond} > 30}${color5}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/accuweather/curr_cond}${color}${else}\
 ${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/accuweather/curr_cond} < 3}${color1}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/accuweather/curr_cond}${color}${else}\
 ${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/accuweather/curr_cond}${endif}${endif}${endif}${font}\
-${voffset -12}${goto 186}${font hooge 05_53:size=6:bold}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/accuweather/curr_cond}${font}
+${voffset -22}${goto 186}${font hooge 05_53:size=6:bold}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/accuweather/curr_cond}${font}
 #
 ${voffset 12}${goto 84}${font ConkyWeather:size=18}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/accuweather/fore_cond}\
 ${goto 138}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/accuweather/fore_cond}\
