@@ -118,13 +118,17 @@ trimday () {
 # errexit function clears the cond files so that nothing would be displayed on
 # the clock, writes an error on the stderr file and then exits the script
 errexit () {
-	cat /dev/null > ${scriptdir}/curr_cond
-	cat /dev/null > ${scriptdir}/fore_cond
 	echo -e "$1" >&2
 	exit 1
 }
 
-scriptdir="$(dirname "$0")"
+###
+#
+# main section
+#
+
+# The directory this script resides
+scriptDir="$(dirname "$0")"
 
 # INFO: Use Google Maps to locate your place and find out your coordinates (slat, slon) that you should place below
 Latitude='37.98'
@@ -135,15 +139,20 @@ Longitude='23.73'
 
 accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
 
-# Store temporary data in this directory
-mkdir -p ~/.cache/cronograph
+# Clear the contents of conditions files
+cat /dev/null > ${scriptDir}/curr_cond
+cat /dev/null > ${scriptDir}/fore_cond
 
-echo -e "forecasts.sh: Contacting the server at url...\n\t${accuWurl}" >&2
-wget -q -O ~/.cache/cronograph/accuw.xml "${accuWurl}" ||
-	errexit "ERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
+# Store temporary data in this directory
+cacheDir="$HOME/.cache/cronograph"
+mkdir -p "${cacheDir}"
+
+echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
+wget -q -4 -t 1 --no-cache -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
+	errexit "ERROR: Wget exits with error code $?.";
 
 echo "forecasts.sh: Checking the results..." >&2
-Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
+Failure=$(grep "<failure>" "${cacheDir}"/accuw.xml)
 
 if [[ -n ${Failure} ]]; then
 	echo ${Failure} >&2
@@ -155,36 +164,37 @@ if [[ -n ${Failure} ]]; then
 	accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
 
 	echo -e "forecasts.sh: Contacting the server for a second time at url...\n\t${accuWurl}" >&2
-	wget -q -O ~/.cache/cronograph/accuw.xml "${accuWurl}" ||
-		errexit "ERROR: Could not contact AccuWeather server. Maybe you're not online or the server wasn't ready.";
+
+	wget -q -4 -t 1 --no-cache -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
+		errexit "ERROR: Wget exits with error code $?.";
 
 	echo "forecasts.sh: Checking the results again..." >&2
-	Failure=$(grep "<failure>" ~/.cache/cronograph/accuw.xml)
+	Failure=$(grep "<failure>" "${cacheDir}"/accuw.xml)
 fi
 
 [[ -n ${Failure} ]] &&
 	errexit "ERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
 
 echo "forecasts.sh: Processing data..." >&2
-sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' ~/.cache/cronograph/accuw.xml
-sed '/currentconditions/,/\/currentconditions/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/curr_cond.txt
-sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_1st.txt
-sed -e '/day number="3"/,/day number="4"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_2nd.txt
-sed -e '/day number="4"/,/day number="5"/!d' -e '/daycode/,/\/daytime/!d' ~/.cache/cronograph/accuw.xml > ~/.cache/cronograph/fore_3rd.txt
+sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "${cacheDir}"/accuw.xml
+sed '/currentconditions/,/\/currentconditions/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/curr_cond.txt
+sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_1st.txt
+sed -e '/day number="3"/,/day number="4"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_2nd.txt
+sed -e '/day number="4"/,/day number="5"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_3rd.txt
 
 pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
-echo $(parseval 'temperature' ~/.cache/cronograph/curr_cond.txt)° > ${scriptdir}/curr_cond
-getImgChr $(parseval 'weathericon' ~/.cache/cronograph/curr_cond.txt) >> ${scriptdir}/curr_cond
-parseval 'weathertext' ~/.cache/cronograph/curr_cond.txt  | tr "[:lower:]" "[:upper:]" >> ${scriptdir}/curr_cond
-getImgChr $(parseval 'weathericon' ~/.cache/cronograph/fore_1st.txt) > ${scriptdir}/fore_cond
-getImgChr $(parseval 'weathericon' ~/.cache/cronograph/fore_2nd.txt) >> ${scriptdir}/fore_cond
-getImgChr $(parseval 'weathericon' ~/.cache/cronograph/fore_3rd.txt) >> ${scriptdir}/fore_cond
-{ echo $(parseval 'lowtemperature' ~/.cache/cronograph/fore_1st.txt)°/$(parseval 'hightemperature' ~/.cache/cronograph/fore_1st.txt)°; } >> ${scriptdir}/fore_cond
-{ echo $(parseval 'lowtemperature' ~/.cache/cronograph/fore_2nd.txt)°/$(parseval 'hightemperature' ~/.cache/cronograph/fore_2nd.txt)°; } >> ${scriptdir}/fore_cond
-{ echo $(parseval 'lowtemperature' ~/.cache/cronograph/fore_3rd.txt)°/$(parseval 'hightemperature' ~/.cache/cronograph/fore_3rd.txt)°; } >> ${scriptdir}/fore_cond
-trimday $(parseval 'daycode' ~/.cache/cronograph/fore_1st.txt) >> ${scriptdir}/fore_cond
-trimday $(parseval 'daycode' ~/.cache/cronograph/fore_2nd.txt) >> ${scriptdir}/fore_cond
-trimday $(parseval 'daycode' ~/.cache/cronograph/fore_3rd.txt) >> ${scriptdir}/fore_cond
+echo $(parseval 'temperature' "${cacheDir}"/curr_cond.txt)° > ${scriptDir}/curr_cond
+getImgChr $(parseval 'weathericon' "${cacheDir}"/curr_cond.txt) >> ${scriptDir}/curr_cond
+parseval 'weathertext' "${cacheDir}"/curr_cond.txt  | tr "[:lower:]" "[:upper:]" >> ${scriptDir}/curr_cond
+getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_1st.txt) > ${scriptDir}/fore_cond
+getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_2nd.txt) >> ${scriptDir}/fore_cond
+getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_3rd.txt) >> ${scriptDir}/fore_cond
+{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_1st.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_1st.txt)°; } >> ${scriptDir}/fore_cond
+{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_2nd.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_2nd.txt)°; } >> ${scriptDir}/fore_cond
+{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_3rd.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_3rd.txt)°; } >> ${scriptDir}/fore_cond
+trimday $(parseval 'daycode' "${cacheDir}"/fore_1st.txt) >> ${scriptDir}/fore_cond
+trimday $(parseval 'daycode' "${cacheDir}"/fore_2nd.txt) >> ${scriptDir}/fore_cond
+trimday $(parseval 'daycode' "${cacheDir}"/fore_3rd.txt) >> ${scriptDir}/fore_cond
 pkill -SIGCONT --oldest --exact --full "^conky.*cronorc$"
 
 exit 0
