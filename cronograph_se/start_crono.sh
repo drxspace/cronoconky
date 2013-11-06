@@ -17,6 +17,6 @@
 
 #conky -q -c "$(dirname "$0")"/cronorc &
 # With the background property setted to yes I don't need the &
-nice -n 5 conky -q -c "$(dirname "$0")"/cronorc
+[[ $(pgrep -c -f "^conky.*cronorc$") -eq 0 ]] && nice -n 5 conky -q -c "$(dirname "$0")"/cronorc
 
 exit 0
