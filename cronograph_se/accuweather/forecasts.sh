@@ -148,34 +148,39 @@ cacheDir="$HOME/.cache/cronograph"
 mkdir -p "${cacheDir}"
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
-wget -q -4 -t 1 --no-cache -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
+
+wget -q -4 -t 1 -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
 	errexit "ERROR: Wget exits with error code $?.";
 
 echo "forecasts.sh: Checking the results..." >&2
-Failure=$(grep "<failure>" "${cacheDir}"/accuw.xml)
 
-if [[ -n ${Failure} ]]; then
-	echo ${Failure} >&2
-	echo "forecasts.sh: Faking the coordinates..." >&2
-#	Latitude+="0001"
-#	Longitude+="0001"
-	Latitude=$(bc <<< "${Latitude} + 0.01")
-	Longitude=$(bc <<< "${Longitude} + 0.01")
-	accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
+[[ -z $(grep -v "<currentconditions>" "${cacheDir}"/accuw.xml) ]] &&
+       errexit "ERROR: AccuWeather server reports failure.";
 
-	echo -e "forecasts.sh: Contacting the server for a second time at url...\n\t${accuWurl}" >&2
-
-	wget -q -4 -t 1 --no-cache -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
-		errexit "ERROR: Wget exits with error code $?.";
-
-	echo "forecasts.sh: Checking the results again..." >&2
-	Failure=$(grep "<failure>" "${cacheDir}"/accuw.xml)
-fi
-
-[[ -n ${Failure} ]] &&
-	errexit "ERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
+#Failure=$(grep "<failure>" "${cacheDir}"/accuw.xml)
+#if [[ -n ${Failure} ]]; then
+#       echo ${Failure} >&2
+#       echo "forecasts.sh: Faking the coordinates..." >&2
+##      Latitude+="0001"
+##      Longitude+="0001"
+#       Latitude=$(bc <<< "${Latitude} + 0.01")
+#       Longitude=$(bc <<< "${Longitude} + 0.01")
+#       accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
+#
+#       echo -e "forecasts.sh: Contacting the server for a second time at url...\n\t${accuWurl}" >&2
+#
+#       wget -q -4 -t 1 --no-cache -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
+#               errexit "ERROR: Wget exits with error code $?.";
+#
+#       echo "forecasts.sh: Checking the results again..." >&2
+#       Failure=$(grep "<failure>" "${cacheDir}"/accuw.xml)
+#fi
+#
+#[[ -n ${Failure} ]] &&
+#       errexit "ERROR: AccuWeather server reports failure: $(echo ${Failure} | sed -n "s|<failure>\(.*\)</failure>|\1|p" | sed "s/^[[:space:]]*//")";
 
 echo "forecasts.sh: Processing data..." >&2
+
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "${cacheDir}"/accuw.xml
 sed '/currentconditions/,/\/currentconditions/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/curr_cond.txt
 sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_1st.txt
