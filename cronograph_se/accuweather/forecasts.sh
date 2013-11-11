@@ -119,7 +119,7 @@ trimday () {
 # the clock, writes an error on the stderr file and then exits the script
 errexit () {
 	echo -e "$1" >&2
-	echo "AccuWeather Err" > ${scriptDir}/curr_cond;
+	echo "AccuWeather Err" > ${scriptDir}/curr_cond
 	exit 1
 }
 
@@ -151,12 +151,12 @@ mkdir -p "${cacheDir}"
 echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
 
 wget -q -4 -t 1 -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
-	errexit "ERROR: Wget exits with error code $?.";
+	errexit "ERROR: Wget exits with error code $?."
 
 echo "forecasts.sh: Checking the results..." >&2
 
 [[ -z $(grep -v "<currentconditions>" "${cacheDir}"/accuw.xml) ]] &&
-       errexit "ERROR: AccuWeather server reports failure.";
+       errexit "ERROR: AccuWeather server reports failure."
 
 #Failure=$(grep "<failure>" "${cacheDir}"/accuw.xml)
 #if [[ -n ${Failure} ]]; then
