@@ -150,8 +150,8 @@ mkdir -p "${cacheDir}"
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
 
-[[ -z $(grep -v "<currentconditions>" "${cacheDir}"/accuw.xml) ]] &&
-	errexit "ERROR: AccuWeather server reports failure.";
+wget -q -4 -t 1 -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
+	errexit "ERROR: Wget exits with error code $?.";
 
 echo "forecasts.sh: Checking the results..." >&2
 
