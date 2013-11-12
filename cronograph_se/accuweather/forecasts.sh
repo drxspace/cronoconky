@@ -119,7 +119,7 @@ trimday () {
 # the clock, writes an error on the stderr file and then exits the script
 errexit () {
 	echo -e "$1" >&2
-	echo "AccuWeather Err" > ${scriptDir}/curr_cond
+	echo "AccuWeather Err" > "${scriptDir}"/curr_cond
 	exit 1
 }
 
@@ -141,8 +141,8 @@ Longitude='23.73'
 accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
 
 # Clear the contents of conditions files
-cat /dev/null > ${scriptDir}/curr_cond
-cat /dev/null > ${scriptDir}/fore_cond
+cat /dev/null > "${scriptDir}"/curr_cond
+cat /dev/null > "${scriptDir}"/fore_cond
 
 # Store temporary data in this directory
 cacheDir="$HOME/.cache/cronograph"
@@ -189,18 +189,18 @@ sed -e '/day number="3"/,/day number="4"/!d' -e '/daycode/,/\/daytime/!d' "${cac
 sed -e '/day number="4"/,/day number="5"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_3rd.txt
 
 pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
-echo $(parseval 'temperature' "${cacheDir}"/curr_cond.txt)° > ${scriptDir}/curr_cond
-getImgChr $(parseval 'weathericon' "${cacheDir}"/curr_cond.txt) >> ${scriptDir}/curr_cond
-parseval 'weathertext' "${cacheDir}"/curr_cond.txt  | tr "[:lower:]" "[:upper:]" >> ${scriptDir}/curr_cond
-getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_1st.txt) > ${scriptDir}/fore_cond
-getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_2nd.txt) >> ${scriptDir}/fore_cond
-getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_3rd.txt) >> ${scriptDir}/fore_cond
-{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_1st.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_1st.txt)°; } >> ${scriptDir}/fore_cond
-{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_2nd.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_2nd.txt)°; } >> ${scriptDir}/fore_cond
-{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_3rd.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_3rd.txt)°; } >> ${scriptDir}/fore_cond
-trimday $(parseval 'daycode' "${cacheDir}"/fore_1st.txt) >> ${scriptDir}/fore_cond
-trimday $(parseval 'daycode' "${cacheDir}"/fore_2nd.txt) >> ${scriptDir}/fore_cond
-trimday $(parseval 'daycode' "${cacheDir}"/fore_3rd.txt) >> ${scriptDir}/fore_cond
+echo $(parseval 'temperature' "${cacheDir}"/curr_cond.txt)° > "${scriptDir}"/curr_cond
+getImgChr $(parseval 'weathericon' "${cacheDir}"/curr_cond.txt) >> "${scriptDir}"/curr_cond
+parseval 'weathertext' "${cacheDir}"/curr_cond.txt  | tr "[:lower:]" "[:upper:]" >> "${scriptDir}"/curr_cond
+getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_1st.txt) > "${scriptDir}"/fore_cond
+getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_2nd.txt) >> "${scriptDir}"/fore_cond
+getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_3rd.txt) >> "${scriptDir}"/fore_cond
+{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_1st.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_1st.txt)°; } >> "${scriptDir}"/fore_cond
+{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_2nd.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_2nd.txt)°; } >> "${scriptDir}"/fore_cond
+{ echo $(parseval 'lowtemperature' "${cacheDir}"/fore_3rd.txt)°/$(parseval 'hightemperature' "${cacheDir}"/fore_3rd.txt)°; } >> "${scriptDir}"/fore_cond
+trimday $(parseval 'daycode' "${cacheDir}"/fore_1st.txt) >> "${scriptDir}"/fore_cond
+trimday $(parseval 'daycode' "${cacheDir}"/fore_2nd.txt) >> "${scriptDir}"/fore_cond
+trimday $(parseval 'daycode' "${cacheDir}"/fore_3rd.txt) >> "${scriptDir}"/fore_cond
 pkill -SIGCONT --oldest --exact --full "^conky.*cronorc$"
 
 exit 0
