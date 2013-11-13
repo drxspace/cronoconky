@@ -155,7 +155,7 @@ wget -q -4 -t 1 -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
 
 echo "forecasts.sh: Checking the results..." >&2
 
-[[ -z $(grep -v "<currentconditions>" "${cacheDir}"/accuw.xml) ]] &&
+[[ -z $(grep "<currentconditions>" "${cacheDir}"/accuw.xml) ]] &&
        errexit "ERROR: AccuWeather server reports failure."
 
 #Failure=$(grep "<failure>" "${cacheDir}"/accuw.xml)
