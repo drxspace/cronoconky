@@ -144,10 +144,9 @@ accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Lat
 cat /dev/null > "${scriptDir}"/curr_cond
 cat /dev/null > "${scriptDir}"/fore_cond
 
-# Store temporary data in this directory
+# Store temporary data in this directory...
 cacheDir="$HOME/.cache/cronograph"
-mkdir -p "${cacheDir}"
-# First make sure that is clrear
+# ...but first make sure that it's clear
 [[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
