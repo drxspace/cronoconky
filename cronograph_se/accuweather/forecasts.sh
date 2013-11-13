@@ -147,6 +147,8 @@ cat /dev/null > "${scriptDir}"/fore_cond
 # Store temporary data in this directory
 cacheDir="$HOME/.cache/cronograph"
 mkdir -p "${cacheDir}"
+# First make sure that is clrear
+[[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
 
