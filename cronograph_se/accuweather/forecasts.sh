@@ -120,6 +120,8 @@ trimday () {
 errexit () {
 	echo -e "$1" >&2
 	echo "AccuWeather Err" > "${scriptDir}"/curr_cond
+	# Till now conky was stopped and must be continued before we exit this script
+	pkill -SIGCONT --oldest --exact --full "^conky.*cronorc$"
 	exit 1
 }
 
@@ -131,6 +133,11 @@ errexit () {
 # The directory this script resides
 scriptDir="$(dirname "$0")"
 
+# Store temporary data in this directory...
+cacheDir="$HOME/.cache/cronograph"
+# ...but first make sure that it's clear
+[[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
+
 # INFO: Use Google Maps to locate your place and find out your coordinates (slat, slon) that you should place below
 Latitude='37.98'
 Longitude='23.73'
@@ -138,16 +145,15 @@ Longitude='23.73'
 # Uncomment next line to make use of English units
 #metric=0
 
+# AccuWeather URL
 accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
+
+# Stop the conky till we construct the data
+pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
 
 # Clear the contents of conditions files
 cat /dev/null > "${scriptDir}"/curr_cond
 cat /dev/null > "${scriptDir}"/fore_cond
-
-# Store temporary data in this directory...
-cacheDir="$HOME/.cache/cronograph"
-# ...but first make sure that it's clear
-[[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
 
@@ -189,7 +195,8 @@ sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' "${cac
 sed -e '/day number="3"/,/day number="4"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_2nd.txt
 sed -e '/day number="4"/,/day number="5"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_3rd.txt
 
-pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
+#pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
+
 echo $(parseval 'temperature' "${cacheDir}"/curr_cond.txt)° > "${scriptDir}"/curr_cond
 getImgChr $(parseval 'weathericon' "${cacheDir}"/curr_cond.txt) >> "${scriptDir}"/curr_cond
 parseval 'weathertext' "${cacheDir}"/curr_cond.txt  | tr "[:lower:]" "[:upper:]" >> "${scriptDir}"/curr_cond
@@ -202,6 +209,7 @@ getImgChr $(parseval 'weathericon' "${cacheDir}"/fore_3rd.txt) >> "${scriptDir}"
 trimday $(parseval 'daycode' "${cacheDir}"/fore_1st.txt) >> "${scriptDir}"/fore_cond
 trimday $(parseval 'daycode' "${cacheDir}"/fore_2nd.txt) >> "${scriptDir}"/fore_cond
 trimday $(parseval 'daycode' "${cacheDir}"/fore_3rd.txt) >> "${scriptDir}"/fore_cond
+
 pkill -SIGCONT --oldest --exact --full "^conky.*cronorc$"
 
 exit 0
