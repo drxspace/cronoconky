@@ -104,6 +104,21 @@ getImgChr () {
 	esac
 }
 
+# The directory this script resides
+scriptDir="$(dirname "$0")"
+
+# Store temporary data in this directory...
+cacheDir="$HOME/.cache/cronograph"
+# ...but first make sure that it's clear
+[[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
+
+
+# clearconds function clears the contents of conditions files
+clearconds () {
+	cat /dev/null > "${scriptDir}"/curr_cond
+	cat /dev/null > "${scriptDir}"/fore_cond
+}
+
 # parseval function parses the value of the specified tag
 parseval () {
 	sed -n "s|<$1>\(.*\)</$1>|\1|p" $2 | sed "s/^[[:space:]]*//"
@@ -119,9 +134,8 @@ trimday () {
 # the clock, writes an error on the stderr file and then exits the script
 errexit () {
 	echo -e "$1" >&2
+	clearconds
 	echo "AccuWeather Err" > "${scriptDir}"/curr_cond
-	# Till now conky was stopped and must be continued before we exit this script
-	pkill -SIGCONT --oldest --exact --full "^conky.*cronorc$"
 	exit 1
 }
 
@@ -129,14 +143,6 @@ errexit () {
 #
 # main section
 #
-
-# The directory this script resides
-scriptDir="$(dirname "$0")"
-
-# Store temporary data in this directory...
-cacheDir="$HOME/.cache/cronograph"
-# ...but first make sure that it's clear
-[[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
 
 # INFO: Use Google Maps to locate your place and find out your coordinates (slat, slon) that you should place below
 Latitude='37.98'
@@ -147,13 +153,6 @@ Longitude='23.73'
 
 # AccuWeather URL
 accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Latitude}&slon=${Longitude}&metric=${metric:-1}"
-
-# Stop the conky till we construct the data
-pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
-
-# Clear the contents of conditions files
-cat /dev/null > "${scriptDir}"/curr_cond
-cat /dev/null > "${scriptDir}"/fore_cond
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
 
@@ -189,13 +188,13 @@ echo "forecasts.sh: Checking the results..." >&2
 
 echo "forecasts.sh: Processing data..." >&2
 
+pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
+
 sed -i -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "${cacheDir}"/accuw.xml
 sed '/currentconditions/,/\/currentconditions/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/curr_cond.txt
 sed -e '/day number="2"/,/day number="3"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_1st.txt
 sed -e '/day number="3"/,/day number="4"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_2nd.txt
 sed -e '/day number="4"/,/day number="5"/!d' -e '/daycode/,/\/daytime/!d' "${cacheDir}"/accuw.xml > "${cacheDir}"/fore_3rd.txt
-
-#pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
 
 echo $(parseval 'temperature' "${cacheDir}"/curr_cond.txt)° > "${scriptDir}"/curr_cond
 getImgChr $(parseval 'weathericon' "${cacheDir}"/curr_cond.txt) >> "${scriptDir}"/curr_cond

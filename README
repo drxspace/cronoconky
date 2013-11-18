@@ -15,6 +15,7 @@ Tested (by me) and WORKED under these enviroments
 - Ubuntu GNOME
 - Ubuntu KDE
 - Mint 15 Cinnamon
+- works also with Arch Linux but you need to manually install the files
 
 
 INSTALLATION
@@ -27,6 +28,9 @@ INSTALLATION
 
 CHANGES in version 2
 --------------------------------------------------------------------------------
+2013-11-18
+· Changes in the forecasts.sh script due to problems with clearing conditions
+  files
 2013-10-27
 · Tweak/change multi_rings.lua to draw nicer hands
 2013-10-10
