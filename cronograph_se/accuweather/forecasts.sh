@@ -112,7 +112,6 @@ cacheDir="$HOME/.cache/cronograph"
 # ...but first make sure that it's clear
 [[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
 
-
 # clearconds function clears the contents of conditions files
 clearconds () {
 	cat /dev/null > "${scriptDir}"/curr_cond
