@@ -104,6 +104,10 @@ getImgChr () {
 	esac
 }
 
+# User Agent String from http://www.useragentstring.com
+# Suppose we're using Chrome/30.0.1599.17
+UserAgent='Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36'
+
 # The directory this script resides
 scriptDir="$(dirname "$0")"
 
@@ -155,7 +159,7 @@ accuWurl="http://thale.accu-weather.com/widget/thale/weather-data.asp?slat=${Lat
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${accuWurl}" >&2
 
-wget -q -4 -t 1 -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
+wget -q -4 -t 1 --user-agent="${UserAgent}" -O "${cacheDir}"/accuw.xml "${accuWurl}" ||
 	errexit "ERROR: Wget exits with error code $?."
 
 echo "forecasts.sh: Checking the results..." >&2
