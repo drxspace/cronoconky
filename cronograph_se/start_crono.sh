@@ -8,11 +8,13 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-#sleep 25
-#      ^^
+sleep 15
+#     ^^
 # Error of failed request:  BadWindow (invalid Window parameter)
 # There's also the X-GNOME-Autostart-Delay=25 property in .desktop file
 # that can be set in order to handle this situation
+
+# Logging
 #rm "$(dirname "$0")"/conkyerr.log && $(which conky) -DD -c "$(dirname "$0")"/cronorc &> "$(dirname "$0")"/conkyerr.log &
 
 #conky -q -c "$(dirname "$0")"/cronorc &
