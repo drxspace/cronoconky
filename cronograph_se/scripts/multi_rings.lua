@@ -28,7 +28,7 @@ local clock_h = {
 		graduation_thickness=10, graduation_mark_thickness=2,
 		graduation_unit_angle=30,
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=1.0
-	},
+	}
 }
 -- MINUTES
 local clock_m = {
@@ -47,7 +47,7 @@ local clock_m = {
 		graduation_thickness=0, graduation_mark_thickness=2,
 		graduation_unit_angle=30,
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.0
-	},
+	}
 }
 -- SECONDS
 local clock_s = {
@@ -66,7 +66,7 @@ local clock_s = {
 		graduation_thickness=0, graduation_mark_thickness=0,
 		graduation_unit_angle=0,
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.0
-	},
+	}
 }
 
 --------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ local gauge = {
 		graph_thickness=27,
 		graph_start_angle=0,
 		graph_unit_angle=3.5, graph_unit_thickness=3.0,
-		graph_bg_colour=0x000000, graph_bg_alpha=0.1,
+		graph_bg_colour=0x000000, graph_bg_alpha=0.0,
 		graph_fg_colour=0xFF0000, graph_fg_alpha=0.3,
 		hand_fg_colour=0xFFFFFF, hand_fg_alpha=1.0,
 		txt_radius=1,
@@ -121,7 +121,7 @@ local gauge = {
 		graph_thickness=27,
 		graph_start_angle=0,
 		graph_unit_angle=3.5, graph_unit_thickness=3.0,
-		graph_bg_colour=0x000000, graph_bg_alpha=0.1,
+		graph_bg_colour=0x000000, graph_bg_alpha=0.0,
 		graph_fg_colour=0xFFFF00, graph_fg_alpha=0.3,
 		hand_fg_colour=0xFFFFFF, hand_fg_alpha=1.0,
 		txt_radius=1,
@@ -134,7 +134,7 @@ local gauge = {
 		caption='',
 		caption_weight=1, caption_size=8.0,
 		caption_fg_colour=0xFFFFFF, caption_fg_alpha=0.0
-	},
+	}
 }
 
 -------------------------------------------------------------------------------
@@ -372,4 +372,3 @@ function conky_multi_rings()
 
 	return
 end
-

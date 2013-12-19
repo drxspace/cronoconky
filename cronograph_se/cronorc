@@ -45,7 +45,7 @@ color6 dcdcdc		# Gainsboro
 color7 white
 color8 orange
 color9 red
-default_color dfdfdf
+default_color ffffff
 
 # — Text settings — #
 text_buffer_size 1536
@@ -60,17 +60,17 @@ xftfont hooge 05_53:size=6
 short_units yes
 
 # — Lua Load — #
-#lua_load $HOME/.conky/cronograph_se/scripts/lua_loader.lua
-#lua_draw_hook_pre lua_loader
+lua_load $HOME/.conky/cronograph_se/lua_loader.lua
+lua_draw_hook_post lua_loader
 
-lua_load $HOME/.conky/cronograph_se/scripts/clock_rings.lua $HOME/.conky/cronograph_se/scripts/multi_rings.lua
-lua_draw_hook_pre clock_rings
-lua_draw_hook_post multi_rings
+#lua_load $HOME/.conky/cronograph_se/scripts/clock_rings.lua $HOME/.conky/cronograph_se/scripts/multi_rings.lua
+#lua_draw_hook_pre clock_rings
+#lua_draw_hook_post multi_rings
 
 
 TEXT
 # Update weather info every (1800/60=30min)
-${execi 1800 bash $HOME/.conky/cronograph_se/accuweather/forecasts.sh}
+${execi 1200 bash $HOME/.conky/cronograph_se/accuweather/forecasts.sh}
 #
 ${voffset 25}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
@@ -78,7 +78,7 @@ ${voffset 18}${goto 64}${font hooge 05_53:size=10:bold}${time %H:%M}${font}${vof
 ${voffset 1}${goto 64}${uptime_short}${goto 184}${time %Y}${font}
 #
 ${voffset -7}${goto 145}${font hooge 05_53:size=6:bold:italic}HD${font}
-${voffset 15}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}${endif}
+${voffset 15}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp /dev/sdc}" != "N/A"}/${hddtemp}${endif}
 # sudo chmod +s `which hddtemp`
 #
 ${voffset 31}${goto 65}\

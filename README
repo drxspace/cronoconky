@@ -26,6 +26,13 @@ INSTALLATION
   place/position.
 
 
+CHANGES in version 2.1
+--------------------------------------------------------------------------------
+2013-12-19
+· Changes in the way that lua scripts are called. This impacts the way that the
+  clock is shaped -in a better order
+
+
 CHANGES in version 2
 --------------------------------------------------------------------------------
 2013-11-18

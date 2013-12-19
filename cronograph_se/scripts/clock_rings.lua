@@ -89,12 +89,12 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- Inside cycle drawing
+		-- Watch inside drawing
 		name='',
 		arg='',
 		max=100,
 		bg_colour=0x222222,
-		bg_alpha=0.3,
+		bg_alpha=0.2,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=150,
@@ -104,12 +104,12 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- center-bullet-bg
+		-- Watch center bullet
 		name='',
 		arg='',
 		max=100,
 		bg_colour=0x808080,
-		bg_alpha=0.6,
+		bg_alpha=0.4,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=150,
@@ -119,7 +119,7 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- cpu-outline
+		-- cpu outline
 		name='',
 		arg='',
 		max=100,
@@ -134,12 +134,12 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- cpu-inside
+		-- cpu inside
 		name='',
 		arg='',
 		max=100,
 		bg_colour=0x000000,
-		bg_alpha=0.3,
+		bg_alpha=0.0,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=85, y=150,
@@ -149,7 +149,7 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- cpu-inside-dot
+		-- cpu inside dot
 		name='',
 		arg='',
 		max=100,
@@ -164,6 +164,7 @@ local settings_table = {
 		end_angle=360
 	},
 	{
+		-- mem outline
 		name='',
 		arg='',
 		max=100,
@@ -178,11 +179,12 @@ local settings_table = {
 		end_angle=360
 	},
 	{
+		-- mem inside
 		name='',
 		arg='',
 		max=100,
 		bg_colour=0x000000,
-		bg_alpha=0.3,
+		bg_alpha=0.0,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=215, y=150,
@@ -192,6 +194,7 @@ local settings_table = {
 		end_angle=360
 	},
 	{
+		-- mem inside dot
 		name='',
 		arg='',
 		max=100,
@@ -206,6 +209,8 @@ local settings_table = {
 		end_angle=360
 	},
 	{
+
+		-- hd outline
 		name='',
 		arg='',
 		max=100,
@@ -220,11 +225,12 @@ local settings_table = {
 		end_angle=360
 	},
 	{
+		-- hd inside
 		name='',
 		arg='',
 		max=100,
 		bg_colour=0x000000,
-		bg_alpha=0.3,
+		bg_alpha=0.0,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=75,
@@ -234,6 +240,7 @@ local settings_table = {
 		end_angle=360
 	},
 	{
+		-- hd inside dot
 		name='',
 		arg='',
 		max=100,
@@ -386,4 +393,3 @@ function conky_clock_rings()
 
 	return
 end
-
