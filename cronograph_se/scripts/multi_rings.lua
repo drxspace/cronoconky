@@ -357,7 +357,7 @@ end
 --                                                            conky_multi_rings
 function conky_multi_rings()
 	-- Check that Conky has been running for at least 5s
-	-- except we use the lua_loader
+	-- unless we use the lua_loader
 	-- if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
 
 	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
