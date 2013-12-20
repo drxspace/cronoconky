@@ -375,7 +375,8 @@ function conky_clock_rings()
 	end
 
 	-- Check that Conky has been running for at least 5s
-	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
+	-- except we use the lua_loader
+	-- if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
 
 	local cs = cairo_xlib_surface_create(conky_window.display,conky_window.drawable,conky_window.visual, conky_window.width,conky_window.height)
 	local cr = cairo_create(cs)
