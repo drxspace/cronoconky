@@ -311,10 +311,10 @@ local function draw_clock_hands(cr,xc,yc)
 	hours_arc=(2*math.pi/12)*hours+mins_arc/12
 
 	-- Draw hour hand
-	xh=xc+0.66*clock_r*math.sin(hours_arc)
-	yh=yc-0.66*clock_r*math.cos(hours_arc)
-	xxh=xc-0.16*clock_r*math.sin(hours_arc)
-	yyh=yc+0.16*clock_r*math.cos(hours_arc)
+	xh=xc+0.60*clock_r*math.sin(hours_arc)
+	yh=yc-0.60*clock_r*math.cos(hours_arc)
+	xxh=xc-0.15*clock_r*math.sin(hours_arc)
+	yyh=yc+0.15*clock_r*math.cos(hours_arc)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xh,yh)
 	cairo_move_to(cr,xc,yc)
