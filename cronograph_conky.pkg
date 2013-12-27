@@ -65,7 +65,7 @@ clear
 echo -e "\E[37;44m+------------------------------------------------------------------------+"
 echo -e "|                                                                        |"
 echo -e "|                     \E[1;37;44m${THISAPPNAME^^}\E[0;37;44m                        |"
-echo -e "|                            ver. \E[30;44m${THISAPPVER}b${THISAPPBLD}\E[37;44m                               |"
+echo -e "|                           ver. \E[30;44m${THISAPPVER}b${THISAPPBLD}\E[37;44m                              |"
 echo -e "|                                                                        |"
 echo -e "|                         \E[32;44mINSTALLATION WIZARD\E[37;44m                            |"
 echo -e "|                                                                        |"
