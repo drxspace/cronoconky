@@ -17,25 +17,27 @@ THISAPPNAME="Conky Cronograph Station SE"
 THISAPPVER=$(cat "${WIZDIR}"/"${CRONODIR}"/.version)
 THISAPPBLD=$(cat "${WIZDIR}"/"${CRONODIR}"/.build)
 
+okay_x_col=$(($(tput cols)-4))
+
 installApp () {
 	case $1 in
 	-i) # Install
 		echo -e "\nInstalling..."
 		echo -en "Creating new directory "${CONKYDIR}"/"
-		mkdir -p "${CONKYDIR}/" && echo -e "\t\t[OK]"
+		mkdir -p "${CONKYDIR}/" && echo -e "\r\033[${okay_x_col}C\[OK\]"
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
-		cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\t\t[OK]"
+		cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[OK]"
 	;;
 	-r) # Reinstall
 		echo -en "Removing directory "${CONKYDIR}"/"${CRONODIR}""
-		rm -rf "${CONKYDIR}"/"${CRONODIR}"/ && echo -e "\t\t[OK]"
+		rm -rf "${CONKYDIR}"/"${CRONODIR}"/ && echo -e "\r\033[${okay_x_col}C[OK]"
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
-		cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\t\t[OK]"
+		cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[OK]"
 	;;
 	-u) # Update
 		echo -en "Backing up previous version"
 		( cd "${CONKYDIR}"/;
-		  tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; )  && echo -e "\t\t[OK]"
+		  tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; )  && echo -e "\r\033[${okay_x_col}C[OK]"
 		installApp -r # It's a... recursion
 	;;
 	esac
@@ -85,11 +87,11 @@ NeedPacks=""
 
 if [[ -n $NeedPacks ]]; then
 	echo -e "\nFirst we need to install some packages. This action requires root
-privileges and for this reason we'll may ask for your root password.
+privileges and for this reason we may ask for your root password.
 Packages that would be installed are: \033[1m$NeedPacks\033[0m"
 	read -p "Do you want to continue? [Y/n]: " ANS
 	[[ ${ANS:-Y} != [Yy] ]] && finale 2
-	sudo echo "Installing needed packages. Please wait a moment..." || finale 3
+	sudo echo -e "Installing needed packages. Please wait a moment..." || finale 3
 	sudo apt-get -qq install --no-install-recommends $NeedPacks 2> /dev/null || finale 3
 else
 	kill -SIGTERM $(pidof conky) 2>/dev/null
@@ -99,12 +101,13 @@ fi
 if [[ -n $(grep '^RUN_DAEMON.*"false"' /etc/default/hddtemp) ]]; then
 	echo -e "\nFor the HDD temperature meter to work we need to set the
 hddtemp service to run as daemon otherwise you'll get a N/A message.
-This action requires root privileges and for this reason we'll may
+This action requires root privileges and for this reason we may
 ask for your root password."
 	read -p "Do you want to install the hddtemp service as daemon? [Y/n]: " ANS
 	if [[ ${ANS:-Y} == [Yy] ]]; then
 		sudo sed -i '/RUN_DAEMON/s/false/true/' /etc/default/hddtemp
 		sudo /etc/init.d/hddtemp restart
+		echo -e "Install the hddtemp service as daemon...\r\033[${okay_x_col}C[OK]"
 	fi
 fi
 
@@ -137,27 +140,30 @@ echo -e "\nChoose the desired output unit of all objects displaying a temperatur
 Parameters are either \"celsius\" or \"fahrenheit\".
 The default unit is degree Celsius."
 read -p "Celsius or Fahrenheit? [C/f]: " ANS
-echo -e "Setting the temperature unit..."
+echo -en "Setting the temperature unit..."
 if [[ ${ANS:-C} == [Cc] ]]; then
 	sed -i 's/<temper>/celsius/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
 else	
 	sed -i 's/<temper>/fahrenheit/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
 	sed -i 's/^#metric/metric/' "${CONKYDIR}"/"${CRONODIR}"/accuweather/forecasts.sh
-fi	
+fi
+echo -e "\r\033[${okay_x_col}C[OK]"
 
 # Installing application's icon
 if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
-	echo -e "\nInstaling the Conky Cronograph Station SE icon..."
+	echo -en "\nInstaling the Conky Cronograph Station SE icon..."
 	mkdir -p "$HOME"/.icons
 	cp "${WIZDIR}"/icons/cronograph_64x64.png "$HOME"/.icons/cronograph.png 2> /dev/null
+	echo -e "\r\033[${okay_x_col}C[OK]"
 fi
 
 # Installing needed truetype weather fonts [---]
 if [[ -z $(fc-list | grep ConkyWeather) ]];  then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
 	mkdir -p "$HOME"/.fonts
-	echo -e "Coping fonts and building font information cache files.\nPlease wait a moment..."
+	echo -en "Coping fonts and building font information cache files.\nPlease wait a moment..."
 	cp -r "${WIZDIR}"/ttf-cronograph/ "$HOME"/.fonts/ 2> /dev/null && fc-cache -f &> /dev/null
+	echo -e "\r\033[${okay_x_col}C[OK]"
 fi
 
 # Add this conky to the Startup Applications list
@@ -165,9 +171,11 @@ if [[ ! -f "$HOME"/.config/autostart/cronograph_conky.desktop ]]; then
 	echo -e "\nIt's essential to add this conky to the Startup Applications list
 in order to start automatically each time we login to our system."
 	read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
-	[[ ${ANS:-Y} == [Yy] ]] \
-	&& { mkdir -p "$HOME"/.config/autostart;\
-	     sed "s:<home_dir>:"$HOME":" "${WIZDIR}"/cronograph_conky.desktop > "$HOME"/.config/autostart/cronograph_conky.desktop; }
+	[[ ${ANS:-Y} == [Yy] ]] && { 
+		mkdir -p "$HOME"/.config/autostart;
+		sed "s:<home_dir>:"$HOME":" "${WIZDIR}"/cronograph_conky.desktop > "$HOME"/.config/autostart/cronograph_conky.desktop;
+		echo -e "Setting Cronograph SE as a Startup Application...\r\033[${okay_x_col}C[OK]";
+	}
 fi
 
 echo -e "\nThe conky \"${THISAPPNAME}\" is installed ok!"
