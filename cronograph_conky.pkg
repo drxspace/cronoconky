@@ -80,19 +80,20 @@ read -p "Do you want to continue? [Y/n]: " ANS
 [[ ${ANS:-Y} != [Yy] ]] && finale 1
 
 # Building needed packages list
-NeedPacks=""
-[[ -z $(which conky) ]] && NeedPacks="conky-std "
-[[ -z $(which hddtemp) ]] && NeedPacks=$NeedPacks"hddtemp "
-[[ -z $(which sensors) ]] && NeedPacks=$NeedPacks"lm-sensors"
+NeedPackages=""
+[[ -z $(which conky) ]] && NeedPackages="conky-std "
+[[ -z $(which lua) ]] && NeedPackages=$NeedPackages"lua5.2 "
+[[ -z $(which hddtemp) ]] && NeedPackages=$NeedPackages"hddtemp "
+[[ -z $(which sensors) ]] && NeedPackages=$NeedPackages"lm-sensors"
 
-if [[ -n $NeedPacks ]]; then
+if [[ -n $NeedPackages ]]; then
 	echo -e "\nFirst we need to install some packages. This action requires root
 privileges and for this reason we may ask for your root password.
-Packages that would be installed are: \033[1m$NeedPacks\033[0m"
+Packages that would be installed are: \033[1m$NeedPackages\033[0m"
 	read -p "Do you want to continue? [Y/n]: " ANS
 	[[ ${ANS:-Y} != [Yy] ]] && finale 2
 	sudo echo -e "Installing needed packages. Please wait a moment..." || finale 3
-	sudo apt-get -qq install --no-install-recommends $NeedPacks 2> /dev/null || finale 3
+	sudo apt-get -qq install --no-install-recommends $NeedPackages 2> /dev/null || finale 3
 else
 	kill -SIGTERM $(pidof conky) 2>/dev/null
 fi

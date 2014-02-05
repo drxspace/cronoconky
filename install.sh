@@ -38,7 +38,7 @@ case "$TERM" in
 		exec "$TERM" -geometry 74x24+0+0 -T "$TITLE" -e /bin/bash "$DIR"/"$MAININSTALLER"
 	;;
 	*)
-		notify-send "Error" "Unable to install conky.\nNot an known terminal was found to execute the main installation package.\nTry to run this in your terminal.\nbash ./cronograph_conky.pkg" -i face-embarrassed
+		notify-send "Error" "Unable to install conky.\nNot an known terminal was found to execute the main installation package.\nTry to run this in your terminal.\nbash cronograph_conky.pkg" -i face-embarrassed
 	;;
 esac
 
