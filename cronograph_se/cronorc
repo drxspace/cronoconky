@@ -22,10 +22,12 @@ own_window yes
 own_window_class "Conky"
 own_window_hints undecorated,below,skip_taskbar,skip_pager,sticky
 own_window_title "Conky Cronograph Station SE"
-#own_window_type normal # normal type is the default
+#own_window_type normal		# normal type is the default
 own_window_argb_visual yes
 own_window_argb_value 0
-own_window_transparent yes
+#own_window_transparent yes	# If ARGB visual is enabled,
+				# sets background opacity to 0% and so
+				# no need there's argb_value
 
 # — Graphics settings — #
 draw_borders no
@@ -68,8 +70,8 @@ lua_draw_hook_post lua_loader
 
 
 TEXT
-# Update weather info every (1800/60=30min)
-${execi 1200 bash $HOME/.conky/cronograph_se/accuweather/forecasts.sh}
+# Update weather info every (600/60=10min)
+${execi 600 bash $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}
 #
 ${voffset 25}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
