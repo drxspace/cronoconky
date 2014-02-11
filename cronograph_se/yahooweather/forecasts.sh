@@ -7,6 +7,7 @@
 # \__,_/   /_/     /_/|_|  /_____/   _  .___/ /_/  |_|\____/   /_____/
 #                                    /_/           drxspace@gmail.com
 #
+#set -e
 
 # getImgChr () function converts
 # YAHOO! weather icon codes (http://developer.yahoo.com/weather/#codes)
@@ -128,28 +129,17 @@ cacheDir="$HOME/.cache/cronograph"
 # Store temporary RSS Feed in this file
 cacheFile="YahooWeather.xml"
 
-# clearconds () function clears the contents of conditions files
-clearconds () {
+# clearConds () function clears the contents of conditions files
+clearConds () {
 	cat /dev/null > "${scriptDir}"/curr_cond
 	cat /dev/null > "${scriptDir}"/fore_cond
 }
 
-## parseval () function parses the value of the specified tag
-#parseval () {
-#	sed -n "s|<$1>\(.*\)</$1>|\1|p" $2 | sed "s/^[[:space:]]*//"
-#}
-
-# trimday () function returns a 3 letters word for the given day name
-trimday () {
-	local day=${1^^}
-	echo ${day:0:3}
-}
-
-# errexit () function clears the cond files so that nothing would be displayed on
+# errExit () function clears the cond files so that nothing would be displayed on
 # the clock, writes an error on the stderr file and then exits the script
-errexit () {
+errExit () {
 	echo -e "$1" >&2
-	clearconds
+	clearConds
 	echo "Yahoo! Error..." > "${scriptDir}"/curr_cond
 	exit 1
 }
@@ -176,36 +166,38 @@ YahooWurl="http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=${DegreesUnits:
 echo -e "forecasts.sh: Contacting the server at url:\n\t${YahooWurl}" >&2
 
 wget -q -4 -t 1 --user-agent="${UserAgent}" -O "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
-	errexit "ERROR: Wget exits with error code $?."
+	errExit "ERROR: Wget exits with error code $?."
 
 echo "forecasts.sh: Checking the results..." >&2
 
 [[ -z $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}") ]] &&
-       errexit "ERROR: Yahoo Weather server reports failure."
+       errExit "ERROR: Yahoo Weather server reports failure."
 
 echo "forecasts.sh: Processing data..." >&2
 
+# Pause the running conky process
 pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
 
+# Write the current weather conditions to file
 echo "$(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*")"° > "${scriptDir}"/curr_cond
 getImgChr $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*") >> "${scriptDir}"/curr_cond
-grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" >> "${scriptDir}"/curr_cond
+grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/curr_cond
 
-getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z]') > "${scriptDir}"/fore_cond
-getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z]') >> "${scriptDir}"/fore_cond
-getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]') >> "${scriptDir}"/fore_cond
-
-echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z]')°/\
+# Write the next three days weather predictions to file
+getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1') > "${scriptDir}"/fore_cond
+getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2') >> "${scriptDir}"/fore_cond
+getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3') >> "${scriptDir}"/fore_cond
+echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2')°/\
 $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z')°" >> "${scriptDir}"/fore_cond
-echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]')°/\
-$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]')°" >> "${scriptDir}"/fore_cond
-echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]')°/\
-$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]')°" >> "${scriptDir}"/fore_cond
+echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3')°/\
+$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3')°" >> "${scriptDir}"/fore_cond
+echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4')°/\
+$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4')°" >> "${scriptDir}"/fore_cond
+grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/fore_cond
+grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/fore_cond
+grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/fore_cond
 
-trimday $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z]') >> "${scriptDir}"/fore_cond
-trimday $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]') >> "${scriptDir}"/fore_cond
-trimday $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]') >> "${scriptDir}"/fore_cond
-
+# Restart the paused conky process
 pkill -SIGCONT --oldest --exact --full "^conky.*cronorc$"
 
 exit 0

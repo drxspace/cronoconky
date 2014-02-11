@@ -82,6 +82,7 @@ read -p "Do you want to continue? [Y/n]: " ANS
 # Building needed packages list
 NeedPackages=""
 [[ -z $(which conky) ]] && NeedPackages="conky-std "
+[[ -z $(which wget) ]] && NeedPackages=$NeedPackages"wget "
 [[ -z $(which lua) ]] && NeedPackages=$NeedPackages"lua5.2 "
 [[ -z $(which hddtemp) ]] && NeedPackages=$NeedPackages"hddtemp "
 [[ -z $(which sensors) ]] && NeedPackages=$NeedPackages"lm-sensors"
@@ -146,7 +147,7 @@ if [[ ${ANS:-C} == [Cc] ]]; then
 	sed -i 's/<temper>/celsius/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
 else	
 	sed -i 's/<temper>/fahrenheit/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
-	sed -i 's/^#metric/metric/' "${CONKYDIR}"/"${CRONODIR}"/accuweather/forecasts.sh
+	sed -i 's/^#DegreesUnits/DegreesUnits/' "${CONKYDIR}"/"${CRONODIR}"/yahooweather/forecasts.sh
 fi
 echo -e "\r\033[${okay_x_col}C[ OK ]"
 
