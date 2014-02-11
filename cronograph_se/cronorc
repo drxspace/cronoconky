@@ -51,10 +51,11 @@ default_color ffffff
 # — Text settings — #
 text_buffer_size 1536
 uppercase no
-use_spacer right
+#use_spacer right
 use_xft yes
+override_utf8_locale yes
 xftalpha 1.0
-xftfont hooge 05_53:size=6
+xftfont hooge 05_53 :size=6
 
 # — Misc settings — #
 # change GiB to G and MiB to M
@@ -75,11 +76,13 @@ ${execi 600 bash $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}
 #
 ${voffset 25}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
-${voffset 18}${goto 64}${font hooge 05_53:size=10:bold}${time %H:%M}${font}${voffset -2}${goto 184}${font hooge 05_53:size=7:bold}${exec export LC_TIME=en_US.utf8; date +"%a %d %b" | tr "[:lower:]" "[:upper:]"}
-${voffset 1}${goto 64}${uptime_short}${goto 184}${time %Y}${font}
+${voffset 22}${font hooge 05_53 :size=11 :bold}${alignc +60}${time %H:%M}${font}
+${alignc +60}${uptime_short}
+${voffset -7}${font hooge 05_53 :size=6 :bold :italic}${alignc}HD${font}
+${voffset -24}${font hooge 05_53 :size=7 :bold}${alignc -60}${exec export LC_TIME=en_US.utf8; date +"%a %d %b" | tr "[:lower:]" "[:upper:]"}${font}
+${font hooge 05_53 :size=6 :bold}${alignc -60}${time %Y}${font}
 #
-${voffset -7}${goto 145}${font hooge 05_53:size=6:bold:italic}HD${font}
-${voffset 15}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp /dev/sdc}" != "N/A"}/${hddtemp}${endif}
+${voffset 17}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp /dev/sdc}" != "N/A"}/${hddtemp}${endif}
 # sudo chmod +s `which hddtemp`
 #
 ${voffset 31}${goto 65}\
@@ -88,30 +91,35 @@ ${if_match ${hwmon 0 temp 2} > 50}${color8}${hwmon 0 temp 2}${color}${else}\
 ${hwmon 0 temp 2}${endif}${endif}\
 ${goto 91}${cpu cpu0}%${goto 221}${memperc}%
 #
-${voffset 5}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${font}
+${voffset 5}${goto 75}${font hooge 05_53 :size=6 :bold :italic}CPU${goto 205}MEM${font}
 #
-${voffset 22}${goto 84}${font hooge 05_53:size=10:bold}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}\
-${voffset -20}${goto 128}${font ConkyWeather:size=32}\
+# Today weather
+#
+${voffset 20}${alignc +72}${font hooge 05_53 :size=10 :bold}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${font}
+${alignc +68}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
+${voffset -40}${goto 128}${font ConkyWeather :size=32}\
 ${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 35}${color4}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 30}${color5}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} < 3}${color1}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
-${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${endif}${endif}${endif}${font}\
-${voffset -11}${goto 186}${font hooge 05_53:size=6:bold}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${font}
+${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${endif}${endif}${endif}${font}
+${voffset -20}${alignc -70}${font hooge 05_53 :size=6 :bold}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${font}
 #
-${voffset 12}${goto 84}${font ConkyWeather:size=18}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}\
-${goto 138}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}\
-${goto 192}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${font}
+# Three days forecasts
 #
-${voffset -3}${goto 80}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}\
-${goto 134}${execi 600 sed -n '5p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}\
-${goto 188}${execi 600 sed -n '6p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset 10}${font ConkyWeather :size=16 :bold}${goto 88}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -18}${goto 139}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -18}${goto 188}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${font}
 #
-${voffset -2}${goto 88}${execi 600 sed -n '7p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}\
-${goto 143}${execi 600 sed -n '8p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}\
-${goto 196}${execi 600 sed -n '9p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -4}${alignc +50}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -8}${alignc}${execi 600 sed -n '5p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -8}${alignc -50}${execi 600 sed -n '6p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+#
+${voffset -2}${alignc +50}${execi 600 sed -n '7p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -8}${alignc}${execi 600 sed -n '8p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -8}${alignc -50}${execi 600 sed -n '9p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
 #
 ${if_empty ${battery}}
-# We assume that there's no battery
+# We assume that there's no battery so the led is always green
 ${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
 ${else}
 ${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
