@@ -124,7 +124,7 @@ if [[ -d "${CONKYDIR}"/"${CRONODIR}"/ ]]; then
 		elif [[ ${THISAPPBLD} > $(cat "${CONKYDIR}"/"${CRONODIR}"/.build) ]]; then
 			echo -e "\nSeems that an older build of this conky is already installed.
 If you choose to update your version, the previous version will be
-backed up to a file called \""${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz\" and placed
+backed up to a file called “"${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz” and placed
 inside the "${CONKYDIR}" directory."
 			read -p "Do you want to update your version? [Y/n]: " ANS
 			[[ ${ANS:-Y} != [Yy] ]] && finale 5
@@ -139,7 +139,7 @@ fi
 
 # Configuring temperature
 echo -e "\nChoose the desired output unit of all objects displaying a temperature.
-Parameters are either \"celsius\" or \"fahrenheit\".
+Parameters are either “celsius” or “fahrenheit”.
 The default unit is degree Celsius."
 read -p "Celsius or Fahrenheit? [C/f]: " ANS
 echo -en "Setting the temperature unit..."
@@ -180,7 +180,7 @@ in order to start automatically each time we login to our system."
 	}
 fi
 
-echo -e "\nThe conky \"${THISAPPNAME}\" is installed ok!"
+echo -e "\nThe conky “${THISAPPNAME}” is installed ok!"
 read -p "Do you want to start the conky right now? [Y/n]: " ANS
 [[ ${ANS:-Y} == [Yy] ]] && "${CONKYDIR}"/"${CRONODIR}"/start_crono.sh
 
