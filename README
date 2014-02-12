@@ -14,8 +14,8 @@ Tested (by me) and WORKED under these enviroments
 - Ubuntu Unity
 - Ubuntu GNOME
 - Ubuntu KDE
-- Mint 15 Cinnamon
-- works also with Arch Linux but you need to manually install the files
+- Mint Cinnamon
+- also works with Arch Linux distros but you need to manually install the files
 
 
 INSTALLATION
@@ -24,6 +24,13 @@ INSTALLATION
 - Then you should edit the ~/.conky/cronograph_se/accuweather/forecasts.sh file
   and follow the instructions in order to type the right coordinates of your
   place/position.
+
+
+CHANGES in version 2.2
+--------------------------------------------------------------------------------
+2014-02-12
+· Changeover from Accuweather to Yahoo! weather (free) service
+· Major changes in clock interface
 
 
 CHANGES in version 2.1.1

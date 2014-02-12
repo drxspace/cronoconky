@@ -14,99 +14,149 @@
 # to characters for use with the ConkyWeather truetype fonts
 getImgChr () {
 	case $1 in
-		0) # sunny
-			echo a
+		0) # tornado
+			echo 1
 		;;
-		1) # sunny
-			echo a
-		;;
-		2) # mostly sunny
-			echo b
-		;;
-		3|4|5) # partly sunny | intermittent clouds | hazy sunshine
-			echo c
-		;;
-		6) # mostly cloudy
-			echo d
-		;;
-		7) # cloudy
-			echo e
-		;;
-		8) # dreary
-			echo f
-		;;
-		9) # dreary
-			echo f
-		;;
-		10) # dreary
-			echo f
-		;;
-		11) # fog
-			echo 0
-		;;
-		12) # showers
-			echo h
-		;;
-		13|14) # mostly cloudy with showers | partly sunny with showers
-			echo g
-		;;
-		15) # thunderstorms
+		1) # tropical storm
 			echo l
 		;;
-		16|17) # mostly clooudy with thunderstorms | partly sunny with thundershowers
-			echo k
+		2) # hurricane
+			echo 3
 		;;
-		18) # rain
-			echo i
+		3) # severe thunderstorms
+			echo n
 		;;
-		19) # flurries
-			echo q
+		4) # thunderstorms
+			echo l
 		;;
-		20|21|23) # mostly cloudy with flurries | partly sunny with flurries | mostly cloudy with snow
-			echo o
-		;;
-		22) # snow
-			echo r
-		;;
-		24|31) # ice | cold
-			echo E
-		;;
-		25) # sleet
-			echo v
-		;;
-		26) # freezing rain
-			echo x
-		;;
-		# icons 27-28 have been retired
-		29) # rain and snow
+		5) # mixed rain and snow
 			echo y
 		;;
-		30) # hot
-			echo 5
+		6) # mixed rain and sleet
+			echo v
 		;;
-		32) # windy
-			echo 6
+		7) # mixed snow and sleet
+			echo y
 		;;
-		33) # clear
-			echo A
+		8) # freezing drizzle
+			echo x
 		;;
-		34|35) # mostly clear | partly cloudy
-			echo B
+		9) # drizzle
+			echo x
 		;;
-		36|37) # intermittent clouds | hazy
+		10) # freezing rain
+			echo x
+		;;
+		11) # showers
+			echo s
+		;;
+		12) # showers
+			echo s
+		;;
+		13) # snow flurries
+			echo p
+		;;
+		14) # light snow showers
+			echo o
+		;;
+		15) # blowing snow
+			echo 8
+		;;
+		16) # snow
+			echo q
+		;;
+		17) # hail
+			echo u
+		;;
+		18) # sleet
+			echo y
+		;;
+		19) # dust
+			echo 7
+		;;
+		20) # foggy
+			echo 0
+		;;
+		21) # haze
 			echo C
 		;;
-		38) # mostly cloudy
+		22) # smoky
+			echo 9
+		;;
+		23) # blustery
+			echo 2
+		;;
+		24) # windy
+			echo 9
+		;;
+		25) # cold
+			echo E
+		;;
+		26) # cloudy
+			echo e
+		;;
+		27) # mostly cloudy (night)
 			echo D
 		;;
-		39|40) # partly cloudy with showers | mostly cloudy with showers
-			echo G
+		28) # mostly cloudy (day)
+			echo d
 		;;
-		41|42) # partly cloudy with thunder showers | mostly cloudy with thunder showers
-			echo K
+		29) # partly cloudy (night)
+			echo C
 		;;
-		43|44) # mostly cloudy with flurries | mostly cloudy with snow
-			echo O
+		30) # partly cloudy (day)
+			echo c
+		;;
+		31) # clear (night)
+			echo A
+		;;
+		32) # sunny
+			echo a
+		;;
+		33) # fair (night)
+			echo B
+		;;
+		34) # fair (day)
+			echo b
+		;;
+		35) # mixed rain and hail
+			echo v
+		;;
+		36) # hot
+			echo 5
+		;;
+		37) # isolated thunderstorms
+			echo k
+		;;
+		38) # scattered thunderstorms
+			echo l
+		;;
+		39) # scattered thunderstorms
+			echo l
+		;;
+		40) # scattered showers
+			echo s
+		;;
+		41) # heavy snow
+			echo r
+		;;
+		42) # scattered snow showers
+			echo o
+		;;
+		43) # heavy snow
+			echo r
+		;;
+		44) # partly cloudy
+			echo c
+		;;
+		45) # thundershowers
+			echo k
+		;;
+		46) # snow showers
+			echo o
+		;;
+		47) # isolated thundershowers
+			echo k
 		;;
 		*)
 			echo -
@@ -138,9 +188,16 @@ clearConds () {
 # errExit () function clears the cond files so that nothing would be displayed on
 # the clock, writes an error on the stderr file and then exits the script
 errExit () {
-	echo -e "$1" >&2
+	echo -e "ERROR: $1" >&2
 	clearConds
-	echo "Yahoo! Error..." > "${scriptDir}"/curr_cond
+	echo "99999" > "${scriptDir}"/curr_cond
+	echo "error!" >> "${scriptDir}"/curr_cond
+	echo "$1" >> "${scriptDir}"/curr_cond
+	if [[ $2 -eq 1 ]]; then
+		echo "Please, check that you are connected" >> "${scriptDir}"/curr_cond
+	else
+		echo "Please, wait a little for retry" >> "${scriptDir}"/curr_cond
+	fi
 	exit 1
 }
 
@@ -166,12 +223,12 @@ YahooWurl="http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=${DegreesUnits:
 echo -e "forecasts.sh: Contacting the server at url:\n\t${YahooWurl}" >&2
 
 wget -q -4 -t 1 --user-agent="${UserAgent}" -O "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
-	errExit "ERROR: Wget exits with error code $?."
+	errExit "Wget exits with error code $?" 1
 
 echo "forecasts.sh: Checking the results..." >&2
 
 [[ -z $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}") ]] &&
-       errExit "ERROR: Yahoo Weather server reports failure."
+       errExit "Yahoo! weather server did not reply properly" 2
 
 echo "forecasts.sh: Processing data..." >&2
 
@@ -180,6 +237,8 @@ pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
 
 # Write the current weather conditions to file
 echo "$(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*")"° > "${scriptDir}"/curr_cond
+echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1')°/\
+$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z')°" >> "${scriptDir}"/curr_cond
 getImgChr $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*") >> "${scriptDir}"/curr_cond
 grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/curr_cond
 
