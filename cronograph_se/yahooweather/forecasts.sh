@@ -9,6 +9,11 @@
 #
 #set -e
 
+####### I M P O R T A N T #######
+#
+# Please, check the 169th line and enter the WOEID of your own location
+#
+
 # getImgChr () function converts
 # YAHOO! weather icon codes (http://developer.yahoo.com/weather/#codes)
 # to characters for use with the ConkyWeather truetype fonts
@@ -17,7 +22,7 @@ getImgChr () {
 		0) # tornado
 			echo 1
 		;;
-		1) # tropical storm
+		1|4|38|39) # tropical storm, thunderstorms, scattered thunderstorms
 			echo l
 		;;
 		2) # hurricane
@@ -26,37 +31,22 @@ getImgChr () {
 		3) # severe thunderstorms
 			echo n
 		;;
-		4) # thunderstorms
-			echo l
-		;;
-		5) # mixed rain and snow
+		5|7|18) # mixed rain and snow,mixed snow and sleet,sleet
 			echo y
 		;;
-		6) # mixed rain and sleet
+		6|35) # mixed rain and sleet,mixed rain and hail
 			echo v
 		;;
-		7) # mixed snow and sleet
-			echo y
-		;;
-		8) # freezing drizzle
+		8|9|10) # freezing drizzle,drizzle,freezing rain
 			echo x
 		;;
-		9) # drizzle
-			echo x
-		;;
-		10) # freezing rain
-			echo x
-		;;
-		11) # showers
-			echo s
-		;;
-		12) # showers
+		11|12|40) # showers,scattered showers
 			echo s
 		;;
 		13) # snow flurries
 			echo p
 		;;
-		14) # light snow showers
+		14|42|46) # light snow showers,scattered snow showers,snow showers
 			echo o
 		;;
 		15) # blowing snow
@@ -68,26 +58,20 @@ getImgChr () {
 		17) # hail
 			echo u
 		;;
-		18) # sleet
-			echo y
-		;;
 		19) # dust
 			echo 7
 		;;
 		20) # foggy
 			echo 0
 		;;
-		21) # haze
+		21|29) # haze,partly cloudy (night)
 			echo C
 		;;
-		22) # smoky
+		22|24) # smoky,windy
 			echo 9
 		;;
 		23) # blustery
 			echo 2
-		;;
-		24) # windy
-			echo 9
 		;;
 		25) # cold
 			echo E
@@ -101,10 +85,7 @@ getImgChr () {
 		28) # mostly cloudy (day)
 			echo d
 		;;
-		29) # partly cloudy (night)
-			echo C
-		;;
-		30) # partly cloudy (day)
+		30|44) # partly cloudy (day),partly cloudy
 			echo c
 		;;
 		31) # clear (night)
@@ -119,44 +100,17 @@ getImgChr () {
 		34) # fair (day)
 			echo b
 		;;
-		35) # mixed rain and hail
-			echo v
-		;;
 		36) # hot
 			echo 5
 		;;
-		37) # isolated thunderstorms
+		37|45|47) # isolated thunderstorms,thundershowers,isolated thundershowers
 			echo k
-		;;
-		38) # scattered thunderstorms
-			echo l
-		;;
-		39) # scattered thunderstorms
-			echo l
-		;;
-		40) # scattered showers
-			echo s
 		;;
 		41) # heavy snow
 			echo r
 		;;
-		42) # scattered snow showers
-			echo o
-		;;
 		43) # heavy snow
 			echo r
-		;;
-		44) # partly cloudy
-			echo c
-		;;
-		45) # thundershowers
-			echo k
-		;;
-		46) # snow showers
-			echo o
-		;;
-		47) # isolated thundershowers
-			echo k
 		;;
 		*)
 			echo -

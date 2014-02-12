@@ -86,7 +86,7 @@ ${if_match ${hwmon 0 temp 2} > 50}${color8}${hwmon 0 temp 2}${color}${else}\
 ${hwmon 0 temp 2}${endif}${endif}
 ${voffset -9}${alignr 174}${cpu cpu0}%${alignr 62}${memperc}%
 #
-${voffset 5}${goto 75}${font hooge 05_53 :size=6 :bold :italic}CPU${goto 205}MEM${font}
+${voffset 5}${goto 76}${font hooge 05_53 :size=6 :bold :italic}CPU${goto 205}MEM${font}
 #
 # Today weather
 #
