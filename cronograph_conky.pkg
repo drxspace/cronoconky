@@ -67,14 +67,14 @@ clear
 echo -e "\E[37;44m+------------------------------------------------------------------------+"
 echo -e "|                                                                        |"
 echo -e "|                     \E[1;37;44m${THISAPPNAME^^}\E[0;37;44m                        |"
-echo -e "|                           ver. \E[30;44m${THISAPPVER}b${THISAPPBLD}\E[37;44m                              |"
+echo -e "|                           ver. \E[30;44m${THISAPPVER}b${THISAPPBLD}\E[37;44m                                |"
 echo -e "|                                                                        |"
 echo -e "|                         \E[32;44mINSTALLATION WIZARD\E[37;44m                            |"
 echo -e "|                                                                        |"
 echo -e "+------------------------------------------------------------------------+"
 tput sgr0 2>/dev/null
 
-echo -e "\nThis wizard will help you to install the \"${THISAPPNAME}\"
+echo -e "\nThis wizard will help you install the “${THISAPPNAME}”
 conky on your computer."
 read -p "Do you want to continue? [Y/n]: " ANS
 [[ ${ANS:-Y} != [Yy] ]] && finale 1
@@ -89,7 +89,7 @@ NeedPackages=""
 
 if [[ -n $NeedPackages ]]; then
 	echo -e "\nFirst we need to install some packages. This action requires root
-privileges and for this reason we may ask for your root password.
+privileges and for this reason we will ask for your root password.
 Packages that would be installed are: \033[1m$NeedPackages\033[0m"
 	read -p "Do you want to continue? [Y/n]: " ANS
 	[[ ${ANS:-Y} != [Yy] ]] && finale 2
