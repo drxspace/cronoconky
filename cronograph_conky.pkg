@@ -37,7 +37,7 @@ installApp () {
 	-u) # Update
 		echo -en "Backing up previous version"
 		( cd "${CONKYDIR}"/;
-		  tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; )  && echo -e "\r\033[${okay_x_col}C[ OK ]"
+		  tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; ) && echo -e "\r\033[${okay_x_col}C[ OK ]"
 		installApp -r # It's a... recursion
 	;;
 	esac
@@ -105,8 +105,8 @@ if [[ -n $(grep '^RUN_DAEMON.*"false"' /etc/default/hddtemp) ]]; then
 hddtemp service to run as daemon otherwise you'll get a N/A message.
 This action requires root privileges and for this reason we may
 ask for your root password."
-	read -p "Do you want to install the hddtemp service as daemon? [Y/n]: " ANS
-	if [[ ${ANS:-Y} == [Yy] ]]; then
+	read -p "Do you want to install the hddtemp service as daemon? [y/N]: " ANS
+	if [[ ${ANS:-N} == [Yy] ]]; then
 		sudo sed -i '/RUN_DAEMON/s/false/true/' /etc/default/hddtemp
 		sudo /etc/init.d/hddtemp restart
 		echo -e "Install the hddtemp service as daemon...\r\033[${okay_x_col}C[ OK ]"
@@ -160,11 +160,11 @@ if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
 fi
 
 # Installing needed truetype weather fonts [---]
-if [[ -z $(fc-list | grep ConkyWeather) ]];  then
+if [[ -z $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
 	mkdir -p "$HOME"/.fonts/TTF/
 	echo -en "Coping fonts and building font information cache files.\nPlease wait a moment..."
-	cp -fv "${WIZDIR}"/ttf-cronograph/*.ttf "$HOME"/.fonts/TTF/ 2> /dev/null && fc-cache -f &> /dev/null
+	cp -f "${WIZDIR}"/ttf-cronograph/*.ttf "$HOME"/.fonts/TTF/ 2> /dev/null && fc-cache -f &> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 fi
 
