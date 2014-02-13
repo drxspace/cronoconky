@@ -189,6 +189,10 @@ echo "forecasts.sh: Processing data..." >&2
 # Pause the running conky process
 pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
 
+# Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan 
+# http://zagortenay333.deviantart.com/
+# http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
+
 # Write the current weather conditions to file
 echo "$(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*")"° > "${scriptDir}"/curr_cond
 echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1')°/\
