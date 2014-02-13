@@ -14,7 +14,8 @@ Tested (by me) and WORKED under these enviroments
 - Ubuntu Unity
 - Ubuntu GNOME
 - Ubuntu KDE
-- Linux Mint Cinnamon
+- Linux Mint 15 MATE
+- Linux Mint 16 Cinnamon
 - also works with Arch Linux distros but you need to manually install the files
 
 
@@ -101,4 +102,6 @@ HOW-TOs
 - Avoid conky loading twice in KDE4:
 ---- Go to System Settings > Startup and Shutdown > Session Managment
      On Login section check Start witn an empty session
+- How to enable compositing?
+---- Visit this http://mylinuxexplore.blogspot.gr/2012/05/solved-docky-issue-in-mintubuntu-how-to.html
 
