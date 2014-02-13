@@ -22,7 +22,7 @@ okay_x_col=$(($(tput cols)-7))
 installApp () {
 	case $1 in
 	-i) # Install
-		echo -e "\nInstalling..."
+		echo -e "\nInstalling “${THISAPPNAME}”"
 		echo -en "Creating new directory "${CONKYDIR}"/"
 		mkdir -p "${CONKYDIR}/" && echo -e "\r\033[${okay_x_col}C[ OK ]"
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
@@ -105,10 +105,10 @@ if [[ -n $(grep '^RUN_DAEMON.*"false"' /etc/default/hddtemp) ]]; then
 hddtemp service to run as daemon otherwise you'll get a N/A message.
 This action requires root privileges and for this reason we may
 ask for your root password."
-	read -p "Do you want to install the hddtemp service as daemon? [y/N]: " ANS
-	if [[ ${ANS:-N} == [Yy] ]]; then
+	read -p "Do you want to install the hddtemp service as daemon? [Y/n]: " ANS
+	if [[ ${ANS:-Y} == [Yy] ]]; then
 		sudo sed -i '/RUN_DAEMON/s/false/true/' /etc/default/hddtemp
-		sudo /etc/init.d/hddtemp restart
+		sudo service hddtemp restart
 		echo -e "Install the hddtemp service as daemon...\r\033[${okay_x_col}C[ OK ]"
 	fi
 fi
