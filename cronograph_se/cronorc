@@ -80,12 +80,12 @@ ${font hooge 05_53 :size=6 :bold}${alignc -64}${time %Y}${font}
 ${voffset 20}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp /dev/sda}" != "N/A"}/${hddtemp}${endif}
 # sudo chmod +s `which hddtemp`
 #
-${voffset 30}${goto 65}\
+${voffset 29}${goto 65}\
 ${if_match ${hwmon 0 temp 2} > 75}${color9}${blink ${hwmon 0 temp 2}}${color}${else}\
 ${if_match ${hwmon 0 temp 2} > 50}${color8}${hwmon 0 temp 2}${color}${else}\
 ${hwmon 0 temp 2}${endif}${endif}
-${voffset -9}${alignr 190}${cpu cpu0}%
-${voffset -9}${alignr 60}${memperc}%
+${voffset -9}${alignr 191}${cpu cpu0}%
+${voffset -9}${alignr 61}${memperc}%
 #
 ${voffset 5}${goto 76}${font hooge 05_53 :size=6 :bold :italic}CPU${goto 205}MEM${font}
 #
