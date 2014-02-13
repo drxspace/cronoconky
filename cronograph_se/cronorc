@@ -77,7 +77,7 @@ ${voffset -8}${font hooge 05_53 :size=6 :bold :italic}${alignc}HD${font}
 ${voffset -24}${font hooge 05_53 :size=7 :bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%a %d %b" | tr "[:lower:]" "[:upper:]"}${font}
 ${font hooge 05_53 :size=6 :bold}${alignc -64}${time %Y}${font}
 #
-${voffset 20}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp /dev/sda}" != "N/A"}/${hddtemp}${endif}
+${voffset 20}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}
 # sudo chmod +s `which hddtemp`
 #
 ${voffset 29}${goto 62}\
