@@ -105,7 +105,7 @@ ${voffset -15}${alignc -70}${font hooge 05_53 :size=6 :bold}${execi 600 sed -n '
 #
 # Three days forecasts
 #
-${voffset 14}${font ConkyWeather :size=16 :bold}${goto 87}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${font}
+${voffset 14}${font ConkyWeather :size=16 :bold}${goto 88}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${font}
 ${voffset -22}${font ConkyWeather :size=16 :bold}${goto 139}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${font}
 ${voffset -22}${font ConkyWeather :size=16 :bold}${goto 187}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${font}
 #
