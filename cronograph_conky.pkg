@@ -89,7 +89,7 @@ NeedPackages=""
 
 if [[ -n $NeedPackages ]]; then
 	echo -e "\nFirst we need to install some packages. This action requires root
-privileges and for this reason we will ask for your root password.
+privileges and for this reason we may ask for your root password.
 Packages that would be installed are: \033[1m$NeedPackages\033[0m"
 	read -p "Do you want to continue? [Y/n]: " ANS
 	[[ ${ANS:-Y} != [Yy] ]] && finale 2
@@ -124,7 +124,7 @@ if [[ -d "${CONKYDIR}"/"${CRONODIR}"/ ]]; then
 		elif [[ ${THISAPPBLD} > $(cat "${CONKYDIR}"/"${CRONODIR}"/.build) ]]; then
 			echo -e "\nSeems that an older build of this conky is already installed.
 If you choose to update your version, the previous version will be
-backed up to a file called “"${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz” and placed
+backed up to a file called “${CRONODIR}_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz” and placed
 inside the "${CONKYDIR}" directory."
 			read -p "Do you want to update your version? [Y/n]: " ANS
 			[[ ${ANS:-Y} != [Yy] ]] && finale 5
@@ -153,7 +153,7 @@ echo -e "\r\033[${okay_x_col}C[ OK ]"
 
 # Installing application's icon
 if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
-	echo -en "\nInstaling the Conky Cronograph Station SE icon..."
+	echo -en "\nInstaling the “${THISAPPNAME}” icon..."
 	mkdir -p "$HOME"/.icons
 	cp "${WIZDIR}"/icons/cronograph_64x64.png "$HOME"/.icons/cronograph.png 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
@@ -162,9 +162,9 @@ fi
 # Installing needed truetype weather fonts [---]
 if [[ -z $(fc-list | grep ConkyWeather) ]];  then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
-	mkdir -p "$HOME"/.fonts
+	mkdir -p "$HOME"/.fonts/TTF/
 	echo -en "Coping fonts and building font information cache files.\nPlease wait a moment..."
-	cp -r "${WIZDIR}"/ttf-cronograph/ "$HOME"/.fonts/ 2> /dev/null && fc-cache -f &> /dev/null
+	cp -fv "${WIZDIR}"/ttf-cronograph/*.ttf "$HOME"/.fonts/TTF/ 2> /dev/null && fc-cache -f &> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 fi
 
@@ -176,7 +176,7 @@ in order to start automatically each time we login to our system."
 	[[ ${ANS:-Y} == [Yy] ]] && { 
 		mkdir -p "$HOME"/.config/autostart;
 		sed "s:<home_dir>:"$HOME":" "${WIZDIR}"/cronograph_conky.desktop > "$HOME"/.config/autostart/cronograph_conky.desktop;
-		echo -e "Setting Cronograph SE as a Startup Application...\r\033[${okay_x_col}C[ OK ]";
+		echo -e "Setting “${THISAPPNAME}” as a Startup Application...\r\033[${okay_x_col}C[ OK ]";
 	}
 fi
 
