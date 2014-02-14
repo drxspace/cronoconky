@@ -5,7 +5,7 @@ update_interval 1
 total_run_times 0
 background yes
 double_buffer yes
-imlib_cache_size 756
+imlib_cache_size 0	# Imlib2 image cache size, in bytes. Set to 0 to disable the image cache.
 no_buffers yes
 temperature_unit <temper>
 
@@ -47,7 +47,7 @@ color8 orange
 color9 red
 
 # — Text settings — #
-text_buffer_size 2048
+text_buffer_size 1536
 uppercase no
 use_xft yes
 override_utf8_locale yes
