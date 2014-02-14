@@ -253,7 +253,7 @@ local settings_table = {
 		thickness=2,
 		start_angle=0,
 		end_angle=360
-	}
+	},
 }
 
 -- Use these settings to define the origin and extent of your clock.
@@ -378,7 +378,7 @@ function conky_clock_rings()
 	-- unless we use the lua_loader
 	-- if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
 
-	local cs = cairo_xlib_surface_create(conky_window.display,conky_window.drawable,conky_window.visual, conky_window.width,conky_window.height)
+	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
 	local cr = cairo_create(cs)
 
 	for i in pairs(settings_table) do

@@ -28,7 +28,7 @@ local clock_h = {
 		graduation_thickness=10, graduation_mark_thickness=2,
 		graduation_unit_angle=30,
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=1.0
-	}
+	},
 }
 -- MINUTES
 local clock_m = {
@@ -47,7 +47,7 @@ local clock_m = {
 		graduation_thickness=0, graduation_mark_thickness=2,
 		graduation_unit_angle=30,
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.0
-	}
+	},
 }
 -- SECONDS
 local clock_s = {
@@ -66,7 +66,7 @@ local clock_s = {
 		graduation_thickness=0, graduation_mark_thickness=0,
 		graduation_unit_angle=0,
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.0
-	}
+	},
 }
 
 --------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ local gauge = {
 		caption='',
 		caption_weight=1, caption_size=8.0,
 		caption_fg_colour=0xFFFFFF, caption_fg_alpha=0.0
-	}
+	},
 }
 
 -------------------------------------------------------------------------------
@@ -177,12 +177,12 @@ local function draw_clock_ring(display, data, value)
 	local val = (value % max_value)
 	local i = 1
 	while i <= val do
-		cairo_arc(display, x, y, graph_radius, (  ((graph_unit_angle * i) - graph_unit_thickness)*(2*math.pi/360)  )-(math.pi/2), ((graph_unit_angle * i) * (2*math.pi/360))-(math.pi/2))
+		cairo_arc(display, x, y, graph_radius, (((graph_unit_angle*i) - graph_unit_thickness) * (2*math.pi/360)) - (math.pi/2), ((graph_unit_angle * i) * (2*math.pi/360)) - (math.pi/2) )
 		cairo_set_source_rgba(display, rgb_to_r_g_b(graph_fg_colour, graph_fg_alpha))
 		cairo_stroke(display)
 		i = i + 1
 	end
-	local angle = (graph_unit_angle * i) - graph_unit_thickness
+	-- local angle = (graph_unit_angle * i) - graph_unit_thickness
 
 	-- graduations marks
 	local graduation_radius = data['graduation_radius']
@@ -202,18 +202,18 @@ local function draw_clock_ring(display, data, value)
 		end
 	end
 
-	-- text
+	--[[ text
 	local txt_radius = data['txt_radius']
 	local txt_weight, txt_size = data['txt_weight'], data['txt_size']
 	local txt_fg_colour, txt_fg_alpha = data['txt_fg_colour'], data['txt_fg_alpha']
 	local movex = txt_radius * (math.cos((angle * 2 * math.pi / 360)-(math.pi/2)))
 	local movey = txt_radius * (math.sin((angle * 2 * math.pi / 360)-(math.pi/2)))
-	cairo_select_font_face (display, "ubuntu", CAIRO_FONT_SLANT_NORMAL, txt_weight);
+	cairo_select_font_face (display, "DejaVu Sans", CAIRO_FONT_SLANT_NORMAL, txt_weight);
 	cairo_set_font_size (display, txt_size);
 	cairo_set_source_rgba (display, rgb_to_r_g_b(txt_fg_colour, txt_fg_alpha));
 	cairo_move_to (display, x + movex - (txt_size / 2), y + movey + 3);
 	cairo_show_text (display, value);
-	cairo_stroke (display);
+	cairo_stroke (display);]]
 end
 
 -------------------------------------------------------------------------------
@@ -251,7 +251,7 @@ local function draw_gauge_ring(display, data, value)
 		cairo_stroke(display)
 		i = i + 1
 	end
-	local angle = start_arc
+	-- local angle = start_arc
 
 	-- hand
 	start_arc = (graph_unit_angle * val) - (graph_unit_thickness * 2)
@@ -280,13 +280,13 @@ local function draw_gauge_ring(display, data, value)
 		end
 	end
 
-	-- text
+	--[[ text
 	local txt_radius = data['txt_radius']
 	local txt_weight, txt_size = data['txt_weight'], data['txt_size']
 	local txt_fg_colour, txt_fg_alpha = data['txt_fg_colour'], data['txt_fg_alpha']
 	local movex = txt_radius * math.cos(angle_to_position(graph_start_angle, angle))
 	local movey = txt_radius * math.sin(angle_to_position(graph_start_angle, angle))
-	cairo_select_font_face (display, "ubuntu", CAIRO_FONT_SLANT_NORMAL, txt_weight)
+	cairo_select_font_face (display, "DejaVu Sans", CAIRO_FONT_SLANT_NORMAL, txt_weight)
 	cairo_set_font_size (display, txt_size)
 	cairo_set_source_rgba (display, rgb_to_r_g_b(txt_fg_colour, txt_fg_alpha))
 	cairo_move_to (display, x + movex - (txt_size / 2), y + movey + 3)
@@ -299,7 +299,7 @@ local function draw_gauge_ring(display, data, value)
 	local caption_fg_colour, caption_fg_alpha = data['caption_fg_colour'], data['caption_fg_alpha']
 	local tox = graph_radius * (math.cos((graph_start_angle * 2 * math.pi / 360)-(math.pi/2)))
 	local toy = graph_radius * (math.sin((graph_start_angle * 2 * math.pi / 360)-(math.pi/2)))
-	cairo_select_font_face (display, "ubuntu", CAIRO_FONT_SLANT_NORMAL, caption_weight);
+	cairo_select_font_face (display, "DejaVu Sans", CAIRO_FONT_SLANT_NORMAL, caption_weight);
 	cairo_set_font_size (display, caption_size)
 	cairo_set_source_rgba (display, rgb_to_r_g_b(caption_fg_colour, caption_fg_alpha))
 	cairo_move_to (display, x + tox + 5, y + toy + 1)
@@ -308,7 +308,7 @@ local function draw_gauge_ring(display, data, value)
 		cairo_move_to (display, x + tox - 30, y + toy + 1)
 	end
 	cairo_show_text (display, caption)
-	cairo_stroke (display)
+	cairo_stroke (display)]]
 end
 
 -------------------------------------------------------------------------------
@@ -334,6 +334,7 @@ local function go_clock_rings(display)
 		load_clock_rings(display, clock_s[i])
 	end
 end
+
 
 -------------------------------------------------------------------------------
 --                                                               go_gauge_rings
