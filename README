@@ -29,6 +29,9 @@ INSTALLATION
 
 CHANGES in version 2.2
 --------------------------------------------------------------------------------
+2014-02-15
+· The collectgarbage() function was used
+· Lua scripts cleared
 2014-02-12
 · Changeover from Accuweather to Yahoo! weather (free) service
 · Major changes in clock interface
