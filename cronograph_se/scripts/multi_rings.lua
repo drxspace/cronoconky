@@ -30,6 +30,7 @@ local clock_h = {
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=1.0
 	},
 }
+--[[
 -- MINUTES
 local clock_m = {
 	{
@@ -68,6 +69,7 @@ local clock_s = {
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.0
 	},
 }
+]]
 
 --------------------------------------------------------------------------------
 --                                                                    gauge DATA
@@ -176,9 +178,13 @@ local function draw_clock_ring(display, data, value)
 	-- arc of value
 	local val = (value % max_value)
 	local i = 1
+	-- Set once
+	-- This color will then be used for any subsequent drawing operation until a new source pattern is set.
+	-- http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source-rgba
+	cairo_set_source_rgba(display, rgb_to_r_g_b(graph_fg_colour, graph_fg_alpha))
 	while i <= val do
 		cairo_arc(display, x, y, graph_radius, (((graph_unit_angle*i) - graph_unit_thickness) * (2*math.pi/360)) - (math.pi/2), ((graph_unit_angle * i) * (2*math.pi/360)) - (math.pi/2) )
-		cairo_set_source_rgba(display, rgb_to_r_g_b(graph_fg_colour, graph_fg_alpha))
+		-- cairo_set_source_rgba(display, rgb_to_r_g_b(graph_fg_colour, graph_fg_alpha))
 		cairo_stroke(display)
 		i = i + 1
 	end
@@ -192,28 +198,33 @@ local function draw_clock_ring(display, data, value)
 	if graduation_radius > 0 and graduation_thickness > 0 and graduation_unit_angle > 0 then
 		local nb_graduation = 360 / graduation_unit_angle
 		local i = 1
+		-- Set once
+		-- This color will then be used for any subsequent drawing operation until a new source pattern is set.
+		-- http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source-rgba
+		cairo_set_source_rgba(display, rgb_to_r_g_b(graduation_fg_colour, graduation_fg_alpha))
 		while i <= nb_graduation do
-			cairo_set_line_width(display, graduation_thickness)
 			cairo_arc(display, x, y, graduation_radius, (((graduation_unit_angle * i)-(graduation_mark_thickness/2))*(2*math.pi/360))-(math.pi/2), (((graduation_unit_angle * i)+(graduation_mark_thickness/2))*(2*math.pi/360))-(math.pi/2))
-			cairo_set_source_rgba(display, rgb_to_r_g_b(graduation_fg_colour, graduation_fg_alpha))
+			cairo_set_line_width(display, graduation_thickness)
 			cairo_stroke(display)
 			cairo_set_line_width(display, graph_thickness)
 			i = i + 1
 		end
 	end
 
-	--[[ text
+	--[[
+	--text
 	local txt_radius = data['txt_radius']
 	local txt_weight, txt_size = data['txt_weight'], data['txt_size']
 	local txt_fg_colour, txt_fg_alpha = data['txt_fg_colour'], data['txt_fg_alpha']
 	local movex = txt_radius * (math.cos((angle * 2 * math.pi / 360)-(math.pi/2)))
 	local movey = txt_radius * (math.sin((angle * 2 * math.pi / 360)-(math.pi/2)))
-	cairo_select_font_face (display, "DejaVu Sans", CAIRO_FONT_SLANT_NORMAL, txt_weight);
-	cairo_set_font_size (display, txt_size);
-	cairo_set_source_rgba (display, rgb_to_r_g_b(txt_fg_colour, txt_fg_alpha));
-	cairo_move_to (display, x + movex - (txt_size / 2), y + movey + 3);
-	cairo_show_text (display, value);
-	cairo_stroke (display);]]
+	cairo_select_font_face (display, "DejaVu Sans", CAIRO_FONT_SLANT_NORMAL, txt_weight)
+	cairo_set_font_size (display, txt_size)
+	cairo_set_source_rgba (display, rgb_to_r_g_b(txt_fg_colour, txt_fg_alpha))
+	cairo_move_to (display, x + movex - (txt_size / 2), y + movey + 3)
+	cairo_show_text (display, value)
+	cairo_stroke (display)
+	]]
 end
 
 -------------------------------------------------------------------------------
@@ -280,7 +291,8 @@ local function draw_gauge_ring(display, data, value)
 		end
 	end
 
-	--[[ text
+	--[[
+	-- text
 	local txt_radius = data['txt_radius']
 	local txt_weight, txt_size = data['txt_weight'], data['txt_size']
 	local txt_fg_colour, txt_fg_alpha = data['txt_fg_colour'], data['txt_fg_alpha']
@@ -299,7 +311,7 @@ local function draw_gauge_ring(display, data, value)
 	local caption_fg_colour, caption_fg_alpha = data['caption_fg_colour'], data['caption_fg_alpha']
 	local tox = graph_radius * (math.cos((graph_start_angle * 2 * math.pi / 360)-(math.pi/2)))
 	local toy = graph_radius * (math.sin((graph_start_angle * 2 * math.pi / 360)-(math.pi/2)))
-	cairo_select_font_face (display, "DejaVu Sans", CAIRO_FONT_SLANT_NORMAL, caption_weight);
+	cairo_select_font_face (display, "DejaVu Sans", CAIRO_FONT_SLANT_NORMAL, caption_weight)
 	cairo_set_font_size (display, caption_size)
 	cairo_set_source_rgba (display, rgb_to_r_g_b(caption_fg_colour, caption_fg_alpha))
 	cairo_move_to (display, x + tox + 5, y + toy + 1)
@@ -308,7 +320,8 @@ local function draw_gauge_ring(display, data, value)
 		cairo_move_to (display, x + tox - 30, y + toy + 1)
 	end
 	cairo_show_text (display, caption)
-	cairo_stroke (display)]]
+	cairo_stroke (display)
+	]]
 end
 
 -------------------------------------------------------------------------------
@@ -327,14 +340,15 @@ local function go_clock_rings(display)
 	for i in pairs(clock_h) do
 		load_clock_rings(display, clock_h[i])
 	end
+	--[[
 	for i in pairs(clock_m) do
 		load_clock_rings(display, clock_m[i])
 	end
 	for i in pairs(clock_s) do
 		load_clock_rings(display, clock_s[i])
 	end
+	]]
 end
-
 
 -------------------------------------------------------------------------------
 --                                                               go_gauge_rings
@@ -358,19 +372,22 @@ end
 --                                                            conky_multi_rings
 function conky_multi_rings()
 	-- Check that Conky has been running for at least 5s
-	-- unless we use the lua_loader
+	-- We use the lua_loader script that makes wait for this
 	-- if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
 
 	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
 	local display = cairo_create(cs)
 
+	-- This function references surface, so you can immediately call
+	-- cairo_surface_destroy() on it if you don't need to maintain a separate reference to it.
+	cairo_surface_destroy(cs)
+	cs = nil
+
 	go_clock_rings(display)
 	go_gauge_rings(display)
 
 	cairo_destroy(display)
-	cairo_surface_destroy(cs)
 	display = nil
-	cs = nil
 
 	return
 end
