@@ -310,25 +310,28 @@ local function draw_clock_hands(cr,xc,yc)
 	mins_arc=(2*math.pi/60)*mins+secs_arc/60
 	hours_arc=(2*math.pi/12)*hours+mins_arc/12
 
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(hands_colour,clock_alpha))
+	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
+
 	-- Draw hour hand
 	xh=xc+0.60*clock_r*math.sin(hours_arc)
 	yh=yc-0.60*clock_r*math.cos(hours_arc)
+	-- and hour backhand
 	xxh=xc-0.15*clock_r*math.sin(hours_arc)
 	yyh=yc+0.15*clock_r*math.cos(hours_arc)
+	cairo_set_line_width(cr,8)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xh,yh)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xxh,yyh)
-	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
-	cairo_set_line_width(cr,8)
-	cairo_set_source_rgba(cr,rgb_to_r_g_b(hands_colour,clock_alpha))
 	cairo_stroke(cr)
 
 	-- Draw minute hand
-	xm=xc+0.88*clock_r*math.sin(mins_arc)
-	ym=yc-0.88*clock_r*math.cos(mins_arc)
-	xxm=xc-0.22*clock_r*math.sin(mins_arc)
-	yym=yc+0.22*clock_r*math.cos(mins_arc)
+	xm=xc+0.80*clock_r*math.sin(mins_arc)
+	ym=yc-0.80*clock_r*math.cos(mins_arc)
+	-- and minute backhand
+	xxm=xc-0.20*clock_r*math.sin(mins_arc)
+	yym=yc+0.20*clock_r*math.cos(mins_arc)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xm,ym)
 	cairo_move_to(cr,xc,yc)
@@ -336,10 +339,11 @@ local function draw_clock_hands(cr,xc,yc)
 	cairo_set_line_width(cr,5)
 	cairo_stroke(cr)
 
-	-- Draw seconds hand
 	if show_seconds then
-		xs=xc+0.96*clock_r*math.sin(secs_arc)
-		ys=yc-0.96*clock_r*math.cos(secs_arc)
+		-- Draw seconds hand
+		xs=xc+0.90*clock_r*math.sin(secs_arc)
+		ys=yc-0.90*clock_r*math.cos(secs_arc)
+		-- and seconds backhand
 		xxs=xc-0.32*clock_r*math.sin(secs_arc)
 		yys=yc+0.32*clock_r*math.cos(secs_arc)
 		cairo_move_to(cr,xc,yc)
@@ -375,11 +379,16 @@ function conky_clock_rings()
 	end
 
 	-- Check that Conky has been running for at least 5s
-	-- unless we use the lua_loader
+	-- We use the lua_loader script that makes wait for this
 	-- if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
 
 	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
 	local cr = cairo_create(cs)
+	
+	-- This function references surface, so you can immediately call
+	-- cairo_surface_destroy() on it if you don't need to maintain a separate reference to it.
+	cairo_surface_destroy(cs)
+	cs = nil
 
 	for i in pairs(settings_table) do
 		setup_rings(cr, settings_table[i])
@@ -388,9 +397,7 @@ function conky_clock_rings()
 	draw_clock_hands(cr, clock_x, clock_y)
 
 	cairo_destroy(cr)
-	cairo_surface_destroy(cs)
 	cr = nil
-	cs = nil
 
 	return
 end
