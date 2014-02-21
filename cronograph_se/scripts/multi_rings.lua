@@ -24,7 +24,7 @@ local clock_h = {
 		txt_radius=100,
 		txt_weight=1, txt_size=10.0,
 		txt_fg_colour=0xFFFFFF, txt_fg_alpha=0.0,
-		graduation_radius=125,
+		graduation_radius=127,
 		graduation_thickness=10, graduation_mark_thickness=2,
 		graduation_unit_angle=30,
 		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=1.0
@@ -102,7 +102,7 @@ local gauge = {
 		graph_thickness=27,
 		graph_start_angle=0,
 		graph_unit_angle=3.5, graph_unit_thickness=3.0,
-		graph_bg_colour=0x000000, graph_bg_alpha=0.0,
+		graph_bg_colour=0x000000, graph_bg_alpha=0.1,
 		graph_fg_colour=0xFF0000, graph_fg_alpha=0.3,
 		hand_fg_colour=0xFFFFFF, hand_fg_alpha=1.0,
 		txt_radius=1,
@@ -123,7 +123,7 @@ local gauge = {
 		graph_thickness=27,
 		graph_start_angle=0,
 		graph_unit_angle=3.5, graph_unit_thickness=3.0,
-		graph_bg_colour=0x000000, graph_bg_alpha=0.0,
+		graph_bg_colour=0x000000, graph_bg_alpha=0.1,
 		graph_fg_colour=0xFFFF00, graph_fg_alpha=0.3,
 		hand_fg_colour=0xFFFFFF, hand_fg_alpha=1.0,
 		txt_radius=1,
@@ -169,13 +169,15 @@ local function draw_clock_ring(display, data, value)
 	local graph_bg_colour, graph_bg_alpha = data['graph_bg_colour'], data['graph_bg_alpha']
 	local graph_fg_colour, graph_fg_alpha = data['graph_fg_colour'], data['graph_fg_alpha']
 
+	--[[
 	-- background ring
 	cairo_arc(display, x, y, graph_radius, 0, 2 * math.pi)
 	cairo_set_source_rgba(display, rgb_to_r_g_b(graph_bg_colour, graph_bg_alpha))
 	cairo_set_line_width(display, graph_thickness)
 	cairo_stroke(display)
+	]]
 
-	-- arc of value
+	--[[ arc of value
 	local val = (value % max_value)
 	local i = 1
 	-- Set once
@@ -189,6 +191,7 @@ local function draw_clock_ring(display, data, value)
 		i = i + 1
 	end
 	-- local angle = (graph_unit_angle * i) - graph_unit_thickness
+	]]
 
 	-- graduations marks
 	local graduation_radius = data['graduation_radius']
