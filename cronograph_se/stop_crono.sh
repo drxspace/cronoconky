@@ -8,6 +8,8 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-pkill -SIGTERM --oldest --exact --full "^conky.*cronorc$" 2> /dev/null
+pkill -SIGTERM --oldest --exact --full "^conky.*cronorc$" 2> /dev/null || {
+	notify-send "Cronograph Station SE" "Conky Cronograph Station SE isn\'t running." -i face-sad
+}
 
 exit 0

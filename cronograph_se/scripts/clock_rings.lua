@@ -341,11 +341,11 @@ local function draw_clock_hands(cr,xc,yc)
 
 	if show_seconds then
 		-- Draw seconds hand
-		xs=xc+0.90*clock_r*math.sin(secs_arc)
-		ys=yc-0.90*clock_r*math.cos(secs_arc)
+		xs=xc+0.92*clock_r*math.sin(secs_arc)
+		ys=yc-0.92*clock_r*math.cos(secs_arc)
 		-- and seconds backhand
-		xxs=xc-0.32*clock_r*math.sin(secs_arc)
-		yys=yc+0.32*clock_r*math.cos(secs_arc)
+		xxs=xc-0.31*clock_r*math.sin(secs_arc)
+		yys=yc+0.31*clock_r*math.cos(secs_arc)
 		cairo_move_to(cr,xc,yc)
 		cairo_line_to(cr,xs,ys)
 		cairo_move_to(cr,xc,yc)
