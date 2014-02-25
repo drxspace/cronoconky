@@ -9,7 +9,7 @@
 #
 
 pkill -SIGTERM --oldest --exact --full "^conky.*cronorc$" 2> /dev/null || {
-	notify-send "Cronograph Station SE" "Conky Cronograph Station SE isn\'t running." -i face-sad
+	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-sad
 }
 
 exit 0
