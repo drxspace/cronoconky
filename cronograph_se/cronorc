@@ -129,4 +129,6 @@ ${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_s
 ${else}${image $HOME/.conky/cronograph_se/images/Red.png -p 129,18 -s 40x40}${endif}${endif}${endif}${endif}
 ${endif}
 ${execpi 1 cat $HOME/.conky/cronograph_se/scripts/blinkingLED}
+# Overcome the vertical offset issue with the window height
+${voffset -300}
 
