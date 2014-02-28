@@ -27,6 +27,14 @@ INSTALLATION
   place/position.
 
 
+CHANGES in version 2.3
+--------------------------------------------------------------------------------
+2014-02-28
+· The long weather condition names are wrapped and the rc script takes that into
+  accound
+2014-02-27
+· Workaround the voffset issue that change the conky window height
+
 CHANGES in version 2.2
 --------------------------------------------------------------------------------
 2014-02-15
