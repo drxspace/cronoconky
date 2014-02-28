@@ -11,7 +11,7 @@
 
 ####### I M P O R T A N T #######
 #
-# Please, check the 169th line and enter the WOEID of your own location
+# Please, check the 174th line and enter the WOEID of your own location
 #
 
 # getImgChr () function converts
@@ -22,7 +22,7 @@ getImgChr () {
 		0) # tornado
 			echo 1
 		;;
-		1|4|38|39) # tropical storm, thunderstorms, scattered thunderstorms
+		1|4|38|39) # tropical storm,thunderstorms,scattered thunderstorms
 			echo l
 		;;
 		2) # hurricane
@@ -139,6 +139,11 @@ clearConds () {
 	cat /dev/null > "${scriptDir}"/fore_cond
 }
 
+# wrapConds () function wrap the given text if it's >15 chars
+wrapConds () {
+	fold -s -w 15 <<< "$*"
+}
+
 # errExit () function clears the cond files so that nothing would be displayed on
 # the clock, writes an error on the stderr file and then exits the script
 errExit () {
@@ -198,7 +203,7 @@ echo "$(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "temp=\
 echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1')°/\
 $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z')°" >> "${scriptDir}"/curr_cond
 getImgChr $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*") >> "${scriptDir}"/curr_cond
-grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/curr_cond
+wrapConds $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tr '[a-z]' '[A-Z]') >> "${scriptDir}"/curr_cond
 
 # Write the next three days weather predictions to file
 getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1') > "${scriptDir}"/fore_cond
