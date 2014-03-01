@@ -66,7 +66,7 @@ lua_draw_hook_post lua_loader
 
 TEXT
 # Update weather info every (600/60=10min)
-${execi 600 sh $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}\
+${execi 600 bash $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}\
 #
 ${voffset 34}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
