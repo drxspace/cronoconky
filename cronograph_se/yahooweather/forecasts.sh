@@ -222,4 +222,6 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 # Restart the paused conky process
 pkill -SIGCONT --oldest --exact --full "^conky.*cronorc$"
 
+echo "forecasts.sh: Forecasts script ends up okay..." >&2
+
 exit 0
