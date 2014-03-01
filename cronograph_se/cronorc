@@ -48,7 +48,7 @@ color8 orange
 color9 red
 
 #---Text settings---#
-text_buffer_size 756
+text_buffer_size 1024
 uppercase no
 use_xft yes
 override_utf8_locale yes
