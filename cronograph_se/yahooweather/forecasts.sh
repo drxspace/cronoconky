@@ -192,7 +192,7 @@ echo "forecasts.sh: Checking the results..." >&2
 echo "forecasts.sh: Processing data..." >&2
 
 # Pause the running conky process
-pkill -SIGSTOP --oldest --exact --full "^conky.*cronorc$"
+pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan 
 # http://zagortenay333.deviantart.com/
@@ -220,7 +220,7 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/fore_cond
 
 # Restart the paused conky process
-pkill -SIGCONT --oldest --exact --full "^conky.*cronorc$"
+pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 
 echo "forecasts.sh: Forecasts script ends up okay..." >&2
 

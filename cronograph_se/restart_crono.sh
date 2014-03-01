@@ -8,7 +8,7 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-pkill -SIGTERM --oldest --exact --full "^conky.*cronorc$" 2> /dev/null && {
+pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
 	rm -f "$(dirname "$0")"/accuweather/*_cond
 	sleep 3
 	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc
