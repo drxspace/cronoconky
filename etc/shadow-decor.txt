@@ -1,0 +1,22 @@
+  /*===================================================================
+  * From Conky-Harmattan Troubleshooting
+  * I GET A STRANGE SHADOW AROUND MY CONKY(I USE COMPIZ)!
+  * =================================================================*/
+		
+		You are likely using compiz.
+		Since "own_window" is set to "yes" compiz will also draw shadows on it like on any other window!
+		To prevent compiz from drawing a shadow around conky open the compizconfig-settings-manager!
+		If you don´t have it installed then install it via synaptic-package manager or terminal(sudo apt-get install compizconfig-settings-manager)
+		Go to the "window-decorations".
+		To exclude conky type "any& !(class=Conky)" without quotes in the window shadow entry!
+		Conky´s class is by default set to "Conky".
+		If, for whatever reason, it isn´t then just add "own_window_class Conky" to the conky file.
+  /*=================================================================*/
+		
+# any & !(class=Conky)
+# sudo apt-get install -y compizconfig-settings-manager dconf-editor gconf-editor
+# gsettings list-relocatable-schemas | grep unityshell
+
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ override-decoration-theme true
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ inactive-shadow-color "#00000000"
+
