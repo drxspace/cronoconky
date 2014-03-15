@@ -27,6 +27,12 @@ INSTALLATION
   place/position.
 
 
+CHANGES in version 2.4
+--------------------------------------------------------------------------------
+2014-03-15
+· cronorc script examines if we use the fahrenheit temperature unit and draws the
+  needed elements using the right colors
+
 CHANGES in version 2.3
 --------------------------------------------------------------------------------
 2014-02-28

@@ -9,6 +9,8 @@ function conky_lua_loader ()
 	conky_multi_rings()
 	conky_clock_rings()
 
+	-- #419 memory leak when calling top objects with conky_parse in lua
+	-- http://sourceforge.net/p/conky/bugs/419/
 	collectgarbage()
 
 	return

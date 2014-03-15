@@ -7,7 +7,7 @@ background yes
 double_buffer yes
 imlib_cache_size 0	# Imlib2 image cache size, in bytes. Set to 0 to disable the image cache.
 no_buffers yes
-temperature_unit <temper>
+#temperature_unit fahrenheit
 
 #---Window specifications---#
 alignment top_right
@@ -80,10 +80,16 @@ ${voffset 20}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${h
 # sudo chmod +s `which hddtemp`
 #
 ${voffset 29}${goto 62}\
+#
 ${if_empty ${hwmon 0 temp 1}} ${else}\
+${if_empty ${execi 1 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}}\
 ${if_match ${hwmon 0 temp 1} > 75}${color9}${blink ${hwmon 0 temp 1}°}${color}${else}\
 ${if_match ${hwmon 0 temp 1} > 50}${color8}${hwmon 0 temp 1}°${color}${else}\
-${hwmon 0 temp 1}°${endif}${endif}${endif}
+${hwmon 0 temp 1}°${endif}${endif}${else}\
+${if_match ${hwmon 0 temp 1} > 167}${color9}${blink ${hwmon 0 temp 1}°}${color}${else}\
+${if_match ${hwmon 0 temp 1} > 122}${color8}${hwmon 0 temp 1}°${color}${else}\
+${hwmon 0 temp 1}°${endif}${endif}${endif}${endif}
+#
 ${voffset -9}${alignr 191}${cpu cpu0}%
 ${voffset -9}${alignr 61}${memperc}%
 #
@@ -99,11 +105,18 @@ ${alignc}${color1}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/yahooweathe
 #
 ${else}${voffset 20}${alignc +72}${font hooge 05_53:size=10:bold}${execi 600 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${font}
 ${alignc +68}${execi 600 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
+#
 ${voffset -44}${goto 124}${font ConkyWeather:size=38}\
-${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 35}${color4}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
+${if_empty ${execi 1 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}}\
+${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 38}${color4}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 30}${color5}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} < 3}${color1}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
-${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${endif}${endif}${endif}${font}
+${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${endif}${endif}${endif}${else}\
+${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 100}${color4}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
+${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 86}${color5}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
+${if_match ${execi 600 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} < 37}${color1}${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
+${execi 600 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${endif}${endif}${endif}${endif}${font}
+#
 ${if_empty ${execi 600 sed -n '5p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}}${alignc -70}\
 ${voffset -22}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
 ${else}${voffset -27}${alignc -70}${execi 600 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
