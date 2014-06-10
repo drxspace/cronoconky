@@ -70,16 +70,17 @@ ${execi 600 sh -c '$HOME/.conky/cronograph_se/yahooweather/forecasts.sh'}\
 #
 ${voffset 34}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
-${voffset 22}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
+${voffset 23}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${alignc +64}${uptime_short}
 ${voffset -8}${font hooge 05_53:size=6:bold:italic}${alignc}HD${font}
-${voffset -23}${font hooge 05_53:size=7:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%a %d %b" | tr "[:lower:]" "[:upper:]"}${font}
-${alignc -64}${time %Y}
+${voffset -28}${font hooge 05_53:size=7:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%b %Y" | tr "[:lower:]" "[:upper:]"}${font}
+${font hooge 05_53:size=11:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
+${font hooge 05_53:size=7:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}${font}
 #
-${voffset 20}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}
+${voffset 6}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}
 # sudo chmod +s `which hddtemp`
 #
-${voffset 29}${goto 62}\
+${voffset 30}${goto 62}\
 #
 ${if_empty ${hwmon 0 temp 1}} ${else}\
 ${if_empty ${execi 1 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}}\
