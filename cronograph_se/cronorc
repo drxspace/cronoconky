@@ -72,9 +72,9 @@ ${voffset 34}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
 ${voffset 23}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${alignc +64}${uptime_short}
-${voffset -24}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%b %Y" | tr "[:lower:]" "[:upper:]"}
+${voffset -24}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
 ${font hooge 05_53:size=11:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
-${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
+${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%b %Y" | tr "[:lower:]" "[:upper:]"}
 #
 ${voffset -18}${font hooge 05_53:size=6:bold:italic}${alignc}HD${font}
 #
