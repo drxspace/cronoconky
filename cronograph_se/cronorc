@@ -73,11 +73,11 @@ ${voffset 34}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
 ${voffset 22}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${voffset 2}${alignc +64}${uptime_short}
 #
-${voffset -25}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
+${voffset -30}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
 ${font hooge 05_53:size=11:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
 ${voffset 2}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%B %Y" | tr "[:lower:]" "[:upper:]"}
 #
-${voffset -20}${font hooge 05_53:size=6:bold:italic}${alignc}HD${font}
+${voffset -15}${font hooge 05_53:size=6:bold:italic}${alignc}HD${font}
 #
 ${voffset 16}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}
 #sudo chmod +s `which hddtemp`
