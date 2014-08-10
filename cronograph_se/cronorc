@@ -120,9 +120,9 @@ ${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweathe
 ${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} < 37}${color1}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${endif}${endif}${endif}${endif}${font}
 #
-${if_empty ${execi 120 sed -n '5p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}}${alignc -70}\
+${alignc -66}${if_empty ${execi 120 sed -n '5p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}}\
 ${voffset -25}${execi 120 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
-${else}${voffset -26}${alignc -70}${execi 120 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
+${else}${voffset -26}${execi 120 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
 ${alignc -70}${execi 120 sed -n '5p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${voffset 1}${endif}
 #
 # Three days forecasts
