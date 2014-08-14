@@ -111,11 +111,11 @@ ${alignc +68}${execi 120 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/cur
 #
 ${voffset -44}${goto 124}${font ConkyWeather:size=38}\
 ${if_empty ${execi 60 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}}\
-${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 38}${color4}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
+${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 36}${color4}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 30}${color5}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} < 3}${color1}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${endif}${endif}${endif}${else}\
-${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 100}${color4}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
+${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 97}${color4}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} > 86}${color5}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 120 sed -n '1s/°$//p' $HOME/.conky/cronograph_se/yahooweather/curr_cond} < 37}${color1}${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${color}${else}\
 ${execi 120 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${endif}${endif}${endif}${endif}${font}
