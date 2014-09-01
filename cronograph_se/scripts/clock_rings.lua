@@ -264,7 +264,8 @@ local clock_x=150
 local clock_y=150
 
 -- Colour & alpha of the clock hands
-local hands_colour=0xF0F0F0
+local hours_colour=0xF0F0F0
+local mins_colour=0xF0F0F0
 local secs_colour=0x830000
 local clock_alpha=1
 
@@ -310,7 +311,7 @@ local function draw_clock_hands(cr,xc,yc)
 	mins_arc=(2*math.pi/60)*mins+secs_arc/60
 	hours_arc=(2*math.pi/12)*hours+mins_arc/12
 
-	cairo_set_source_rgba(cr,rgb_to_r_g_b(hands_colour,clock_alpha))
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(hours_colour,clock_alpha))
 	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
 
 	-- Draw hour hand
@@ -325,6 +326,8 @@ local function draw_clock_hands(cr,xc,yc)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xxh,yyh)
 	cairo_stroke(cr)
+
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(mins_colour,clock_alpha))
 
 	-- Draw minute hand
 	xm=xc+0.80*clock_r*math.sin(mins_arc)
