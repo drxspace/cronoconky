@@ -38,7 +38,7 @@ local settings_table = {
 		-- "arg" is the argument to the stat type, e.g. if in Conky you
 		-- would write ${cpu cpu0}, 'cpu0' would be the argument. If you
 		-- would not use an argument in the Conky variable, use ''.
-		arg='%I.%M',
+		arg='%I', -- .%M',
 		-- "max" is the maximum value of the ring. If the Conky variable outputs a percentage, use 100.
 		max=12,
 		-- "bg_colour" is the colour of the base ring.
@@ -62,7 +62,7 @@ local settings_table = {
 	},
 	{
 		name='time',
-		arg='%M.%S',
+		arg='%M', -- .%S',
 		max=60,
 		bg_colour=0x999999,
 		bg_alpha=0.3,
@@ -93,7 +93,7 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x222222,
+		bg_colour=0x404040,
 		bg_alpha=0.3,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
@@ -311,7 +311,6 @@ local function draw_clock_hands(cr,xc,yc)
 	mins_arc=(2*math.pi/60)*mins+secs_arc/60
 	hours_arc=(2*math.pi/12)*hours+mins_arc/12
 
-	cairo_set_source_rgba(cr,rgb_to_r_g_b(hours_colour,clock_alpha))
 	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
 
 	-- Draw hour hand
@@ -321,13 +320,12 @@ local function draw_clock_hands(cr,xc,yc)
 	xxh=xc-0.15*clock_r*math.sin(hours_arc)
 	yyh=yc+0.15*clock_r*math.cos(hours_arc)
 	cairo_set_line_width(cr,8)
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(hours_colour,clock_alpha))
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xh,yh)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xxh,yyh)
 	cairo_stroke(cr)
-
-	cairo_set_source_rgba(cr,rgb_to_r_g_b(mins_colour,clock_alpha))
 
 	-- Draw minute hand
 	xm=xc+0.80*clock_r*math.sin(mins_arc)
@@ -335,11 +333,12 @@ local function draw_clock_hands(cr,xc,yc)
 	-- and minute backhand
 	xxm=xc-0.20*clock_r*math.sin(mins_arc)
 	yym=yc+0.20*clock_r*math.cos(mins_arc)
+	cairo_set_line_width(cr,5)
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(mins_colour,clock_alpha))
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xm,ym)
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xxm,yym)
-	cairo_set_line_width(cr,5)
 	cairo_stroke(cr)
 
 	if show_seconds then
@@ -349,12 +348,12 @@ local function draw_clock_hands(cr,xc,yc)
 		-- and seconds backhand
 		xxs=xc-0.31*clock_r*math.sin(secs_arc)
 		yys=yc+0.31*clock_r*math.cos(secs_arc)
+		cairo_set_line_width(cr,2)
+		cairo_set_source_rgba(cr,rgb_to_r_g_b(secs_colour,clock_alpha))
 		cairo_move_to(cr,xc,yc)
 		cairo_line_to(cr,xs,ys)
 		cairo_move_to(cr,xc,yc)
 		cairo_line_to(cr,xxs,yys)
-		cairo_set_line_width(cr,2)
-		cairo_set_source_rgba(cr,rgb_to_r_g_b(secs_colour,clock_alpha))
 		cairo_stroke(cr)
 	end
 
