@@ -9,11 +9,15 @@
 #
 
 pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
-	rm -f "$(dirname "$0")"/accuweather/*_cond
-	sleep 3
-	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc
+	rm -f "$(dirname "$0")"/accuweather/*_cond;
+	sleep 2;
+	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc && {
+		sleep 4; notify-send "Cronograph Station SE" "Conky Cronograph Station SE was restarted okay." -i face-smile;
+	} || {
+		notify-send "Cronograph Station SE" "Conky Cronograph Station SE cannot be restarted." -i face-worried; exit 1;
+	}
 } || {
-	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-sad
+	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-plain; exit 2;
 }
 
 exit 0

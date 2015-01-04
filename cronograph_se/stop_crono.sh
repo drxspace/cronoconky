@@ -8,8 +8,11 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null || {
-	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-sad
+#pkill -SIGKILL -o -x -f "^conky.*cronorc$" 2> /dev/null && {
+pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
+	notify-send "Cronograph Station SE" "Conky Cronograph Station SE successfully stopped." -i face-smile;
+} || {
+	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-plain; exit 1;
 }
 
 exit 0
