@@ -13,7 +13,7 @@
 
 [[ $(pgrep -c -f "^conky.*cronorc$") -eq 0 ]] && {
 	[[ "$DESKTOP_SESSION" == "cinnamon" ]] && sleep 10;
-	sleep 05;
+	sleep 10;
 	#     ^^ Error of failed request:  BadWindow (invalid Window parameter)
 	# There's also the X-GNOME-Autostart-Delay=25 property in .desktop file
 	# that can be set in order to handle this situation
