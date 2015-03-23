@@ -81,7 +81,7 @@ read -p "Do you want to continue? [Y/n]: " ANS
 
 # Building needed packages list
 NeedPackages=""
-[[ -z $(which conky) ]] && NeedPackages="conky-std "
+[[ -z $(which conky) ]] && NeedPackages="conky-all "
 [[ -z $(which wget) ]] && NeedPackages=$NeedPackages"wget "
 [[ -z $(which lua) ]] && NeedPackages=$NeedPackages"lua5.2 "
 [[ -z $(which hddtemp) ]] && NeedPackages=$NeedPackages"hddtemp "
