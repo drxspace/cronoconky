@@ -13,7 +13,7 @@ WIZDIR="$(cd "$(dirname "$0")" && pwd)"
 CONKYDIR="$HOME"/.conky
 CRONODIR="cronograph_se"
 
-THISAPPNAME="Conky Cronograph Station SE"
+THISAPPNAME="Cronograph Station Conky SE"
 THISAPPVER=$(cat "${WIZDIR}"/"${CRONODIR}"/.version)
 THISAPPBLD=$(cat "${WIZDIR}"/"${CRONODIR}"/.build)
 

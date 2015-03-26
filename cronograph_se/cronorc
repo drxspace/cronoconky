@@ -1,4 +1,4 @@
-#---Conky Cronograph Station SE---#
+#---Cronograph Station Conky SE---#
 
 #---Conky settings---#
 update_interval 1
@@ -20,7 +20,7 @@ border_outer_margin 0
 own_window yes
 own_window_class Cronograph
 own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-own_window_title Conky Cronograph Station SE
+own_window_title Cronograph Station Conky SE
 own_window_argb_visual yes
 #own_window_argb_value 0
 own_window_transparent yes	# If ARGB visual is enabled,
