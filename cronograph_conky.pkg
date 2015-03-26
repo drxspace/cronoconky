@@ -57,7 +57,7 @@ Have fun, love and joy ...and don't forget... anything else...
 		echo -e "\nThere's an error while installing packages..." 1>&2 && sleep 4
 	;;
 	esac
-	
+
 	exit $1
 }
 
@@ -171,9 +171,10 @@ if [[ ! -f "$HOME"/.config/autostart/cronograph_conky.desktop ]]; then
 	echo -e "\nIt's essential to add this conky to the Startup Applications list
 in order to start automatically each time we login to our system."
 	read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
-	[[ ${ANS:-Y} == [Yy] ]] && { 
+	[[ ${ANS:-Y} == [Yy] ]] && {
 		mkdir -p "$HOME"/.config/autostart;
 		sed "s:<home_dir>:"$HOME":" "${WIZDIR}"/cronograph_conky.desktop > "$HOME"/.config/autostart/cronograph_conky.desktop;
+		chmod 755 "$HOME"/.config/autostart/cronograph_conky.desktop;
 		echo -e "Setting “${THISAPPNAME}” as a Startup Application...\r\033[${okay_x_col}C[ OK ]";
 	}
 fi
