@@ -12,7 +12,7 @@
 # With the background property setted to yes I don't need the &
 
 [[ $(pgrep -c -f "^conky.*cronorc$") -eq 0 ]] && {
-	[[ "$DESKTOP_SESSION" =~ kde* ]] || sleep 10;
+	[[ "$DESKTOP_SESSION" =~ kde* ]] || sleep 05;
 	#                                         ^^ Error of failed request:
 	#                                            BadWindow (invalid Window parameter)
 	# There's also the X-GNOME-Autostart-Delay=25 property in .desktop file

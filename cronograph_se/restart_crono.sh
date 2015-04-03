@@ -7,20 +7,29 @@
 # \__,_/   /_/     /_/|_|  /_____/   _  .___/ /_/  |_|\____/   /_____/
 #                                    /_/           drxspace@gmail.com
 #
+[[ "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
+	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
+	KillSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/trash-empty.oga"
+	RestartSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/message-new-instant.oga"
+}
 
 pkill -SIGCONT -o -x -f "^conky.*cronorc$" 2> /dev/null
 pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
-	sleep 5;
-	pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null &&  {
-		pkill -SIGKILL -o -x -f "^conky.*cronorc$" 2> /dev/null &&
-			notify-send "Cronograph Station SE" "Conky Cronograph Station SE cannot be restarted so it was killed." -i face-worried; exit 1;
+	sleep 2;
+	pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
+		pkill -SIGKILL -o -x -f "^conky.*cronorc$" 2> /dev/null && {
+			notify-send "Cronograph Station SE" "Conky Cronograph Station SE cannot be restarted so it was killed." -i face-worried;
+			$(${KillSnd}); exit 1;
+		}
 	}
 	rm -f "$(dirname "$0")"/accuweather/*_cond;
-	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc &&  {
+	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc && {
 		sleep 5; notify-send "Cronograph Station SE" "Conky Cronograph Station SE was restarted." -i face-smile;
+		$(${RestartSnd});
 	}
 } || {
-	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-plain; exit 2;
+	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-plain;
+	$(${ErrorSnd}); exit 2;
 }
 
 exit 0

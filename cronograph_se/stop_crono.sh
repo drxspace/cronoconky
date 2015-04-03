@@ -7,17 +7,25 @@
 # \__,_/   /_/     /_/|_|  /_____/   _  .___/ /_/  |_|\____/   /_____/
 #                                    /_/           drxspace@gmail.com
 #
+[[ "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
+	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
+	KillSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/trash-empty.oga"
+	StopSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/device-removed.oga"
+}
 
 pkill -SIGCONT -o -x -f "^conky.*cronorc$" 2> /dev/null && {
 	pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null
 	sleep 1;
 	pkill -SIGKILL -o -x -f "^conky.*cronorc$" 2> /dev/null && {
-		notify-send "Cronograph Station SE" "Conky Cronograph Station SE cannot be stopped so it was killed." -i face-worried; exit 1;
+		notify-send "Cronograph Station SE" "Conky Cronograph Station SE cannot be stopped so it was killed." -i face-worried;
+		$(${KillSnd}); exit 1;
 	} || {
 		notify-send "Cronograph Station SE" "Conky Cronograph Station SE successfully stopped." -i face-smile;
+		$(${StopSnd});
 	}
 } || {
-	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-plain; exit 2;
+	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-plain;
+	$(${ErrorSnd}); exit 2;
 }
 
 exit 0
