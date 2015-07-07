@@ -181,7 +181,7 @@ YahooWurl="http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=${DegreesUnits:
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${YahooWurl}" >&2
 
-wget -q -r -4 -t 1 --user-agent="${UserAgent}" -O "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
+wget -q -N -4 -t 1 --user-agent="${UserAgent}" -O "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
 	errExit "Wget exits with error code: -$?-" 1
 
 echo "forecasts.sh: Checking the results..." >&2
