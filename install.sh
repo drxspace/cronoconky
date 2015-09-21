@@ -8,7 +8,6 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-#ESC_DIR="$(printf "%q" "$(dirname "$0")")"
 DIR="$(dirname "$0")"
 MAININSTALLER="cronograph_conky.pkg"
 
@@ -20,10 +19,11 @@ fi
 TITLE="Setup Cronograph Station Conky SE"
 
 if [[ "$KDE_FULL_SESSION" == "true" ]]; then
-  TERM=$(which konsole)
+	TERM=$(which konsole)
 else
-  TERM=$(which gnome-terminal)
+	TERM=$(which gnome-terminal)
 fi
+
 # ...else fallback to xterm if it's here
 TERM=${TERM:=$(which xterm)}
 
