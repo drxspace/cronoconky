@@ -17,14 +17,14 @@ pkill -SIGCONT -o -x -f "^conky.*cronorc$" 2> /dev/null && {
 	pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null
 	sleep 1;
 	pkill -SIGKILL -o -x -f "^conky.*cronorc$" 2> /dev/null && {
-		notify-send "Cronograph Station SE" "Conky Cronograph Station SE cannot be stopped so it was killed." -i face-worried;
+		notify-send "Cronograph Station BE" "Conky Cronograph Station BE cannot be stopped so it was killed." -i face-worried;
 		$(${KillSnd}); exit 1;
 	} || {
-		notify-send "Cronograph Station SE" "Conky Cronograph Station SE successfully stopped." -i face-smile;
+		notify-send "Cronograph Station BE" "Conky Cronograph Station BE successfully stopped." -i face-smile;
 		$(${StopSnd});
 	}
 } || {
-	notify-send "Cronograph Station SE" "Conky Cronograph Station SE is not running." -i face-plain;
+	notify-send "Cronograph Station BE" "Conky Cronograph Station BE is not running." -i face-plain;
 	$(${ErrorSnd}); exit 2;
 }
 
