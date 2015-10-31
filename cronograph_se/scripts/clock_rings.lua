@@ -42,13 +42,13 @@ local settings_table = {
 		-- "max" is the maximum value of the ring. If the Conky variable outputs a percentage, use 100.
 		max=12,
 		-- "bg_colour" is the colour of the base ring.
-		bg_colour=0x999999,
+		bg_colour=0x444444,
 		-- "bg_alpha" is the alpha value of the base ring.
 		bg_alpha=0.3,
 		-- "fg_colour" is the colour of the indicator part of the ring.
-		fg_colour=0xFFFFFF,
+		fg_colour=0x000000,
 		-- "fg_alpha" is the alpha value of the indicator part of the ring.
-		fg_alpha=0.5,
+		fg_alpha=0.6,
 		-- "x" and "y" are the x and y coordinates of the centre of the ring, relative to the top left corner of the Conky window.
 		x=150, y=150,
 		-- "radius" is the radius of the ring.
@@ -64,10 +64,10 @@ local settings_table = {
 		name='time',
 		arg='%M', -- .%S',
 		max=60,
-		bg_colour=0x999999,
+		bg_colour=0x444444,
 		bg_alpha=0.3,
-		fg_colour=0xFFFFFF,
-		fg_alpha=0.5,
+		fg_colour=0x000000,
+		fg_alpha=0.6,
 		x=150, y=150,
 		radius=140,
 		thickness=4,
@@ -78,10 +78,10 @@ local settings_table = {
 		name='time',
 		arg='%S',
 		max=60,
-		bg_colour=0x999999,
+		bg_colour=0x444444,
 		bg_alpha=0.3,
-		fg_colour=0xFFFFFF,
-		fg_alpha=0.5,
+		fg_colour=0x000000,
+		fg_alpha=0.6,
 		x=150, y=150,
 		radius=145,
 		thickness=4,
@@ -93,8 +93,10 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x404040,
-		bg_alpha=0.3,
+		--bg_colour=0x404040,
+		--bg_alpha=0.2,
+		bg_colour=0xFFFFFF,
+		bg_alpha=0.2,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=150,
@@ -104,17 +106,17 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- Watch center bullet
+		-- Watch center cicle
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x808080,
-		bg_alpha=0.4,
+		bg_colour=0x909090,
+		bg_alpha=0.5,
 		fg_colour=0xFFFFFF,
-		fg_alpha=0.0,
+		fg_alpha=1.0,
 		x=150, y=150,
 		radius=1,
-		thickness=23,
+		thickness=25,
 		start_angle=0,
 		end_angle=360
 	},
@@ -123,9 +125,9 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFFFF,
+		bg_colour=0x000000,
 		bg_alpha=1.0,
-		fg_colour=0xFFFFFF,
+		fg_colour=0x000000,
 		fg_alpha=0.0,
 		x=85, y=150,
 		radius=30,
@@ -138,7 +140,7 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x000000,
+		bg_colour=0xA0A0A0,
 		bg_alpha=0.1,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
@@ -153,9 +155,9 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFFFF,
-		bg_alpha=1.0,
-		fg_colour=0xFFFFFF,
+		bg_colour=0xFFFF99,
+		bg_alpha=0.8,
+		fg_colour=0x000000,
 		fg_alpha=0.0,
 		x=85, y=150,
 		radius=1,
@@ -168,9 +170,9 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFFFF,
+		bg_colour=0x000000,
 		bg_alpha=1.0,
-		fg_colour=0xFFFFFF,
+		fg_colour=0x000000,
 		fg_alpha=0.0,
 		x=215, y=150,
 		radius=30,
@@ -183,7 +185,7 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x000000,
+		bg_colour=0xA0A0A0,
 		bg_alpha=0.1,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
@@ -198,9 +200,9 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFFFF,
-		bg_alpha=1.0,
-		fg_colour=0xFFFFFF,
+		bg_colour=0xFFFF99,
+		bg_alpha=0.8,
+		fg_colour=0x000000,
 		fg_alpha=0.0,
 		x=215, y=150,
 		radius=1,
@@ -214,9 +216,9 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFFFF,
+		bg_colour=0x000000,
 		bg_alpha=1.0,
-		fg_colour=0xFFFFFF,
+		fg_colour=0x000000,
 		fg_alpha=0.0,
 		x=150, y=75,
 		radius=25,
@@ -229,7 +231,7 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x000000,
+		bg_colour=0xA0A0A0,
 		bg_alpha=0.1,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
@@ -244,8 +246,8 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFFFF,
-		bg_alpha=1.0,
+		bg_colour=0xFFFF99,
+		bg_alpha=0.8,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=75,
@@ -264,10 +266,10 @@ local clock_x=150
 local clock_y=150
 
 -- Colour & alpha of the clock hands
-local hours_colour=0xF0F0F0
-local mins_colour=0xF0F0F0
+local hours_colour=0x202020
+local mins_colour=0x202020
 local secs_colour=0x830000
-local clock_alpha=1
+local clock_alpha=0.7
 
 -- Do you want to show the seconds hand?
 local show_seconds=true
@@ -359,7 +361,7 @@ local function draw_clock_hands(cr,xc,yc)
 
 	-- Draw center dot/screw
 	cairo_arc(cr,xc,yc,1,0,360)
-	cairo_set_source_rgba(cr,rgb_to_r_g_b(0x101010,1.0))
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(0xFFFF99,0.8))
 	cairo_set_line_width(cr,3)
 	cairo_stroke(cr)
 end

@@ -13,7 +13,7 @@ WIZDIR="$(cd "$(dirname "$0")" && pwd)"
 CONKYDIR="$HOME"/.conky
 CRONODIR="cronograph_se"
 
-THISAPPNAME="Cronograph Station Conky SE"
+THISAPPNAME="Cronograph Station Conky BE"
 THISAPPVER=$(cat "${WIZDIR}"/"${CRONODIR}"/.version)
 THISAPPBLD=$(cat "${WIZDIR}"/"${CRONODIR}"/.build)
 
@@ -38,7 +38,7 @@ installApp () {
 		echo -en "Backing up previous version"
 		( cd "${CONKYDIR}"/;
 		  tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; ) && echo -e "\r\033[${okay_x_col}C[ OK ]"
-		installApp -r # It's a... recursion
+		installApp -r
 	;;
 	esac
 }

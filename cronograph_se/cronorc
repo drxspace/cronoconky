@@ -1,4 +1,4 @@
-#---Cronograph Station Conky SE---#
+#---Cronograph Station Conky BE---#
 
 #---Conky settings---#
 update_interval 1
@@ -36,17 +36,17 @@ draw_outline no
 draw_shades no
 
 #---Color settings---#
-default_color ffffff
-color0 ffebcd		# BlanchedAlmond
-color1 87cefa		# LightSkyBlue
-color2 fffafa		# Snow
-color3 ff7f50		# Coral
-color4 ff6347		# Tomato
-color5 f0e68c		# Khaki
-color6 dcdcdc		# Gainsboro 
-color7 white
-color8 orange
-color9 red
+default_color 000000
+color0 FFEBCD		# BlanchedAlmond
+color1 87CEFA		# LightSkyBlue
+color2 FFFAFA		# Snow
+color3 FF7F50		# Coral
+color4 FF6347		# Tomato
+color5 F0E68C		# Khaki
+color6 DCDCDC		# Gainsboro 
+color7 WHITE
+color8 B86B00
+color9 990000
 
 #---Text settings---#
 text_buffer_size 1024
@@ -69,9 +69,9 @@ TEXT
 # Update weather info every (120/60=2min)
 ${execi 120 sh -c '$HOME/.conky/cronograph_se/yahooweather/forecasts.sh'}\
 #
-${voffset 34}${goto 119}${if_empty ${battery}}PWR${else}BAT${endif}:
+${voffset 32}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
-${voffset 22}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
+${voffset 24}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${voffset 2}${alignc +64}${uptime_short}
 #
 ${voffset -30}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
@@ -109,7 +109,7 @@ ${alignc}${color1}${execi 120 sed -n '4p' $HOME/.conky/cronograph_se/yahooweathe
 # Today weather
 #
 ${else}${voffset 20}${alignc +72}${font hooge 05_53:size=10:bold}${execi 120 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}${font}
-${alignc +68}${execi 120 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
+${alignc +74}${execi 120 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/curr_cond}
 #
 ${voffset -44}${goto 124}${font ConkyWeather:size=38}\
 ${if_empty ${execi 60 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_se/yahooweather/forecasts.sh}}\
@@ -129,27 +129,27 @@ ${alignc -70}${execi 120 sed -n '5p' $HOME/.conky/cronograph_se/yahooweather/cur
 #
 # Three days forecasts
 #
-${voffset 7}${font ConkyWeather:size=16:bold}${goto 88}${execi 120 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
-${voffset -20}${goto 139}${execi 1800 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
-${voffset -20}${goto 187}${execi 1800 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${font}
+${voffset 10}${font ConkyWeather:size=16:bold}${goto 87}${execi 120 sed -n '1p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -21}${goto 139}${execi 1800 sed -n '2p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -21}${goto 187}${execi 1800 sed -n '3p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${font}
 #
-${voffset -4}${alignc +51}${execi 1800 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -3}${alignc +52}${execi 1800 sed -n '4p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
 ${voffset -9}${alignc}${execi 120 sed -n '5p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
 ${voffset -9}${alignc -50}${execi 1800 sed -n '6p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
 #
-${voffset -2}${alignc +51}${execi 1800 sed -n '7p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
+${voffset -2}${alignc +52}${execi 1800 sed -n '7p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
 ${voffset -9}${alignc}${execi 120 sed -n '8p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}
 ${voffset -9}${alignc -50}${execi 1800 sed -n '9p' $HOME/.conky/cronograph_se/yahooweather/fore_cond}${endif}
 #
 ${if_empty ${battery}}
 # We assume that there's no battery so the led is always green
-${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
+${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 134,20 -s 30x30}
 ${else}
-${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 129,18 -s 40x40}
-${else}${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_se/images/Green.png -p 129,18 -s 40x40}
-${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_se/images/Yellow.png -p 129,18 -s 40x40}
-${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_se/images/Orange.png -p 129,18 -s 40x40}
-${else}${image $HOME/.conky/cronograph_se/images/Red.png -p 129,18 -s 40x40}${endif}${endif}${endif}${endif}
+${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_se/images/Dark_Green.png -p 134,20 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_se/images/Green.png -p 134,20 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_se/images/Yellow.png -p 134,20 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_se/images/Orange.png -p 134,20 -s 30x30}
+${else}${image $HOME/.conky/cronograph_se/images/Red.png -p 134,20 -s 30x30}${endif}${endif}${endif}${endif}
 ${endif}
 ${execpi 1 cat $HOME/.conky/cronograph_se/scripts/blinkingLED}
 # Overcome the vertical offset issue with the window height
