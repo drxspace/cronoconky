@@ -5,7 +5,8 @@ update_interval 1
 total_run_times 0
 background yes
 double_buffer yes
-imlib_cache_size 0	# Imlib2 image cache size, in bytes. Set to 0 to disable the image cache.
+imlib_cache_size 0		# Imlib2 image cache size, in bytes. Set to 0 to
+				#+ disable the image cache
 no_buffers yes
 #temperature_unit fahrenheit
 
@@ -24,10 +25,10 @@ own_window_title Cronograph Station Conky BLK
 own_window_argb_visual yes
 #own_window_argb_value 0
 own_window_transparent yes	# If ARGB visual is enabled,
-							# sets background opacity to 0%
+				#+ sets background opacity to 0%
 #own_window_type override	# normal type is the default
-							# Override windows are not under the control of
-							# the window manager.
+				#+ Override windows are not under the control of
+				#+ the window manager
 
 #---Graphics settings---#
 draw_borders no

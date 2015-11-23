@@ -3,6 +3,7 @@
 #Cronograph Preview
 ![Cronograph Preview](https://github.com/drxspace/cronoconky/blob/master/crono-running.gif)
 
+#Some words
 So many things should go here but I'm so sorry that I can't do it with my two
 plus one fingers that ms left me...
 Anyway, if you like it as I do drop me a "letter" telling me that :)
