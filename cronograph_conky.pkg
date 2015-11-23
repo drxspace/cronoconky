@@ -11,9 +11,9 @@
 WIZDIR="$(cd "$(dirname "$0")" && pwd)"
 
 CONKYDIR="$HOME"/.conky
-CRONODIR="cronograph_se"
+CRONODIR="cronograph_blk"
 
-THISAPPNAME="Cronograph Station Conky BE"
+THISAPPNAME="Cronograph Station Conky BLK"
 THISAPPVER=$(cat "${WIZDIR}"/"${CRONODIR}"/.version)
 THISAPPBLD=$(cat "${WIZDIR}"/"${CRONODIR}"/.build)
 
@@ -66,7 +66,7 @@ clear
 
 echo -e "\E[37;44m+------------------------------------------------------------------------+"
 echo -e "|                                                                        |"
-echo -e "|                     \E[1;37;44m${THISAPPNAME^^}\E[0;37;44m                        |"
+echo -e "|                     \E[1;37;44m${THISAPPNAME^^}\E[0;37;44m                       |"
 echo -e "|                           ver. \E[1;31;44m${THISAPPVER}b${THISAPPBLD}\E[37;44m                                |"
 echo -e "|                                                                        |"
 echo -e "|                         \E[1;33;44mINSTALLATION WIZARD\E[37;44m                            |"

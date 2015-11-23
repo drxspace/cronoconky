@@ -1,10 +1,10 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Name=Cronograph Station Conky SE
+Name=Cronograph Station Conky BLK
 GenericName=Cronograph Conky
-Comment=Cronograph Station Conky SE is an amazing good-looking clock that displays your local weather on your desktop
-Exec=<home_dir>/.conky/cronograph_se/start_crono.sh
+Comment=Cronograph Station Conky BLK is an amazing good-looking clock that displays your local weather on your desktop
+Exec=<home_dir>/.conky/cronograph_blk/start_crono.sh
 Icon=cronograph
 Type=Application
 Terminal=false

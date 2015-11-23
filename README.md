@@ -1,7 +1,7 @@
-# Cronograph Station Conky SE & BE
+# Cronograph Station Conky SE & BLK editions
 
-#Cronograph Origin    
-![Cronograph Origin](https://github.com/drxspace/cronoconky/blob/master/crono-running.gif)
+#Cronograph Preview
+![Cronograph Preview](https://github.com/drxspace/cronoconky/blob/master/crono-running.gif)
 
 So many things should go here but I'm so sorry that I can't do it with my two
 plus one fingers that ms left me...

@@ -27,7 +27,7 @@ local clock_h = {
 		graduation_radius=127,
 		graduation_thickness=10, graduation_mark_thickness=2,
 		graduation_unit_angle=30,
-		graduation_fg_colour=0x444444, graduation_fg_alpha=0.3
+		graduation_fg_colour=0x000000, graduation_fg_alpha=0.6
 	},
 }
 --[[
@@ -37,7 +37,7 @@ local clock_m = {
 		name='time', arg='%M', max_value=60,
 		x=150, y=150,
 		graph_radius=100,
-		graph_thickness=3,
+		graph_thickness=1,
 		graph_unit_angle=6, graph_unit_thickness=3,
 		graph_bg_colour=0xFFFFFF, graph_bg_alpha=0.0,
 		graph_fg_colour=0xFFFFFF, graph_fg_alpha=0.0,
@@ -47,9 +47,10 @@ local clock_m = {
 		graduation_radius=57,
 		graduation_thickness=0, graduation_mark_thickness=2,
 		graduation_unit_angle=30,
-		graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.0
+		graduation_fg_colour=0x000000, graduation_fg_alpha=0.9
 	},
 }
+
 -- SECONDS
 local clock_s = {
 	{

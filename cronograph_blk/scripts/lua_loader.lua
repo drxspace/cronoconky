@@ -1,4 +1,4 @@
-package.path = package.path .. ";" .. os.getenv ("HOME") .. "/.conky/cronograph_se/scripts/?.lua"
+package.path = package.path .. ";" .. os.getenv ("HOME") .. "/.conky/cronograph_blk/scripts/?.lua"
 
 require("clock_rings")
 require("multi_rings")

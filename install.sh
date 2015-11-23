@@ -16,7 +16,7 @@ if [ -t 0 ]; then
 	exit
 fi
 
-TITLE="Setup Cronograph Station Conky SE"
+TITLE="Setup Cronograph Station Conky BLK"
 
 if [[ "$KDE_FULL_SESSION" == "true" ]]; then
 	TERM=$(which konsole)
