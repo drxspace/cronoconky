@@ -1,4 +1,6 @@
 # Cronograph Station Conky SE & BLK editions
+[![ License ](https://img.shields.io/badge/license-GPLv2-blue.svg?style=flat)](LICENSE)
+
 
 #Cronograph Preview
 ![Cronograph Preview](https://github.com/drxspace/cronoconky/blob/master/crono-running.gif)
@@ -74,7 +76,7 @@ Thank you ALL!
 ### CHANGES in version 2.1
 
 2013-12-19
-· Changes in the way that lua scripts are called. This impacts the way that the
+· Changes inthe way that lua scripts are called. This impacts the way that the
   clock is shaped -in a better order
 
 
