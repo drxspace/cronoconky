@@ -81,11 +81,12 @@ read -p "Do you want to continue? [Y/n]: " ANS
 
 # Building needed packages list
 NeedPackages=""
-[[ -z $(which conky) ]] && NeedPackages="conky-all "
-[[ -z $(which wget) ]] && NeedPackages=$NeedPackages"wget "
-[[ -z $(which lua) ]] && NeedPackages=$NeedPackages"lua5.2 "
-[[ -z $(which hddtemp) ]] && NeedPackages=$NeedPackages"hddtemp "
-[[ -z $(which sensors) ]] && NeedPackages=$NeedPackages"lm-sensors"
+[[ -x $(which conky) ]] && NeedPackages="conky-all "
+#[[ -x $(which wget) ]] && NeedPackages=$NeedPackages"wget "
+[[ -x $(which curl) ]] && NeedPackages=$NeedPackages"curl "
+[[ -x $(which lua) ]] && NeedPackages=$NeedPackages"lua5.3 "
+[[ -x $(which hddtemp) ]] && NeedPackages=$NeedPackages"hddtemp "
+[[ -x $(which sensors) ]] && NeedPackages=$NeedPackages"lm-sensors"
 
 if [[ -n $NeedPackages ]]; then
 	echo -e "\nFirst we need to install some packages. This action requires root
@@ -158,7 +159,7 @@ if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
 fi
 
 # Installing needed truetype weather fonts [---]
-if [[ -z $(fc-list | grep ConkyWeather) ]]; then
+if [[ -x $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
 	mkdir -p "$HOME"/.fonts/TTF/
 	echo -en "Coping fonts and building font information cache files.\nPlease wait a moment..."

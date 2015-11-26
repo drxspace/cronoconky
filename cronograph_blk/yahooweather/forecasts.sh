@@ -181,8 +181,10 @@ YahooWurl="http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=${DegreesUnits:
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${YahooWurl}" >&2
 
-wget -q -N -4 -t 1 --user-agent="${UserAgent}" -O "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
-	errExit "Wget exits with error code: -$?-" 1
+#wget -q -4 -t 1 -N --user-agent="${UserAgent}" -O "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
+#	errExit "Wget exits with error code: -$?-" 1
+curl -s -N -4 --retry 2 --retry-delay 1 --retry-max-time 10 -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
+	errExit "curl exits with error code: -$?-" 1
 
 echo "forecasts.sh: Checking the results..." >&2
 
