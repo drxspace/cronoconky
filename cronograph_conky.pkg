@@ -84,7 +84,7 @@ NeedPackages=""
 [[ -x $(which conky) ]] || NeedPackages="conky-all "
 #[[ -x $(which wget) ]] || NeedPackages=$NeedPackages"wget "
 [[ -x $(which curl) ]] || NeedPackages=$NeedPackages"curl "
-[[ -x $(which lua) ]] || NeedPackages=$NeedPackages"lua5.3 "
+[[ -x $(which lua5.3) ]] || NeedPackages=$NeedPackages"lua5.3 "
 [[ -x $(which hddtemp) ]] || NeedPackages=$NeedPackages"hddtemp "
 [[ -x $(which sensors) ]] || NeedPackages=$NeedPackages"lm-sensors"
 
