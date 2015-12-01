@@ -119,8 +119,10 @@ getImgChr () {
 }
 
 # User Agent String from http://www.useragentstring.com
+# Suppose we're using Firefox/43.0
+UserAgent='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'
 # Suppose we're using Chrome/41.0.2228.0
-UserAgent='Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
+#UserAgent='Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
 
 # The directory this script resides
 scriptDir="$(dirname "$0")"
