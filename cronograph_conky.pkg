@@ -67,7 +67,7 @@ clear
 echo -e "\E[37;44m+------------------------------------------------------------------------+"
 echo -e "|                                                                        |"
 echo -e "|                     \E[1;37;44m${THISAPPNAME^^}\E[0;37;44m                       |"
-echo -e "|                           ver. \E[1;31;44m${THISAPPVER}b${THISAPPBLD}\E[37;44m                                |"
+echo -e "|                           ver. \E[1;31;44m${THISAPPVER}-${THISAPPBLD}\E[37;44m                                |"
 echo -e "|                                                                        |"
 echo -e "|                         \E[1;33;44mINSTALLATION WIZARD\E[37;44m                            |"
 echo -e "|                                                                        |"
@@ -84,7 +84,8 @@ NeedPackages=""
 [[ -x $(which conky) ]] || NeedPackages="conky-all "
 #[[ -x $(which wget) ]] || NeedPackages=$NeedPackages"wget "
 [[ -x $(which curl) ]] || NeedPackages=$NeedPackages"curl "
-[[ -x $(which lua5.3) ]] || NeedPackages=$NeedPackages"lua5.3 "
+# conky-all package includes lualib
+#[[ -x $(which lua5.3) ]] || NeedPackages=$NeedPackages"lua5.3 "
 [[ -x $(which hddtemp) ]] || NeedPackages=$NeedPackages"hddtemp "
 [[ -x $(which sensors) ]] || NeedPackages=$NeedPackages"lm-sensors"
 
@@ -154,7 +155,7 @@ echo -e "\r\033[${okay_x_col}C[ OK ]"
 if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
 	echo -en "\nInstaling the “${THISAPPNAME}” icon..."
 	mkdir -p "$HOME"/.icons
-	cp "${WIZDIR}"/icons/cronograph_64x64.png "$HOME"/.icons/cronograph.png 2> /dev/null
+	cp "${WIZDIR}"/icons/cronograph_256x256.png "$HOME"/.icons/cronograph.png 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 fi
 

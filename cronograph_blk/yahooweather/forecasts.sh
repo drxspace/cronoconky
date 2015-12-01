@@ -119,8 +119,8 @@ getImgChr () {
 }
 
 # User Agent String from http://www.useragentstring.com
-# Suppose we're using Chrome/30.0.1599.17
-UserAgent='Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36'
+# Suppose we're using Chrome/41.0.2228.0
+UserAgent='Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
 
 # The directory this script resides
 scriptDir="$(dirname "$0")"
