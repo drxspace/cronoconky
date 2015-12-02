@@ -11,7 +11,7 @@
 
 ####### I M P O R T A N T #######
 #
-# Please, check the 174th line and enter the WOEID of your own location
+# Please, check the 17th line and enter the WOEID of your own location
 #
 
 # getImgChr () function converts

@@ -151,25 +151,41 @@ if [[ ${ANS:-C} == [Ff] ]]; then
 fi
 echo -e "\r\033[${okay_x_col}C[ OK ]"
 
-# Installing application's icon
-if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
+# Installing application's icon... anyway
+#if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
 	echo -en "\nInstaling the “${THISAPPNAME}” icon..."
 	mkdir -p "$HOME"/.icons
 	cp "${WIZDIR}"/icons/cronograph_256x256.png "$HOME"/.icons/cronograph.png 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
-fi
+#fi
 
-# Installing needed truetype weather fonts [---]
-if [[ -z $(fc-list | grep ConkyWeather) ]]; then
+# Installing needed truetype weather fonts... anyway
+#if [[ -z $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
 	mkdir -p "$HOME"/.fonts/TTF/
-	echo -en "Coping fonts and building font information cache files.\nPlease wait a moment..."
-	cp -f "${WIZDIR}"/ttf-cronograph/*.ttf "$HOME"/.fonts/TTF/ 2> /dev/null && fc-cache -f &> /dev/null
+	echo -en "Coping fonts. Please wait a moment..."
+	cp -f "${WIZDIR}"/ttf-cronograph/*.ttf "$HOME"/.fonts/TTF/ 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
-fi
+
+	if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
+		echo -e "\nFont configuration files aren't present."
+		echo -e "For this conky to show its elements aligned in the right position
+we should provide one."
+		read -p "Do you want to create a font configuration file? [Y/n]: " ANS
+		[[ ${ANS:-Y} == [Yy] ]] && {
+			mkdir -p "$HOME"/.config/fontconfig/
+			echo -en "Creating font configuration file. Please wait a moment..."
+			cp -f "${WIZDIR}"/fontconfig/fonts.conf "$HOME"/.config/fontconfig/
+			echo -e "\r\033[${okay_x_col}C[ OK ]"
+		}
+	fi
+	echo -en "Building font information cache files. Please wait a moment..."
+	fc-cache -f &> /dev/null
+	echo -e "\r\033[${okay_x_col}C[ OK ]"
+#fi
 
 # Add this conky to the Startup Applications list
-if [[ ! -f "$HOME"/.config/autostart/cronograph_conky.desktop ]]; then
+#if [[ ! -f "$HOME"/.config/autostart/cronograph_conky.desktop ]]; then
 	echo -e "\nIt's essential to add this conky to the Startup Applications list
 in order to start automatically each time we login to our system."
 	read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
@@ -179,11 +195,13 @@ in order to start automatically each time we login to our system."
 		chmod 755 "$HOME"/.config/autostart/cronograph_conky.desktop;
 		echo -e "Setting “${THISAPPNAME}” as a Startup Application...\r\033[${okay_x_col}C[ OK ]";
 	}
-fi
+#fi
 
 echo -e "\nThe conky “${THISAPPNAME}” is installed ok!"
 read -p "Do you want to start the conky right now? [Y/n]: " ANS
 [[ ${ANS:-Y} == [Yy] ]] && "${CONKYDIR}"/"${CRONODIR}"/start_crono.sh
+
+echo -e "\nIt's \033[1mhighly recommended\033[0m to logout and login back." && sleep 5
 
 finale 0
 
