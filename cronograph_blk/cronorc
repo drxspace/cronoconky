@@ -70,7 +70,7 @@ TEXT
 # Update weather info every (600/60=10min)
 ${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}
 #
-${voffset 22}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
+${voffset 23}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
 ${voffset 24}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${voffset 2}${alignc +64}${uptime_short}
