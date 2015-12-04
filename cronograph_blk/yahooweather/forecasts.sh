@@ -228,6 +228,5 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 echo "forecasts.sh: Forecasts script ends up okay at $(date +%H:%M). Restarting the conky." >&2
 # Restart the paused conky process
 pkill -SIGCONT -o -x -f "^conky.*cronorc$"
-wait
 
 exit 0
