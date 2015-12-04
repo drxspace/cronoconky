@@ -9,10 +9,40 @@
 #
 #set -e
 
-####### I M P O R T A N T #######
+####### I.M.P.O.R.T.A.N.T #######
 #
-# Please, check the 17th line and enter the WOEID of your own location
+# Please, check the 34th line and enter the WOEID of your own location
 #
+
+# The directory this script resides
+scriptDir="$(dirname "$0")"
+
+# Store temporary data in this directory...
+cacheDir="$HOME/.cache/cronograph"
+# ...but first make sure that it's clear
+[[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
+
+# Store temporary RSS Feed in this file
+cacheFile="YahooWeather.xml"
+
+# INFO: Navigate to http://weather.yahoo.com/ enter your or zip code to locate
+#       your place you want to watch and get the WOEID number at url's end e.g.
+#       http://weather.yahoo.com/greece/attica/athens-946738/
+#                                                     ^^^^^^
+#       This is the WOEID (where on Earth ID) number we're talking.
+#       Then replace the following one with the WOEID of your own location.
+WOEID='946738'
+
+# Uncomment next line to make use of English units
+#DegreesUnits='f'
+
+# User Agent String from http://www.useragentstring.com
+# Suppose we're using Chrome/30.0.1599.17
+#UserAgent='Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36'
+# Suppose we're using Chrome/41.0.2228.0
+#UserAgent='Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
+# Suppose we're using Firefox/43.0
+UserAgent='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'
 
 # getImgChr () function converts
 # YAHOO! weather icon codes (http://developer.yahoo.com/weather/#codes)
@@ -118,30 +148,14 @@ getImgChr () {
 	esac
 }
 
-# User Agent String from http://www.useragentstring.com
-# Suppose we're using Firefox/43.0
-UserAgent='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'
-# Suppose we're using Chrome/41.0.2228.0
-#UserAgent='Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
-
-# The directory this script resides
-scriptDir="$(dirname "$0")"
-
-# Store temporary data in this directory...
-cacheDir="$HOME/.cache/cronograph"
-# ...but first make sure that it's clear
-[[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
-
-# Store temporary RSS Feed in this file
-cacheFile="YahooWeather.xml"
-
-# clearConds () function clears the contents of conditions files
-clearConds () {
+# ClearConds () function clears the contents of conditions files
+ClearConds () {
+	echo -e "forecasts.sh: Clearing the contents of existing conditions files." >&2
 	cat /dev/null > "${scriptDir}"/curr_cond
 	cat /dev/null > "${scriptDir}"/fore_cond
 }
 
-# wrapConds () function wrap the given text if it's >15 chars
+# wrapConds () helper function wraps the given text if it's >15 chars
 wrapConds () {
 	fold -s -w 15 <<< "$*"
 }
@@ -150,14 +164,14 @@ wrapConds () {
 # the clock, writes an error on the stderr file and then exits the script
 errExit () {
 	echo -e "ERROR: $1" >&2
-	clearConds
+	ClearConds
 	echo "99999" > "${scriptDir}"/curr_cond
 	echo "error!" >> "${scriptDir}"/curr_cond
 	echo "$1" >> "${scriptDir}"/curr_cond
 	if [[ $2 -eq 1 ]]; then
-		echo "Please, check that you are connected" >> "${scriptDir}"/curr_cond
+		echo "Please, make sure you are connected" >> "${scriptDir}"/curr_cond
 	else
-		echo "Please, wait a little for retry" >> "${scriptDir}"/curr_cond
+		echo "Please, wait a little to retry" >> "${scriptDir}"/curr_cond
 	fi
 	exit 1
 }
@@ -167,37 +181,25 @@ errExit () {
 # main section
 #
 
-# INFO: Navigate to http://weather.yahoo.com/ enter your or zip code to locate
-#       your place you want to watch and get the WOEID number at url's end e.g.
-#       http://weather.yahoo.com/greece/attica/athens-946738/
-#                                                     ^^^^^^
-#       This is the WOEID (where on Earth ID) number we're talking.
-#       Then replace the following one with the WOEID of your own location.
-WOEID='946738'
-
-# Uncomment next line to make use of English units
-#DegreesUnits='f'
+# Pause the running conky process
+pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 
 # Yahoo Weather RSS Feed url
 YahooWurl="http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=${DegreesUnits:-c}"
 
-echo -e "forecasts.sh: Contacting the server at url:\n\t${YahooWurl}" >&2
+ClearConds
 
+echo -e "forecasts.sh: Contacting the server at url:\n\t${YahooWurl}" >&2
 #wget -q -4 -t 1 -N --user-agent="${UserAgent}" -O "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
 #	errExit "Wget exits with error code: -$?-" 1
 curl -s -N -4 --retry 2 --retry-delay 1 --retry-max-time 10 -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
 	errExit "curl exits with error code: -$?-" 1
 
-echo "forecasts.sh: Checking the results..." >&2
-
+echo "forecasts.sh: Checking the results." >&2
 [[ -z $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}") ]] &&
        errExit "Yahoo! weather server did not reply properly" 2
 
-echo "forecasts.sh: Processing data..." >&2
-
-# Pause the running conky process
-pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
-
+echo "forecasts.sh: Processing data." >&2
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan 
 # http://zagortenay333.deviantart.com/
 # http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
@@ -223,9 +225,9 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/fore_cond
 
+echo "forecasts.sh: Forecasts script ends up okay at $(date +%H:%M). Restarting the conky." >&2
 # Restart the paused conky process
 pkill -SIGCONT -o -x -f "^conky.*cronorc$"
-
-echo "forecasts.sh: Forecasts script ends up okay at [$(date +%H:%M)]" >&2
+wait
 
 exit 0
