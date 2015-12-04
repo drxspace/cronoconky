@@ -117,7 +117,7 @@ ${if_empty ${execi 60 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_blk/yahoo
 ${if_match ${execi 60 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 36}${color4}${execi 60 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 60 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 30}${color5}${execi 60 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 60 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} < 3}${color1}${execi 60 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
-${execi 60 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${endif}${endif}${endif}${else}\
+${execi 60 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${endif}${endif}${endif}${e
 ${if_match ${execi 60 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 97}${color4}${execi 60 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 60 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 86}${color5}${execi 60 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 60 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} < 37}${color1}${execi 60 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
@@ -144,13 +144,13 @@ ${voffset -9}${alignc -50}${execi 60 sed -n '9p' $HOME/.conky/cronograph_blk/yah
 #
 ${if_empty ${battery}}
 # We assume that there's no battery so the led is always green
-${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,20 -s 30x30}
+${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
 ${else}
-${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,20 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_blk/images/Green.png -p 134,20 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_blk/images/Yellow.png -p 134,20 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_blk/images/Orange.png -p 134,20 -s 30x30}
-${else}${image $HOME/.conky/cronograph_blk/images/Red.png -p 134,20 -s 30x30}${endif}${endif}${endif}${endif}
+${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_blk/images/Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_blk/images/Yellow.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_blk/images/Orange.png -p 134,22 -s 30x30}
+${else}${image $HOME/.conky/cronograph_blk/images/Red.png -p 134,22 -s 30x30}${endif}${endif}${endif}${endif}
 ${endif}
 ${execpi 1 cat $HOME/.conky/cronograph_blk/scripts/blinkingLED}
 # Overcome the vertical offset issue with the window height

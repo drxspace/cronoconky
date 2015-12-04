@@ -1,9 +1,9 @@
 ${if_match ${execi 1 num=$(date +%-S);rem=$(( num % 2 ));if [ $rem -eq 0 ] ; then echo 0 ; else  echo 1 ; fi}==0}
-${image $HOME/.conky/cronograph_blk/images/Orange.png -p 134, 248 -s 30x30}
-${image $HOME/.conky/cronograph_blk/images/Orange.png -p  19, 134 -s 30x30}
-${image $HOME/.conky/cronograph_blk/images/Orange.png -p 248, 134 -s 30x30}
+${image $HOME/.conky/cronograph_blk/images/Orange.png -p 134, 246 -s 30x30}
+${image $HOME/.conky/cronograph_blk/images/Orange.png -p  21, 134 -s 30x30}
+${image $HOME/.conky/cronograph_blk/images/Orange.png -p 246, 134 -s 30x30}
 ${else}
-${image $HOME/.conky/cronograph_blk/images/Blank.png -p 134, 248 -s 30x30}
-${image $HOME/.conky/cronograph_blk/images/Blank.png -p  19, 134 -s 30x30}
-${image $HOME/.conky/cronograph_blk/images/Blank.png -p 248, 134 -s 30x30}
+${image $HOME/.conky/cronograph_blk/images/Blank.png -p 134, 246 -s 30x30}
+${image $HOME/.conky/cronograph_blk/images/Blank.png -p  21, 134 -s 30x30}
+${image $HOME/.conky/cronograph_blk/images/Blank.png -p 246, 134 -s 30x30}
 ${endif}
