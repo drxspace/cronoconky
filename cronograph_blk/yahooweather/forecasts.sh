@@ -181,9 +181,6 @@ errExit () {
 # main section
 #
 
-# Pause the running conky process
-pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
-
 # Yahoo Weather RSS Feed url
 YahooWurl="http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=${DegreesUnits:-c}"
 
@@ -198,6 +195,9 @@ curl -s -N -4 --retry 2 --retry-delay 1 --retry-max-time 10 -A "${UserAgent}" -o
 echo "forecasts.sh: Checking the results." >&2
 [[ -z $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}") ]] &&
        errExit "Yahoo! weather server did not reply properly" 2
+
+# Pause the running conky process
+pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 
 echo "forecasts.sh: Processing data." >&2
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan 
