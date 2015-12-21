@@ -63,7 +63,7 @@ short_units yes
 
 #---Lua Load---#
 lua_load $HOME/.conky/cronograph_blk/scripts/lua_loader.lua
-lua_draw_hook_pre lua_loader
+lua_draw_hook_post lua_loader
 
 
 TEXT
