@@ -194,7 +194,7 @@ curl -s -N -4 --retry 2 --retry-delay 1 --retry-max-time 10 -A "${UserAgent}" -o
 
 echo "forecasts.sh: Checking the results." >&2
 [[ -z $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}") ]] &&
-       errExit "Yahoo! weather server did not reply properly" 2
+	errExit "Yahoo! weather server did not reply properly" 2
 
 # Pause the running conky process
 pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
