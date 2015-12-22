@@ -70,15 +70,15 @@ TEXT
 # Update weather info every (600/60=10min)
 ${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}
 #
-${voffset 23}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
+${voffset 25}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
-${voffset 24}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
+${voffset 22}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${voffset 2}${alignc +64}${uptime_short}
 #
-${voffset -30}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
-${font hooge 05_53:size=11:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
-${voffset 2}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%B" | tr "[:lower:]" "[:upper:]"}
-${alignc -64}${exec date +"%Y"}
+${voffset -30}${alignc -64}${execi 1 export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
+${font hooge 05_53:size=11:bold}${alignc -64}${execi 1 export LC_TIME=en_US.utf8; date +"%d"}${font}
+${voffset 2}${alignc -64}${execi 1 export LC_TIME=en_US.utf8; date +"%B" | tr "[:lower:]" "[:upper:]"}
+${alignc -64}${execi 1 date +"%Y"}
 #
 ${voffset -24}${font hooge 05_53:size=6:bold:italic}${alignc}HD${font}
 #
@@ -88,7 +88,7 @@ ${voffset 16}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${h
 ${voffset 30}${goto 62}\
 #
 ${if_empty ${hwmon 0 temp 1}} ${else}\
-${if_empty ${exec grep "^DegreesUnits='f'" $HOME/.conky/cronograph_blk/yahooweather/forecasts.sh}}\
+${if_empty ${execi 30 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_blk/yahooweather/forecasts.sh}}\
 ${if_match ${hwmon 0 temp 1} > 75}${color9}${blink ${hwmon 0 temp 1}°}${color}${else}\
 ${if_match ${hwmon 0 temp 1} > 50}${color8}${hwmon 0 temp 1}°${color}${else}\
 ${hwmon 0 temp 1}°${endif}${endif}${else}\
@@ -101,7 +101,7 @@ ${voffset -9}${alignr 61}${memperc}%
 #
 ${voffset 5}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${font}
 #
-${if_match "${execi 30 head -1 $HOME/.conky/cronograph_blk/yahooweather/curr_cond}" == "99999"}\
+${if_match "${execi 600 head -1 $HOME/.conky/cronograph_blk/yahooweather/curr_cond}" == "99999"}\
 # Display an error message
 ${voffset 12}${alignc +10}${font hooge 05_53:size=10:bold}${execi 30 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${font}
 ${alignc}${color8}${execi 30 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}
