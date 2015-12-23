@@ -21,11 +21,11 @@
 	# There's also the X-GNOME-Autostart-Delay=25 property in .desktop file
 	# that can be set in order to handle this situation
 	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc || {
-		notify-send "Cronograph Station BE" "Conky Cronograph Station BE cannot be started." -i face-worried;
+		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be started." -i face-worried;
 		$(${ErrorSnd}); exit 1;
 	}
 } || {
-	notify-send "Cronograph Station BE" "Conky Cronograph Station BE is already on the run." -i face-plain;
+	notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK is already on the run." -i face-plain;
 	$(${ErrorSnd}); exit 2;
 }
 

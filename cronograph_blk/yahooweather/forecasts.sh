@@ -9,7 +9,7 @@
 #
 #set -e
 
-####### I.M.P.O.R.T.A.N.T #######
+####### I M P O R T A N T #######
 #
 # Please, check the 34th line and enter the WOEID of your own location
 #
@@ -173,17 +173,22 @@ errExit () {
 	else
 		echo "Please, wait a little to retry" >> "${scriptDir}"/curr_cond
 	fi
+	pkill -SIGCONT -o -x -f "^conky.*cronorc$" # Continue the conky process first
 	exit 1
 }
 
 ###
 #
-# main section
+# Main section
 #
+
+# Pause the running conky process before
+pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 
 # Yahoo Weather RSS Feed url
 YahooWurl="http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=${DegreesUnits:-c}"
 
+# Clear the conditions files
 ClearConds
 
 echo -e "forecasts.sh: Contacting the server at url:\n\t${YahooWurl}" >&2
@@ -194,10 +199,7 @@ curl -s -N -4 --retry 2 --retry-delay 1 --retry-max-time 10 -A "${UserAgent}" -o
 
 echo "forecasts.sh: Checking the results." >&2
 [[ -z $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}") ]] &&
-	errExit "Yahoo! weather server did not reply properly" 2
-
-# Pause the running conky process
-pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
+       errExit "Yahoo! weather server did not reply properly" 2
 
 echo "forecasts.sh: Processing data." >&2
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan 
@@ -225,8 +227,9 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${scriptDir}"/fore_cond
 
+#wait # for above tasks to finish
+
 echo "forecasts.sh: Forecasts script ends up okay at $(date +%H:%M). Restarting the conky." >&2
 # Restart the paused conky process
 pkill -SIGCONT -o -x -f "^conky.*cronorc$"
-
 exit 0
