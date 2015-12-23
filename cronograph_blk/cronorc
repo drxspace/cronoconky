@@ -67,8 +67,11 @@ lua_draw_hook_post lua_loader
 
 
 TEXT
-# Update weather info every (600/60=10min)
-${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}
+# Normally, update weather info every (600/60=) 10 minutes
+# but if we had errors do it every 10 seconds
+${if_empty ${execi 10 head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}}\
+${execi 30 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}${else}\
+${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}${endif}
 #
 ${voffset 25}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
@@ -88,7 +91,7 @@ ${voffset 16}${alignc}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${h
 ${voffset 30}${goto 62}\
 #
 ${if_empty ${hwmon 0 temp 1}} ${else}\
-${if_empty ${execi 600 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_blk/yahooweather/forecasts.sh}}\
+${if_empty ${execi 3600 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_blk/yahooweather/forecasts.sh}}\
 ${if_match ${hwmon 0 temp 1} > 75}${color9}${blink ${hwmon 0 temp 1}°}${color}${else}\
 ${if_match ${hwmon 0 temp 1} > 50}${color8}${hwmon 0 temp 1}°${color}${else}\
 ${hwmon 0 temp 1}°${endif}${endif}${else}\
@@ -101,19 +104,19 @@ ${voffset -9}${alignr 61}${memperc}%
 #
 ${voffset 5}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${font}
 #
-${if_match "${execi 600 sed -n '1p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}" == "99999"}\
+# Today weather
+#
+${if_match "${execi 30 head -1 $HOME/.conky/cronograph_blk/yahooweather/curr_cond}" == "99999"}\
 # Display an error message
 ${voffset 12}${alignc +10}${font hooge 05_53:size=10:bold}${execi 30 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${font}
 ${alignc}${color8}${execi 30 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}
 ${alignc}${color1}${execi 30 sed -n '4p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}
 #
-# Today weather
-#
-${else}${voffset 20}${alignc +72}${font hooge 05_53:size=10:bold}${execi 30 sed -n '1p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${font}
+${else}${voffset 20}${alignc +72}${font hooge 05_53:size=10:bold}${execi 30 head -1 $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${font}
 ${alignc +74}${execi 30 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}
 #
 ${voffset -44}${goto 124}${font ConkyWeather:size=38}\
-${if_empty ${execi 600 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_blk/yahooweather/forecasts.sh}}\
+${if_empty ${execi 3600 grep "^DegreesUnits='f'" $HOME/.conky/cronograph_blk/yahooweather/forecasts.sh}}\
 ${if_match ${execi 30 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 36}${color4}${execi 30 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 30 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 30}${color5}${execi 30 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
 ${if_match ${execi 30 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} < 3}${color1}${execi 30 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
@@ -130,7 +133,7 @@ ${alignc -65}${execi 30 sed -n '5p' $HOME/.conky/cronograph_blk/yahooweather/cur
 #
 # Three days forecasts
 #
-${voffset 8}${font ConkyWeather:size=16:bold}${goto 87}${execi 30 sed -n '1p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
+${voffset 8}${font ConkyWeather:size=16:bold}${goto 87}${execi 30 head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
 ${voffset -21}${goto 139}${execi 30 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
 ${voffset -21}${goto 187}${execi 30 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}${font}
 #
