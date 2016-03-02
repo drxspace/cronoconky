@@ -48,8 +48,8 @@ color4 FF6347 # Tomato
 color5 F0E68C # Khaki
 color6 DCDCDC # Gainsboro
 color7 WHITE
-color8 B86B00
-color9 990000
+color8 BF6002
+color9 BF0000
 
 # ———==[ Text settings ]==———
 text_buffer_size 1024
