@@ -171,7 +171,7 @@ errExit () {
 	if [[ $2 -eq 1 ]]; then
 		echo "Please, make sure you are connected" >> "${scriptDir}"/curr_cond
 	else
-		echo "Please, wait a little to retry" >> "${scriptDir}"/curr_cond
+		echo "Please, wait for a while to retry" >> "${scriptDir}"/curr_cond
 	fi
 	pkill -SIGCONT -o -x -f "^conky.*cronorc$" # Continue the conky process first
 	exit 1
