@@ -65,19 +65,19 @@ short_units yes
 
 # ———==[ Lua Load ]==———
 lua_load $HOME/.conky/cronograph_blk/scripts/lua_loader.lua
-lua_draw_hook_post lua_loader
+lua_draw_hook_pre lua_loader
 
 
 TEXT
 # Normally, update weather info every (600/60=) 10 minutes
 # but if we had errors do it every 10 seconds
-${if_empty ${exec head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}}\
-${execi 15 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}\
-${else}${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}${endif}
+# ${if_empty ${exec head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}}\
+# ${execi 15 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}\
+# ${else}${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}${endif}\
 #
-${voffset 25}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
+${voffset 33}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
-${voffset 28}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
+${voffset 30}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${alignc +64}${uptime_short}
 #
 ${voffset -33}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
@@ -110,7 +110,7 @@ ${voffset 6}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${f
 # Display an error message or weather info
 ${if_match "${exec head -1 $HOME/.conky/cronograph_blk/yahooweather/curr_cond}" == "99999"}\
 # Display an error message
-${voffset 10}${alignc +10}${font hooge 05_53:size=10:bold}${execi 10 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${font}
+${voffset 30}${alignc}${font hooge 05_53:size=10:bold}${execi 10 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${font}
 ${alignc}${color8}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}
 ${alignc}${color1}${execi 10 sed -n '4p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
 # Display weather info
