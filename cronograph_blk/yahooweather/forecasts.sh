@@ -34,7 +34,7 @@ cacheFile="YahooWeather.xml"
 WOEID='946738'
 
 # Uncomment next line to make use of English units
-#DegreesUnits='f'
+#DegreesUnits='F'
 
 # User Agent String from http://www.useragentstring.com
 # Suppose we're using Chrome/30.0.1599.17
@@ -186,7 +186,7 @@ errExit () {
 pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 
 # Yahoo Weather RSS Feed url
-YahooWurl="http://weather.yahooapis.com/forecastrss?w=${WOEID}&u=${DegreesUnits:-c}"
+YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${DegreesUnits:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
 
 # Clear the conditions files
 ClearConds
@@ -198,7 +198,7 @@ curl -s -N -4 --retry 2 --retry-delay 1 --retry-max-time 10 -A "${UserAgent}" -o
 	errExit "curl exits with error code: -$?-" 1
 
 echo "forecasts.sh: Checking the results." >&2
-[[ -z $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}") ]] &&
+[[ -z $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}") ]] &&
        errExit "Yahoo! weather server did not reply properly" 2
 
 echo "forecasts.sh: Processing data." >&2
@@ -207,11 +207,11 @@ echo "forecasts.sh: Processing data." >&2
 # http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
 
 # Write the current weather conditions to file
-echo "$(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*")"° > "${scriptDir}"/curr_cond
+echo "$(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1')"° > "${scriptDir}"/curr_cond
 echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1')°/\
 $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z')°" >> "${scriptDir}"/curr_cond
-getImgChr $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*") >> "${scriptDir}"/curr_cond
-wrapConds $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | tr '[a-z]' '[A-Z]') >> "${scriptDir}"/curr_cond
+getImgChr $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1') >> "${scriptDir}"/curr_cond
+wrapConds $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z]') >> "${scriptDir}"/curr_cond
 
 # Write the next three days weather predictions to file
 getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1') > "${scriptDir}"/fore_cond

@@ -33,10 +33,16 @@ Thank you ALL!
   place/position.
 
 
+### CHANGES in version 3.1
+
+2016-05-20
+· use of YQL to retrieve the weather information
+
+
 ### CHANGES in version 3.0
 
 2015-10-18
-· convert it to black and white
+· convert it to black on white
 · realign elements
 · resize images
 
