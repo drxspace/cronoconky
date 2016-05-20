@@ -65,15 +65,15 @@ short_units yes
 
 # ———==[ Lua Load ]==———
 lua_load $HOME/.conky/cronograph_blk/scripts/lua_loader.lua
-lua_draw_hook_pre lua_loader
+lua_draw_hook_post lua_loader
 
 
 TEXT
 # Normally, update weather info every (600/60=) 10 minutes
+${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}\
 # but if we had errors do it every 10 seconds
-${if_empty ${exec head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}}\
-${execi 15 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}\
-${else}${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}${endif}\
+# ${if_empty ${exec head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}}\
+# ${execi 10 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}${endif}\
 #
 ${voffset 33}${goto 118}${if_empty ${battery}}PWR${else}BAT${endif}:
 #
