@@ -191,7 +191,7 @@ YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.c
 # Clear the conditions files
 ClearConds
 
-echo -e "forecasts.sh: Contacting the server at url:\n\t${YahooWurl}" >&2
+echo -e "forecasts.sh: Contacting the server at url: ${YahooWurl}" >&2
 curl -s -N -4 --retry 3 --retry-delay 3 --retry-max-time 30 -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
 	errExit "curl exits with error code: -$?-" 1
 

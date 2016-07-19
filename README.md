@@ -33,11 +33,15 @@ Thank you ALL!
   place/position.
 
 
+### CHANGES in version 4.0
+
+2016-07-19
+· use of the new config file syntax which uses [Lua](http://www.lua.org/) syntax
+
 ### CHANGES in version 3.1
 
 2016-05-20
 · use of YQL to retrieve the weather information
-
 
 ### CHANGES in version 3.0
 

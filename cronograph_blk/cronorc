@@ -1,74 +1,79 @@
-# ———==[ Cronograph Station Conky BLK ]==———
+conky.config = {
+--------------------------------------------------------------------------------
+-- ———==[ Cronograph Station Conky BLK ]==———
+--------------------------------------------------------------------------------
 
-# ———==[ Conky settings ]==———
-update_interval 1
-total_run_times 0
-background yes
-double_buffer yes
-# Imlib2 image cache size, in bytes. Set to 0 to disable the image cache
-imlib_cache_size 0
-no_buffers yes
-#temperature_unit fahrenheit
+-- ———==[ Conky settings ]==———
+update_interval=1,
+total_run_times=0,
+background=true,
+double_buffer=true,
+-- Imlib2 image cache size, in bytes. Set to 0 to disable the image cache
+imlib_cache_size=0,
+no_buffers=true,
+--temperature_unit="fahrenheit",
 
-# ———==[ Window specifications ]==———
-alignment top_right
-gap_x 25
-gap_y 50
-maximum_width 300
-minimum_size 300 300
-border_inner_margin 0
-border_outer_margin 0
-own_window yes
-own_window_class Cronograph
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-own_window_title Cronograph Station Conky BLK
-own_window_argb_visual yes
-# If ARGB visual is enabled,
-#   sets background opacity to 0%
-#own_window_argb_value 0
-own_window_transparent yes
-# normal type is the default
-#   Override windows are not under the control of
-#   the window manager
-#own_window_type override
+-- ———==[ Window specifications ]==———
+alignment="top_right",
+gap_x=10,
+gap_y=50,
+minimum_width=300,
+maximum_width=300,
+minimum_height=300,
+border_inner_margin=0,
+border_outer_margin=0,
+own_window=true,
+own_window_class="WM_Cronograph",
+own_window_hints="undecorated,below,sticky,skip_taskbar,skip_pager",
+own_window_title="Cronograph Station Conky BLK",
+own_window_argb_visual=true,
+-- If ARGB visual is enabled
+--   sets background opacity to 0%
+--own_window_argb_value=0,
+own_window_transparent=true,
+-- normal type is the default
+--   Override windows are not under the control of
+--   the window manager
+--own_window_type="override",
 
-# ———==[ Graphics settings ]==———
-draw_borders no
-draw_graph_borders no
-draw_outline no
-draw_shades no
+-- ———==[ Graphics settings ]==———
+draw_borders=false,
+draw_graph_borders=false,
+draw_outline=false,
+draw_shades=false,
 
-# ———==[ Color settings ]==———
-default_color 000000
-color0 FFEBCD # BlanchedAlmond
-color1 87CEFA # LightSkyBlue
-color2 FFFAFA # Snow
-color3 FF7F50 # Coral
-color4 FF6347 # Tomato
-color5 F0E68C # Khaki
-color6 DCDCDC # Gainsboro
-color7 WHITE
-color8 BF6002
-color9 BF0000
+-- ———==[ Color settings ]==———
+default_color="000000",
+color0="FFEBCD", -- BlanchedAlmond
+color1="87CEFA", -- LightSkyBlue
+color2="FFFAFA", -- Snow
+color3="FF7F50", -- Coral
+color4="FF6347", -- Tomato
+color5="F0E68C", -- Khaki
+color6="DCDCDC", -- Gainsboro
+color7="FFFFFF",
+color8="BF6002",
+color9="BF0000",
 
-# ———==[ Text settings ]==———
-text_buffer_size 1024
-uppercase no
-use_xft yes
-override_utf8_locale yes
-xftalpha 1.0
-xftfont hooge 05_53:size=6
+-- ———==[ Text settings ]==———
+text_buffer_size=1024,
+uppercase=false,
+override_utf8_locale=true,
+use_xft=true,
+xftalpha=1.0,
+font="hooge 05_53:size=6",
 
-# ———==[ Misc settings ]==———
-# change GiB to G and MiB to M
-short_units yes
+-- ———==[ Misc settings ]==———
+-- change GiB to G and MiB to M
+short_units=true,
 
-# ———==[ Lua Load ]==———
-lua_load $HOME/.conky/cronograph_blk/scripts/lua_loader.lua
-lua_draw_hook_post lua_loader
+-- ———==[ Lua Load ]==———
+lua_load="$HOME/.conky/cronograph_blk/scripts/lua_loader.lua",
+lua_draw_hook_post="lua_loader"
+};
 
 
-TEXT
+conky.text = [[
 # Normally, update weather info every (600/60=) 10 minutes
 ${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}\
 # but if we had errors do it every 10 seconds
@@ -104,9 +109,9 @@ ${voffset -9}${alignr 191}${cpu cpu0}%
 ${voffset -9}${alignr 61}${memperc}%
 #
 ${voffset 6}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${font}
-#
+#------------------------------
 # Today's weather
-#
+#------------------------------
 # Display an error message or weather info
 ${if_match "${exec head -1 $HOME/.conky/cronograph_blk/yahooweather/curr_cond}" == "99999"}\
 # Display an error message
@@ -135,9 +140,9 @@ ${else}${voffset -5}${execi 10 sed -n '4p' $HOME/.conky/cronograph_blk/yahooweat
 ${alignc -65}${execi 10 sed -n '5p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${endif}
 # Display an error message or weather info ends
 ${endif}
-#
+#------------------------------
 # Three days forecasts
-#
+#------------------------------
 ${font ConkyWeather:size=16:bold}${goto 87}${execi 10 head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
 ${voffset -20}${goto 139}${execi 10 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
 ${voffset -20}${goto 187}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}${font}
@@ -153,7 +158,7 @@ ${voffset -9}${alignc -50}${execi 10 sed -n '9p' $HOME/.conky/cronograph_blk/yah
 #
 #
 ${if_empty ${battery}}
-# We assume that there's no battery so the led is always green
+# At first, we assume that there's no battery so the led is always green
 ${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
 ${else}
 ${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
@@ -165,3 +170,4 @@ ${endif}
 ${execpi 1 cat $HOME/.conky/cronograph_blk/scripts/blinkingLED}
 # Overcome the vertical offset issue with the window height
 ${voffset -300}
+]]
