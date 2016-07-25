@@ -140,6 +140,14 @@ local gauge = {
 	},
 }
 
+-- Use these settings to define the origin and extent of your clock.
+local clock_r=128
+local clock_r_in=133 -- or 147?
+
+-- "clock_x" and "clock_y" are the coordinates of the centre of the clock, in pixels, from the top left of the Conky window.
+local clock_x=150
+local clock_y=150
+
 -------------------------------------------------------------------------------
 --                                                                 rgb_to_r_g_b
 -- converts color in hexa to decimal
@@ -372,6 +380,13 @@ local function go_gauge_rings(display)
 	end
 end
 
+local function draw_background_circle(display)
+	cairo_set_source_rgba(display,rgb_to_r_g_b(0xE6FFFF,0.6))
+	cairo_set_line_width (display, 0)
+	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
+	cairo_fill (display)
+end
+
 -------------------------------------------------------------------------------
 --                                                            conky_multi_rings
 function conky_multi_rings()
@@ -380,19 +395,25 @@ function conky_multi_rings()
 	-- We use the lua_loader script that makes wait for this
 	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 2) then return end
 
-	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
-	local display = cairo_create(cs)
+	local cs = cairo_xlib_surface_create(conky_window.display,
+					     conky_window.drawable,
+					     conky_window.visual,
+					     conky_window.width,
+					     conky_window.height)
+	local cr = cairo_create(cs)
 
 	-- This function references surface, so you can immediately call
 	-- cairo_surface_destroy() on it if you don't need to maintain a separate reference to it.
 	cairo_surface_destroy(cs)
 	cs = nil
 
-	go_clock_rings(display)
-	go_gauge_rings(display)
+	draw_background_circle(cr)
 
-	cairo_destroy(display)
-	display = nil
+	go_clock_rings(cr)
+	go_gauge_rings(cr)
+
+	cairo_destroy(cr)
+	cr = nil
 
 	-- #419 memory leak when calling top objects with conky_parse in lua
 	-- http://sourceforge.net/p/conky/bugs/419/

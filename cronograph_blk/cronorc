@@ -68,9 +68,9 @@ font="hooge 05_53:size=6",
 short_units=true,
 
 -- ———==[ Lua Load ]==———
-lua_load="$HOME/.conky/cronograph_blk/scripts/clock_rings.lua $HOME/.conky/cronograph_blk/scripts/multi_rings.lua",
-lua_draw_hook_pre="clock_rings",
-lua_draw_hook_post="multi_rings",
+lua_load="$HOME/.conky/cronograph_blk/scripts/multi_rings.lua $HOME/.conky/cronograph_blk/scripts/clock_rings.lua",
+lua_draw_hook_pre="multi_rings",
+lua_draw_hook_post="clock_rings",
 };
 
 

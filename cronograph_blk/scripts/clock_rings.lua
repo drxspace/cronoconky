@@ -256,7 +256,6 @@ local settings_table = {
 
 -- Use these settings to define the origin and extent of your clock.
 local clock_r=128
-local clock_r_in=133 -- or 147?
 
 -- "clock_x" and "clock_y" are the coordinates of the centre of the clock, in pixels, from the top left of the Conky window.
 local clock_x=150
@@ -365,13 +364,6 @@ end
 
 function conky_clock_rings()
 
-	local function draw_background_circle(cr)
-		cairo_set_source_rgba(cr,rgb_to_r_g_b(0xE6FFFF,0.6))
-		cairo_set_line_width (cr, 0);
-		cairo_arc (cr, clock_x, clock_y, clock_r_in, 0, 360);
-		cairo_fill (cr);
-	end
-
 	local function setup_rings(cr,pt)
 		local str, value = '', 0
 		local pct
@@ -391,15 +383,17 @@ function conky_clock_rings()
 	-- We use the lua_loader script that makes wait for this
 	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 2) then return end
 
-	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
+	local cs = cairo_xlib_surface_create(conky_window.display,
+					     conky_window.drawable,
+					     conky_window.visual,
+					     conky_window.width,
+					     conky_window.height)
 	local cr = cairo_create(cs)
-	
+
 	-- This function references surface, so you can immediately call
 	-- cairo_surface_destroy() on it if you don't need to maintain a separate reference to it.
 	cairo_surface_destroy(cs)
 	cs = nil
-
-	draw_background_circle(cr)
 
 	for i in pairs(settings_table) do
 		setup_rings(cr, settings_table[i])
