@@ -91,7 +91,7 @@ local gauge = {
 		graduation_radius=22,
 		graduation_thickness=4, graduation_mark_thickness=4,
 		graduation_unit_angle=30,
-		graduation_fg_colour=0x000000, graduation_fg_alpha=1.0,
+		graduation_fg_colour=0x000000, graduation_fg_alpha=0.6,
 		caption='',
 		caption_weight=1, caption_size=8.0,
 		caption_fg_colour=0xFFFFFF, caption_fg_alpha=0.0
@@ -112,7 +112,7 @@ local gauge = {
 		graduation_radius=27,
 		graduation_thickness=4, graduation_mark_thickness=4,
 		graduation_unit_angle=30,
-		graduation_fg_colour=0x000000, graduation_fg_alpha=1.0,
+		graduation_fg_colour=0x000000, graduation_fg_alpha=0.6,
 		caption='',
 		caption_weight=1, caption_size=8.0,
 		caption_fg_colour=0xFFFFFF, caption_fg_alpha=0.0
@@ -133,7 +133,7 @@ local gauge = {
 		graduation_radius=27,
 		graduation_thickness=4, graduation_mark_thickness=4,
 		graduation_unit_angle=30,
-		graduation_fg_colour=0x000000, graduation_fg_alpha=1.0,
+		graduation_fg_colour=0x000000, graduation_fg_alpha=0.6,
 		caption='',
 		caption_weight=1, caption_size=8.0,
 		caption_fg_colour=0xFFFFFF, caption_fg_alpha=0.0
@@ -375,9 +375,10 @@ end
 -------------------------------------------------------------------------------
 --                                                            conky_multi_rings
 function conky_multi_rings()
-	-- Check that Conky has been running for at least 5s
+
+	-- Check that Conky has been running for at least 2s
 	-- We use the lua_loader script that makes wait for this
-	-- if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
+	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 2) then return end
 
 	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
 	local display = cairo_create(cs)
@@ -392,6 +393,10 @@ function conky_multi_rings()
 
 	cairo_destroy(display)
 	display = nil
+
+	-- #419 memory leak when calling top objects with conky_parse in lua
+	-- http://sourceforge.net/p/conky/bugs/419/
+	collectgarbage()
 
 	return
 end

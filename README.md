@@ -33,6 +33,11 @@ Thank you ALL!
   place/position.
 
 
+### CHANGES in version 5.0
+
+2016-07-25
+· redesign of the clock background and foreground
+
 ### CHANGES in version 4.0
 
 2016-07-19

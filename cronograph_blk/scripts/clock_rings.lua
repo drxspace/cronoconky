@@ -42,9 +42,9 @@ local settings_table = {
 		-- "max" is the maximum value of the ring. If the Conky variable outputs a percentage, use 100.
 		max=12,
 		-- "bg_colour" is the colour of the base ring.
-		bg_colour=0x444444,
+		bg_colour=0x999999,
 		-- "bg_alpha" is the alpha value of the base ring.
-		bg_alpha=0.3,
+		bg_alpha=0.6,
 		-- "fg_colour" is the colour of the indicator part of the ring.
 		fg_colour=0x000000,
 		-- "fg_alpha" is the alpha value of the indicator part of the ring.
@@ -64,10 +64,8 @@ local settings_table = {
 		name='time',
 		arg='%M', -- .%S',
 		max=60,
-		bg_colour=0x444444,
-		bg_alpha=0.3,
-		fg_colour=0x000000,
-		fg_alpha=0.6,
+		bg_colour=0x999999, bg_alpha=0.6,
+		fg_colour=0x000000, fg_alpha=0.6,
 		x=150, y=150,
 		radius=140,
 		thickness=4,
@@ -78,10 +76,8 @@ local settings_table = {
 		name='time',
 		arg='%S',
 		max=60,
-		bg_colour=0x444444,
-		bg_alpha=0.3,
-		fg_colour=0x000000,
-		fg_alpha=0.6,
+		bg_colour=0x999999, bg_alpha=0.6,
+		fg_colour=0x000000, fg_alpha=0.6,
 		x=150, y=150,
 		radius=145,
 		thickness=4,
@@ -96,7 +92,7 @@ local settings_table = {
 		--bg_colour=0x404040,
 		--bg_alpha=0.2,
 		bg_colour=0xFFFFFF,
-		bg_alpha=0.2,
+		bg_alpha=0.0, -- due to background circle
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=150,
@@ -106,12 +102,12 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- Watch center cicle
+		-- Watch center circle
 		name='',
 		arg='',
 		max=100,
 		bg_colour=0x909090,
-		bg_alpha=0.5,
+		bg_alpha=0.6,
 		fg_colour=0xFFFFFF,
 		fg_alpha=1.0,
 		x=150, y=150,
@@ -260,6 +256,7 @@ local settings_table = {
 
 -- Use these settings to define the origin and extent of your clock.
 local clock_r=128
+local clock_r_in=133 -- or 147?
 
 -- "clock_x" and "clock_y" are the coordinates of the centre of the clock, in pixels, from the top left of the Conky window.
 local clock_x=150
@@ -289,14 +286,14 @@ local function draw_ring(cr,t,pt)
 	local t_arc=t*(angle_f-angle_0)
 
 	-- Draw background ring
-	cairo_arc(cr,xc,yc,ring_r,angle_0,angle_f)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(bgc,bga))
 	cairo_set_line_width(cr,ring_w)
+	cairo_arc(cr,xc,yc,ring_r,angle_0,angle_f)
 	cairo_stroke(cr)
 
 	-- Draw indicator ring
-	cairo_arc(cr,xc,yc,ring_r,angle_0,angle_0+t_arc)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(fgc,fga))
+	cairo_arc(cr,xc,yc,ring_r,angle_0,angle_0+t_arc)
 	cairo_stroke(cr)
 end
 
@@ -360,13 +357,21 @@ local function draw_clock_hands(cr,xc,yc)
 	end
 
 	-- Draw center dot/screw
-	cairo_arc(cr,xc,yc,1,0,360)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(0xFFFF99,0.8))
 	cairo_set_line_width(cr,3)
+	cairo_arc(cr,xc,yc,1,0,360)
 	cairo_stroke(cr)
 end
 
 function conky_clock_rings()
+
+	local function draw_background_circle(cr)
+		cairo_set_source_rgba(cr,rgb_to_r_g_b(0xE6FFFF,0.6))
+		cairo_set_line_width (cr, 0);
+		cairo_arc (cr, clock_x, clock_y, clock_r_in, 0, 360);
+		cairo_fill (cr);
+	end
+
 	local function setup_rings(cr,pt)
 		local str, value = '', 0
 		local pct
@@ -382,9 +387,9 @@ function conky_clock_rings()
 		draw_ring(cr,pct,pt)
 	end
 
-	-- Check that Conky has been running for at least 5s
+	-- Check that Conky has been running for at least 2s
 	-- We use the lua_loader script that makes wait for this
-	-- if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 5) then return end
+	if (conky_window == nil) or (tonumber(conky_parse('${updates}')) < 2) then return end
 
 	local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
 	local cr = cairo_create(cs)
@@ -394,6 +399,8 @@ function conky_clock_rings()
 	cairo_surface_destroy(cs)
 	cs = nil
 
+	draw_background_circle(cr)
+
 	for i in pairs(settings_table) do
 		setup_rings(cr, settings_table[i])
 	end
@@ -402,6 +409,10 @@ function conky_clock_rings()
 
 	cairo_destroy(cr)
 	cr = nil
+
+	-- #419 memory leak when calling top objects with conky_parse in lua
+	-- http://sourceforge.net/p/conky/bugs/419/
+	collectgarbage()
 
 	return
 end

@@ -15,7 +15,7 @@ no_buffers=true,
 
 -- ———==[ Window specifications ]==———
 alignment="top_right",
-gap_x=10,
+gap_x=15,
 gap_y=50,
 minimum_width=300,
 maximum_width=300,
@@ -68,8 +68,9 @@ font="hooge 05_53:size=6",
 short_units=true,
 
 -- ———==[ Lua Load ]==———
-lua_load="$HOME/.conky/cronograph_blk/scripts/lua_loader.lua",
-lua_draw_hook_post="lua_loader"
+lua_load="$HOME/.conky/cronograph_blk/scripts/clock_rings.lua $HOME/.conky/cronograph_blk/scripts/multi_rings.lua",
+lua_draw_hook_pre="clock_rings",
+lua_draw_hook_post="multi_rings",
 };
 
 
