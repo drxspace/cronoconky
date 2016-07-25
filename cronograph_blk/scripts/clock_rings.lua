@@ -42,7 +42,7 @@ local settings_table = {
 		-- "max" is the maximum value of the ring. If the Conky variable outputs a percentage, use 100.
 		max=12,
 		-- "bg_colour" is the colour of the base ring.
-		bg_colour=0x888888,
+		bg_colour=0x777777,
 		-- "bg_alpha" is the alpha value of the base ring.
 		bg_alpha=0.6,
 		-- "fg_colour" is the colour of the indicator part of the ring.
@@ -64,7 +64,7 @@ local settings_table = {
 		name='time',
 		arg='%M', -- .%S',
 		max=60,
-		bg_colour=0x666666, bg_alpha=0.6,
+		bg_colour=0x555555, bg_alpha=0.6,
 		fg_colour=0x000000, fg_alpha=0.6,
 		x=150, y=150,
 		radius=140,
@@ -76,7 +76,7 @@ local settings_table = {
 		name='time',
 		arg='%S',
 		max=60,
-		bg_colour=0x444444, bg_alpha=0.6,
+		bg_colour=0x333333, bg_alpha=0.6,
 		fg_colour=0x000000, fg_alpha=0.6,
 		x=150, y=150,
 		radius=145,
@@ -262,7 +262,7 @@ local clock_x=150
 local clock_y=150
 
 -- Colour & alpha of the clock hands
-local hours_colour=0x202020
+local hours_colour=0x383436
 local mins_colour=0x202020
 local secs_colour=0x830000
 local clock_alpha=0.7
@@ -317,7 +317,7 @@ local function draw_clock_hands(cr,xc,yc)
 	-- and hour backhand
 	xxh=xc-0.15*clock_r*math.sin(hours_arc)
 	yyh=yc+0.15*clock_r*math.cos(hours_arc)
-	cairo_set_line_width(cr,8)
+	cairo_set_line_width(cr,9)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(hours_colour,clock_alpha))
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xh,yh)
@@ -331,7 +331,7 @@ local function draw_clock_hands(cr,xc,yc)
 	-- and minute backhand
 	xxm=xc-0.20*clock_r*math.sin(mins_arc)
 	yym=yc+0.20*clock_r*math.cos(mins_arc)
-	cairo_set_line_width(cr,5)
+	cairo_set_line_width(cr,6)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(mins_colour,clock_alpha))
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xm,ym)
