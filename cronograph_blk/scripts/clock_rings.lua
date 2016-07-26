@@ -151,13 +151,13 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFF99,
-		bg_alpha=0.8,
+		bg_colour=0xFFD700,
+		bg_alpha=0.9,
 		fg_colour=0x000000,
 		fg_alpha=0.0,
 		x=85, y=150,
 		radius=1,
-		thickness=2,
+		thickness=3,
 		start_angle=0,
 		end_angle=360
 	},
@@ -196,13 +196,13 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFF99,
-		bg_alpha=0.8,
+		bg_colour=0xFFD700,
+		bg_alpha=0.9,
 		fg_colour=0x000000,
 		fg_alpha=0.0,
 		x=215, y=150,
 		radius=1,
-		thickness=2,
+		thickness=3,
 		start_angle=0,
 		end_angle=360
 	},
@@ -242,13 +242,13 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xFFFF99,
-		bg_alpha=0.8,
+		bg_colour=0xFFD700,
+		bg_alpha=0.9,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=75,
 		radius=1,
-		thickness=2,
+		thickness=3,
 		start_angle=0,
 		end_angle=360
 	},
@@ -356,7 +356,7 @@ local function draw_clock_hands(cr,xc,yc)
 	end
 
 	-- Draw center dot/screw
-	cairo_set_source_rgba(cr,rgb_to_r_g_b(0xFFFF99,0.8))
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(0xFFD700,0.9))
 	cairo_set_line_width(cr,3)
 	cairo_arc(cr,xc,yc,1,0,360)
 	cairo_stroke(cr)

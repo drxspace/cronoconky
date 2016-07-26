@@ -142,7 +142,7 @@ local gauge = {
 
 -- Use these settings to define the origin and extent of your clock.
 local clock_r=128
-local clock_r_in=147 -- 147 or 133?
+local clock_r_in=133 -- 133 or 147?
 
 -- "clock_x" and "clock_y" are the coordinates of the centre of the clock, in pixels, from the top left of the Conky window.
 local clock_x=150
@@ -381,7 +381,7 @@ local function go_gauge_rings(display)
 end
 
 local function draw_background_circle(display)
-	cairo_set_source_rgba(display,rgb_to_r_g_b(0xE6FFFF,0.8))
+	cairo_set_source_rgba(display,rgb_to_r_g_b(0xE6FFFF,0.6))
 	cairo_set_line_width (display, 0)
 	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
 	cairo_fill (display)
