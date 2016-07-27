@@ -78,7 +78,7 @@ local gauge = {
 	{
 		name='fs_used_perc', arg='/', max_value=100,
 		x=150, y=75,
-		graph_radius=11,
+		graph_radius=13,
 		graph_thickness=23,
 		graph_start_angle=0,
 		graph_unit_angle=3.5, graph_unit_thickness=3.0,
@@ -99,7 +99,7 @@ local gauge = {
 	{
 		name='cpu', arg='cpu0', max_value=100,
 		x=85, y=150,
-		graph_radius=15,
+		graph_radius=16,
 		graph_thickness=27,
 		graph_start_angle=0,
 		graph_unit_angle=3.5, graph_unit_thickness=3.0,
@@ -120,7 +120,7 @@ local gauge = {
 	{
 		name='memperc', arg='', max_value=100,
 		x=215, y=150,
-		graph_radius=15,
+		graph_radius=16,
 		graph_thickness=27,
 		graph_start_angle=0,
 		graph_unit_angle=3.5, graph_unit_thickness=3.0,
@@ -277,9 +277,9 @@ local function draw_gauge_ring(display, data, value)
 	-- local angle = start_arc
 
 	-- hand
-	start_arc = (graph_unit_angle * val) - (graph_unit_thickness * 2)
+	start_arc = (graph_unit_angle * val) - (graph_unit_thickness * 2) - 1
 	stop_arc = (graph_unit_angle * val)
-	cairo_arc(display, x, y, graph_radius, angle_to_position(graph_start_angle, start_arc), angle_to_position(graph_start_angle, stop_arc))
+	cairo_arc(display, x, y, graph_radius - 2, angle_to_position(graph_start_angle, start_arc), angle_to_position(graph_start_angle, stop_arc))
 	cairo_set_source_rgba(display, rgb_to_r_g_b(hand_fg_colour, hand_fg_alpha))
 	cairo_stroke(display)
 
