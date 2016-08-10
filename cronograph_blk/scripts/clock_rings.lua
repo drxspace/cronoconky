@@ -48,7 +48,7 @@ local settings_table = {
 		-- "fg_colour" is the colour of the indicator part of the ring.
 		fg_colour=0x000000,
 		-- "fg_alpha" is the alpha value of the indicator part of the ring.
-		fg_alpha=0.6,
+		fg_alpha=0.5,
 		-- "x" and "y" are the x and y coordinates of the centre of the ring, relative to the top left corner of the Conky window.
 		x=150, y=150,
 		-- "radius" is the radius of the ring.
@@ -65,7 +65,7 @@ local settings_table = {
 		arg='%M', -- .%S',
 		max=60,
 		bg_colour=0x555555, bg_alpha=0.6,
-		fg_colour=0x000000, fg_alpha=0.6,
+		fg_colour=0x000000, fg_alpha=0.7,
 		x=150, y=150,
 		radius=140,
 		thickness=4,
@@ -77,7 +77,7 @@ local settings_table = {
 		arg='%S',
 		max=60,
 		bg_colour=0x333333, bg_alpha=0.6,
-		fg_colour=0x000000, fg_alpha=0.6,
+		fg_colour=0x000000, fg_alpha=0.9,
 		x=150, y=150,
 		radius=145,
 		thickness=4,
