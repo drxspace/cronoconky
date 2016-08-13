@@ -71,6 +71,7 @@ font="hooge 05_53:size=6",
 -- ----==[ Misc settings ]==----
 --------------------------------------------------------------------------------
 -- change GiB to G and MiB to M
+--format_human_readable=true,
 short_units=true,
 
 -- ----==[ Lua Load ]==----
