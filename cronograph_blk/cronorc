@@ -162,16 +162,16 @@ ${endif}
 #-------------------------------------------------------------------------------
 #
 ${font ConkyWeather:size=16}${goto 88}${execi 10 head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -20}${goto 140}${execi 10 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -20}${goto 190}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}${font}
+${voffset -20}${goto 139}${execi 10 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
+${voffset -20}${goto 192}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}${font}
 #
 ${voffset -3}${alignc +52}${execi 10 sed -n '4p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
 ${voffset -9}${alignc}${execi 10 sed -n '5p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -9}${alignc -50}${execi 10 sed -n '6p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
+${voffset -9}${alignc -52}${execi 10 sed -n '6p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
 #
 ${voffset -3}${alignc +52}${execi 10 sed -n '7p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
 ${voffset -9}${alignc}${execi 10 sed -n '8p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -9}${alignc -50}${execi 10 sed -n '9p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
+${voffset -9}${alignc -52}${execi 10 sed -n '9p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
 #
 #
 #
