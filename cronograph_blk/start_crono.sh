@@ -15,9 +15,9 @@
 }
 
 [[ $(pgrep -c -f "^conky.*cronorc$") -eq 0 ]] && {
-	[[ "$DESKTOP_SESSION" =~ kde*|cinnamon ]] || sleep 05;
-	#                                         ^^ Error of failed request:
-	#                                            BadWindow (invalid Window parameter)
+	[[ "$DESKTOP_SESSION" =~ kde*|cinnamon ]] || sleep 12;
+	# Error of failed request:                         ^^
+	# BadWindow (invalid Window parameter)
 	# There's also the X-GNOME-Autostart-Delay=25 property in .desktop file
 	# that can be set in order to handle this situation
 	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc || {
