@@ -381,9 +381,14 @@ local function go_gauge_rings(display)
 end
 
 local function draw_background_circle(display)
-	cairo_set_source_rgba(display,rgb_to_r_g_b(0xE6FFFF,0.7))
-	cairo_set_line_width (display, 0)
+	cairo_set_source_rgba(display,rgb_to_r_g_b(0xBFD9D9,0.9))
 	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
+	cairo_fill (display)
+	--
+	cairo_set_source_rgba(display,rgb_to_r_g_b(0xF0F6F6,0.4))
+	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
+	cairo_clip (display);
+	cairo_arc (display, 200, 10, 130, 45, 315)
 	cairo_fill (display)
 end
 
