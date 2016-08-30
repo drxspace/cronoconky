@@ -265,6 +265,8 @@ local clock_y=150
 local hours_colour=0x383436
 local mins_colour=0x202020
 local secs_colour=0x830000
+local secs_shd_colour=0x888888
+local secs_shade_off=2
 local clock_alpha=0.7
 
 -- Do you want to show the seconds hand?
@@ -352,6 +354,15 @@ local function draw_clock_hands(cr,xc,yc)
 		cairo_line_to(cr,xs,ys)
 		cairo_move_to(cr,xc,yc)
 		cairo_line_to(cr,xxs,yys)
+		cairo_stroke(cr)
+		-- Draw seconds hand shade
+		-- and seconds backhand shade
+		cairo_set_line_width(cr,1)
+		cairo_set_source_rgba(cr,rgb_to_r_g_b(secs_shd_colour,clock_alpha))
+		cairo_move_to(cr,xc+secs_shade_off,yc+secs_shade_off)
+		cairo_line_to(cr,xs+secs_shade_off,ys+secs_shade_off)
+		cairo_move_to(cr,xc+secs_shade_off,yc+secs_shade_off)
+		cairo_line_to(cr,xxs+secs_shade_off,yys+secs_shade_off)
 		cairo_stroke(cr)
 	end
 
