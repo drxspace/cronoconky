@@ -342,19 +342,11 @@ local function draw_clock_hands(cr,xc,yc)
 	cairo_stroke(cr)
 
 	if show_seconds then
-		-- Draw seconds hand
 		xs=xc+0.92*clock_r*math.sin(secs_arc)
 		ys=yc-0.92*clock_r*math.cos(secs_arc)
-		-- and seconds backhand
 		xxs=xc-0.31*clock_r*math.sin(secs_arc)
 		yys=yc+0.31*clock_r*math.cos(secs_arc)
-		cairo_set_line_width(cr,2)
-		cairo_set_source_rgba(cr,rgb_to_r_g_b(secs_colour,clock_alpha))
-		cairo_move_to(cr,xc,yc)
-		cairo_line_to(cr,xs,ys)
-		cairo_move_to(cr,xc,yc)
-		cairo_line_to(cr,xxs,yys)
-		cairo_stroke(cr)
+
 		-- Draw seconds hand shade
 		-- and seconds backhand shade
 		cairo_set_line_width(cr,1)
@@ -363,6 +355,16 @@ local function draw_clock_hands(cr,xc,yc)
 		cairo_line_to(cr,xs+secs_shade_off,ys+secs_shade_off)
 		cairo_move_to(cr,xc+secs_shade_off,yc+secs_shade_off)
 		cairo_line_to(cr,xxs+secs_shade_off,yys+secs_shade_off)
+		cairo_stroke(cr)
+
+		-- Draw seconds hand
+		-- and seconds backhand
+		cairo_set_line_width(cr,2)
+		cairo_set_source_rgba(cr,rgb_to_r_g_b(secs_colour,clock_alpha))
+		cairo_move_to(cr,xc,yc)
+		cairo_line_to(cr,xs,ys)
+		cairo_move_to(cr,xc,yc)
+		cairo_line_to(cr,xxs,yys)
 		cairo_stroke(cr)
 	end
 
