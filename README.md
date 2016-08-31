@@ -1,4 +1,4 @@
-# Cronograph Station Conky SE & BLK editions
+# Cronograph Station Conky BLK
 [![ License ](https://img.shields.io/badge/license-GPLv2-blue.svg?style=flat)](LICENSE.GPL)
 
 

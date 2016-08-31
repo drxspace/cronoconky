@@ -178,12 +178,12 @@ ${voffset -9}${alignc -52}${execi 10 sed -n '9p' $HOME/.conky/cronograph_blk/yah
 ${if_empty ${battery}}
 # At first, we assume that there's no battery so the led is always green
 ${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
-${else}
-${if_match ${battery_percent BAT1} > 50}${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 35}${image $HOME/.conky/cronograph_blk/images/Green.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_blk/images/Yellow.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_blk/images/Orange.png -p 134,22 -s 30x30}
-${else}${image $HOME/.conky/cronograph_blk/images/Red.png -p 134,22 -s 30x30}${endif}${endif}${endif}${endif}
+${else}${if_match ${battery_percent BAT1} > 60}${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 45}${image $HOME/.conky/cronograph_blk/images/Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 30}${image $HOME/.conky/cronograph_blk/images/Yellow.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_blk/images/Orange.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_blk/images/Purple.png -p 134,22 -s 30x30}
+${else}${image $HOME/.conky/cronograph_blk/images/Red.png -p 134,22 -s 30x30}${endif}${endif}${endif}${endif}${endif}
 ${endif}
-${execpi 1 cat $HOME/.conky/cronograph_blk/scripts/blinkingLED}
+#${execpi 1 cat $HOME/.conky/cronograph_blk/scripts/blinkingLED}
 ]]

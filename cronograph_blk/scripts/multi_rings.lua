@@ -381,14 +381,20 @@ local function go_gauge_rings(display)
 end
 
 local function draw_background_circle(display)
-	cairo_set_source_rgba(display,rgb_to_r_g_b(0xF0F6F6,0.6))
+	cairo_set_source_rgba(display,rgb_to_r_g_b(0xE8FAFE,0.8))
 	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
 	cairo_fill (display)
 	-- Draw the shadow ring
-	cairo_set_source_rgba(display,rgb_to_r_g_b(0xF0F6F6,0.5))
+	cairo_set_source_rgba(display,rgb_to_r_g_b(0xFFFFFF,0.4))
 	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
 	cairo_clip (display);
-	cairo_arc (display, 206, 6, 150, 45, 315)
+
+	cairo_move_to (display, 300, 300);
+	cairo_line_to (display, 0, 300);
+	cairo_line_to (display, 0, 280);
+	cairo_curve_to (display, 40, 110, 210, 295, 300, 172);
+	cairo_close_path (display);
+
 	cairo_fill (display)
 end
 
