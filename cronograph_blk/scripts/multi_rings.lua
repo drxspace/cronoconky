@@ -391,8 +391,8 @@ local function draw_background_circle(display)
 
 	cairo_move_to (display, 300, 300);
 	cairo_line_to (display, 0, 300);
-	cairo_line_to (display, 0, 280);
-	cairo_curve_to (display, 40, 110, 210, 295, 300, 172);
+	cairo_line_to (display, 0, 230);
+	cairo_curve_to (display, 140, 105, 150, 300, 300, 180);
 	cairo_close_path (display);
 
 	cairo_fill (display)

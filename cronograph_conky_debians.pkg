@@ -10,7 +10,7 @@
 
 WIZDIR="$(cd "$(dirname "$0")" && pwd)"
 
-CONKYDIR="$HOME"/.conky
+CONKYDIR=/opt
 CRONODIR="cronograph_blk"
 
 THISAPPNAME="Cronograph Station Conky BLK"
@@ -24,20 +24,20 @@ installApp () {
 	-i) # Install
 		echo -e "\nInstalling “${THISAPPNAME}”"
 		echo -en "Creating new directory "${CONKYDIR}"/"
-		mkdir -p "${CONKYDIR}/" && echo -e "\r\033[${okay_x_col}C[ OK ]"
+		sudo mkdir -p "${CONKYDIR}/" && echo -e "\r\033[${okay_x_col}C[ OK ]"
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
-		cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
+		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 	;;
 	-r) # Reinstall
 		echo -en "Removing directory "${CONKYDIR}"/"${CRONODIR}""
-		rm -rf "${CONKYDIR}"/"${CRONODIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
+		sudo rm -rf "${CONKYDIR}"/"${CRONODIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
-		cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
+		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 	;;
 	-u) # Update
 		echo -en "Backing up previous version"
 		( cd "${CONKYDIR}"/;
-		  tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; ) && echo -e "\r\033[${okay_x_col}C[ OK ]"
+		  sudo tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; ) && echo -e "\r\033[${okay_x_col}C[ OK ]"
 		installApp -r
 	;;
 	esac
@@ -64,12 +64,12 @@ Have fun, love and joy ...and don't forget... anything else...
 # MAIN script starts here
 clear
 
-echo -e "\E[37;44m+------------------------------------------------------------------------+"
+echo -e "\e[37;44m+------------------------------------------------------------------------+"
 echo -e "|                                                                        |"
-echo -e "|                     \E[1;37;44m${THISAPPNAME^^}\E[0;37;44m                       |"
-echo -e "|                           ver. \E[1;31;44m${THISAPPVER}-${THISAPPBLD}\E[37;44m                              |"
+echo -e "|                     \e[1;37;44m${THISAPPNAME^^}\e[0;37;44m                       |"
+echo -e "|                           ver. \e[1;31;44m${THISAPPVER}-${THISAPPBLD}\e[37;44m                              |"
 echo -e "|                                                                        |"
-echo -e "|                         \E[1;33;44mINSTALLATION WIZARD\E[37;44m                            |"
+echo -e "|                         \e[1;33;44mINSTALLATION WIZARD\e[37;44m                            |"
 echo -e "|                                                                        |"
 echo -e "+------------------------------------------------------------------------+"
 tput sgr0 2>/dev/null
@@ -82,10 +82,7 @@ read -p "Do you want to continue? [Y/n]: " ANS
 # Building needed packages list
 NeedPackages=""
 [[ -x $(which conky) ]] || NeedPackages="conky-all "
-#[[ -x $(which wget) ]] || NeedPackages=$NeedPackages"wget "
 [[ -x $(which curl) ]] || NeedPackages=$NeedPackages"curl "
-# conky-all package includes lualib
-#[[ -x $(which lua5.3) ]] || NeedPackages=$NeedPackages"lua5.3 "
 [[ -x $(which hddtemp) ]] || NeedPackages=$NeedPackages"hddtemp "
 [[ -x $(which sensors) ]] || NeedPackages=$NeedPackages"lm-sensors"
 
@@ -147,15 +144,14 @@ read -p "Celsius or Fahrenheit? [C/f]: " ANS
 echo -en "Setting the temperature unit..."
 if [[ ${ANS:-C} == [Ff] ]]; then
 	sed -i 's/^--temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
-	sed -i 's/^#DegreesUnits/DegreesUnits/' "${CONKYDIR}"/"${CRONODIR}"/yahooweather/forecasts.sh
+	sed -i 's/^#temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/yahooweather/forecasts.sh
 fi
 echo -e "\r\033[${okay_x_col}C[ OK ]"
 
 # Installing application's icon... anyway
 #if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
 	echo -en "\nInstaling the “${THISAPPNAME}” icon..."
-	mkdir -p "$HOME"/.icons
-	cp "${WIZDIR}"/icons/cronograph_256x256.png "$HOME"/.icons/cronograph.png 2> /dev/null
+	sudo cp "${WIZDIR}"/icons/cronograph_256x256.png /usr/share/pixmaps/cronograph.png 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 #fi
 
@@ -190,9 +186,7 @@ we should provide one."
 in order to start automatically each time we login to our system."
 	read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
 	[[ ${ANS:-Y} == [Yy] ]] && {
-		mkdir -p "$HOME"/.config/autostart;
-		sed "s:<home_dir>:"$HOME":" "${WIZDIR}"/cronograph_conky.desktop > "$HOME"/.config/autostart/cronograph_conky.desktop;
-		chmod 755 "$HOME"/.config/autostart/cronograph_conky.desktop;
+		sudo cp "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart;
 		echo -e "Setting “${THISAPPNAME}” as a Startup Application...\r\033[${okay_x_col}C[ OK ]";
 	}
 #fi

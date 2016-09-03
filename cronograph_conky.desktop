@@ -1,15 +1,16 @@
 [Desktop Entry]
 Version=1.0
 Name=Cronograph Station Conky BLK
-GenericName=Cronograph Conky
+GenericName=Cronograph Conky Black
 Comment=Cronograph Station Conky BLK is an amazing good-looking clock that displays your local weather on your desktop
-Exec=<home_dir>/.conky/cronograph_blk/start_crono.sh
-Icon=cronograph
-Type=Application
-Terminal=false
+Exec=/opt/cronograph_blk/start_crono.sh
 Hidden=false
+Icon=cronograph
 NoDisplay=false
+OnlyShowIn=
 StartupNotify=true
+Terminal=false
+Type=Application
 X-DBUS-ServiceName=
 X-DBUS-StartupType=unique
 X-GNOME-Autostart-Delay=
@@ -20,4 +21,3 @@ X-KDE-SubstituteUID=false
 X-KDE-Username=
 X-MATE-Autostart-enabled=true
 X-XFCE-Autostart-Override=true
-OnlyShowIn=Unity;GNOME;Cinnamon;KDE;MATE;XFCE;

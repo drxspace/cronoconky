@@ -9,9 +9,10 @@
 #
 #set -e
 
-####### I M P O R T A N T #######
+############################ I M P O R T A N T #################################
 #
-# Please, check the 34th line and enter the WOEID of your own location
+# Please, check the 35th line and enter the WOEID of your own location
+# Visit https://www.yahoo.com/news/weather/ and search your location
 #
 
 # The directory this script resides
@@ -34,7 +35,7 @@ cacheFile="YahooWeather.xml"
 WOEID='946738'
 
 # Uncomment next line to make use of English units
-#DegreesUnits='F'
+#temperature_unit='F'
 
 # User Agent String from http://www.useragentstring.com
 # Suppose we're using Chrome/30.0.1599.17
@@ -186,7 +187,7 @@ errExit () {
 pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 
 # Yahoo Weather RSS Feed url
-YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${DegreesUnits:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
+YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
 
 # Clear the conditions files
 ClearConds

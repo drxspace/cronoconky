@@ -8,7 +8,7 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-#rm "$(dirname "$0")"/conkyerr.log && $(which conky) -DD -c "$(dirname "$0")"/cronorc &> "$(dirname "$0")"/conkyerr.log &
+#rm /opt/cronograph_blk/conkyerr.log && $(which conky) -DD -c /opt/cronograph_blk/cronorc &> /opt/cronograph_blk/conkyerr.log &
 # With the background property setted to yes I don't need the &
 [[ "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
 	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
@@ -20,7 +20,7 @@
 	# BadWindow (invalid Window parameter)
 	# There's also the X-GNOME-Autostart-Delay=25 property in .desktop file
 	# that can be set in order to handle this situation
-	nice -n 5 conky -q -c "$(dirname "$0")"/cronorc || {
+	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc || {
 		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be started." -i face-worried;
 		$(${ErrorSnd}); exit 1;
 	}

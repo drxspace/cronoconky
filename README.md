@@ -33,6 +33,11 @@ Thank you ALL!
   place/position.
 
 
+### CHANGES in version 6.0
+
+2016-09-03
+· getting ready to Arch
+
 ### CHANGES in version 5.1
 
 2016-08-30

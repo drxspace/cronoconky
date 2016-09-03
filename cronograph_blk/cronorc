@@ -20,8 +20,9 @@ alignment="top_right",
 gap_x=15,
 gap_y=50,
 minimum_width=300,
-maximum_width=300,
 minimum_height=300,
+maximum_width=300,
+maximum_height=300,
 border_inner_margin=0,
 border_outer_margin=0,
 own_window=true,
@@ -76,7 +77,7 @@ short_units=true,
 
 -- ----==[ Lua Load ]==----
 --------------------------------------------------------------------------------
-lua_load="$HOME/.conky/cronograph_blk/scripts/multi_rings.lua $HOME/.conky/cronograph_blk/scripts/clock_rings.lua",
+lua_load="/opt/cronograph_blk/scripts/multi_rings.lua /opt/cronograph_blk/scripts/clock_rings.lua",
 lua_draw_hook_pre="multi_rings",
 lua_draw_hook_post="clock_rings",
 };
@@ -84,10 +85,10 @@ lua_draw_hook_post="clock_rings",
 
 conky.text = [[
 # Normally, update weather info every (600/60=) 10 minutes
-${execi 600 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}\
+${execi 600 sh -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}\
 # but if we had errors do it every 10 seconds ***deprecated***
-# ${if_empty ${exec head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}}\
-# ${execi 10 sh -c '$HOME/.conky/cronograph_blk/yahooweather/forecasts.sh'}${endif}\
+# ${if_empty ${exec head -1 /opt/cronograph_blk/yahooweather/fore_cond}}\
+# ${execi 10 sh -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}${endif}\
 #
 ${voffset 33}${goto 118}${font hooge 05_53:size=6:bold:italic}${if_empty ${battery}}PWR${else}BAT${endif}${font}:
 #
@@ -106,7 +107,7 @@ ${voffset 15}${alignc}${color0}${fs_used}/${fs_size}${if_match "${hddtemp}" != "
 ${voffset 30}${goto 62}\
 #
 ${if_empty ${hwmon 0 temp 1}}${else}\
-${if_empty ${exec grep "^DegreesUnits='F'" $HOME/.conky/cronograph_blk/yahooweather/forecasts.sh}}\
+${if_empty ${exec grep "^temperature_unit='F'" /opt/cronograph_blk/yahooweather/forecasts.sh}}\
 ${if_match ${hwmon 0 temp 1} > 75}${color9}${blink ${hwmon 0 temp 1}°}${color}${else}\
 ${if_match ${hwmon 0 temp 1} > 50}${color8}${hwmon 0 temp 1}°${color}${else}\
 ${hwmon 0 temp 1}°${endif}${endif}${else}\
@@ -124,66 +125,66 @@ ${voffset 6}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${f
 # Today's weather
 #-------------------------------------------------------------------------------
 #
-${if_match "${exec head -1 $HOME/.conky/cronograph_blk/yahooweather/curr_cond}" == "99999"}\
+${if_match "${exec head -1 /opt/cronograph_blk/yahooweather/curr_cond}" == "99999"}\
 #
 # Display an error message
 #
-${voffset 30}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 10 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${font}
-${alignc}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}
-${alignc}${color1}${execi 10 sed -n '4p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
+${voffset 30}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 10 sed -n '2p' /opt/cronograph_blk/yahooweather/curr_cond}${color}${font}
+${alignc}${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}
+${alignc}${color1}${execi 10 sed -n '4p' /opt/cronograph_blk/yahooweather/curr_cond}${color}${else}\
 #
 # Display weather information
 #
-${voffset 20}${alignc +64}${font hooge 05_53:size=10:bold}${execi 10 head -1 $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${font}
-${alignc +66}${execi 10 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}
+${voffset 20}${alignc +64}${font hooge 05_53:size=10:bold}${execi 10 head -1 /opt/cronograph_blk/yahooweather/curr_cond}${font}
+${alignc +66}${execi 10 sed -n '2p' /opt/cronograph_blk/yahooweather/curr_cond}
 #
 ${voffset -44}${goto 124}${font ConkyWeather:size=38}\
-${if_empty ${execi 10 grep "^DegreesUnits='F'" $HOME/.conky/cronograph_blk/yahooweather/forecasts.sh}}\
-${if_match ${execi 10 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 36}${color4}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
-${if_match ${execi 10 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 30}${color5}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
-${if_match ${execi 10 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} < 3}${color1}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
-${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${endif}${endif}${endif}${else}\
-${if_match ${execi 10 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 97}${color4}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
-${if_match ${execi 10 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} > 86}${color5}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
-${if_match ${execi 10 sed -n '1s/°$//p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond} < 37}${color1}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${color}${else}\
-${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${endif}${endif}${endif}${endif}${font}
+${if_empty ${execi 10 grep "^temperature_unit='F'" /opt/cronograph_blk/yahooweather/forecasts.sh}}\
+${if_match ${execi 10 sed -n '1s/°$//p' /opt/cronograph_blk/yahooweather/curr_cond} > 36}${color4}${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}${color}${else}\
+${if_match ${execi 10 sed -n '1s/°$//p' /opt/cronograph_blk/yahooweather/curr_cond} > 30}${color5}${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}${color}${else}\
+${if_match ${execi 10 sed -n '1s/°$//p' /opt/cronograph_blk/yahooweather/curr_cond} < 3}${color1}${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}${color}${else}\
+${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}${endif}${endif}${endif}${else}\
+${if_match ${execi 10 sed -n '1s/°$//p' /opt/cronograph_blk/yahooweather/curr_cond} > 97}${color4}${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}${color}${else}\
+${if_match ${execi 10 sed -n '1s/°$//p' /opt/cronograph_blk/yahooweather/curr_cond} > 86}${color5}${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}${color}${else}\
+${if_match ${execi 10 sed -n '1s/°$//p' /opt/cronograph_blk/yahooweather/curr_cond} < 37}${color1}${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}${color}${else}\
+${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/curr_cond}${endif}${endif}${endif}${endif}${font}
 #
 # Display weather name
 #
 ${voffset -22}${alignc -66}\
-${if_empty ${execi 10 sed -n '5p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}}\
-${execi 10 sed -n '4p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${voffset -5}
-${else}${voffset -5}${execi 10 sed -n '4p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}
-${alignc -65}${execi 10 sed -n '5p' $HOME/.conky/cronograph_blk/yahooweather/curr_cond}${endif}
+${if_empty ${execi 10 sed -n '5p' /opt/cronograph_blk/yahooweather/curr_cond}}\
+${execi 10 sed -n '4p' /opt/cronograph_blk/yahooweather/curr_cond}${voffset -5}
+${else}${voffset -5}${execi 10 sed -n '4p' /opt/cronograph_blk/yahooweather/curr_cond}
+${alignc -65}${execi 10 sed -n '5p' /opt/cronograph_blk/yahooweather/curr_cond}${endif}
 ${endif}
 #
 #-------------------------------------------------------------------------------
 # Three days forecasts
 #-------------------------------------------------------------------------------
 #
-${font ConkyWeather:size=16}${goto 88}${execi 10 head -1 $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -20}${goto 139}${execi 10 sed -n '2p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -20}${goto 192}${execi 10 sed -n '3p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}${font}
+${font ConkyWeather:size=16}${goto 88}${execi 10 head -1 /opt/cronograph_blk/yahooweather/fore_cond}
+${voffset -20}${goto 139}${execi 10 sed -n '2p' /opt/cronograph_blk/yahooweather/fore_cond}
+${voffset -20}${goto 192}${execi 10 sed -n '3p' /opt/cronograph_blk/yahooweather/fore_cond}${font}
 #
-${voffset -3}${alignc +52}${execi 10 sed -n '4p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -9}${alignc}${execi 10 sed -n '5p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -9}${alignc -52}${execi 10 sed -n '6p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
+${voffset -3}${alignc +52}${execi 10 sed -n '4p' /opt/cronograph_blk/yahooweather/fore_cond}
+${voffset -9}${alignc}${execi 10 sed -n '5p' /opt/cronograph_blk/yahooweather/fore_cond}
+${voffset -9}${alignc -52}${execi 10 sed -n '6p' /opt/cronograph_blk/yahooweather/fore_cond}
 #
-${voffset -3}${alignc +52}${execi 10 sed -n '7p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -9}${alignc}${execi 10 sed -n '8p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
-${voffset -9}${alignc -52}${execi 10 sed -n '9p' $HOME/.conky/cronograph_blk/yahooweather/fore_cond}
+${voffset -3}${alignc +52}${execi 10 sed -n '7p' /opt/cronograph_blk/yahooweather/fore_cond}
+${voffset -9}${alignc}${execi 10 sed -n '8p' /opt/cronograph_blk/yahooweather/fore_cond}
+${voffset -9}${alignc -52}${execi 10 sed -n '9p' /opt/cronograph_blk/yahooweather/fore_cond}
 #
 #
 #
 ${if_empty ${battery}}
 # At first, we assume that there's no battery so the led is always green
-${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 60}${image $HOME/.conky/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 45}${image $HOME/.conky/cronograph_blk/images/Green.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 30}${image $HOME/.conky/cronograph_blk/images/Yellow.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 20}${image $HOME/.conky/cronograph_blk/images/Orange.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 15}${image $HOME/.conky/cronograph_blk/images/Purple.png -p 134,22 -s 30x30}
-${else}${image $HOME/.conky/cronograph_blk/images/Red.png -p 134,22 -s 30x30}${endif}${endif}${endif}${endif}${endif}
+${image /opt/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 60}${image /opt/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 45}${image /opt/cronograph_blk/images/Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 30}${image /opt/cronograph_blk/images/Yellow.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 20}${image /opt/cronograph_blk/images/Orange.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT1} > 15}${image /opt/cronograph_blk/images/Purple.png -p 134,22 -s 30x30}
+${else}${image /opt/cronograph_blk/images/Red.png -p 134,22 -s 30x30}${endif}${endif}${endif}${endif}${endif}
 ${endif}
-#${execpi 1 cat $HOME/.conky/cronograph_blk/scripts/blinkingLED}
+#${execpi 1 cat /opt/cronograph_blk/scripts/blinkingLED}
 ]]
