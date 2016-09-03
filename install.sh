@@ -22,7 +22,10 @@ else
 	exit
 fi
 
-TERM=$(which gnome-terminal 2>/dev/null) || TERM=$(which konsole 2>/dev/null) || TERM=$(which xfce4-terminal 2>/dev/null) ||\
+TERM=$(which gnome-terminal 2>/dev/null) || \
+	TERM=$(which konsole 2>/dev/null) || \
+	TERM=$(which mate-terminal 2>/dev/null) || \
+	TERM=$(which xfce4-terminal 2>/dev/null) || \
 	# ...else fallback to xterm if it's here
 	TERM=${TERM:=$(which xterm 2>/dev/null)}
 TITLE="Setup Cronograph Station Conky BLK"
@@ -33,6 +36,9 @@ case "$TERM" in
 	;;
 	*konsole)
 		exec "$TERM" --geometry 74x24+0+0 --caption "$TITLE" -e /bin/bash "$DIR/$MAININSTALLER"
+	;;
+	*mate-terminal)
+		exec "$TERM" --geometry 74x24+0+0 -t "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*xfce4-terminal)
 		exec "$TERM" --geometry 74x24+0+0 -T "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"

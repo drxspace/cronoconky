@@ -158,9 +158,9 @@ echo -e "\r\033[${okay_x_col}C[ OK ]"
 # Installing needed truetype weather fonts... anyway
 #if [[ -z $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
-	mkdir -p "$HOME"/.fonts/TTF/
+	sudo mkdir -p /usr/share/fonts/TTF
 	echo -en "Coping fonts. Please wait a moment..."
-	cp -f "${WIZDIR}"/ttf-cronograph/*.ttf "$HOME"/.fonts/TTF/ 2> /dev/null
+	sudo cp -f "${WIZDIR}"/ttf-cronograph/*.ttf /usr/share/fonts/TTF/ 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 
 	if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
@@ -193,7 +193,7 @@ in order to start automatically each time we login to our system."
 
 echo -e "\nThe conky “${THISAPPNAME}” is installed ok!"
 read -p "Do you want to start the conky right now? [Y/n]: " ANS
-[[ ${ANS:-Y} == [Yy] ]] && "${CONKYDIR}"/"${CRONODIR}"/start_crono.sh
+[[ ${ANS:-Y} == [Yy] ]] && sudo "${CONKYDIR}"/"${CRONODIR}"/start_crono.sh
 
 echo -e "\nIt's \033[1mhighly recommended\033[0m to logout and login back." && sleep 5
 
