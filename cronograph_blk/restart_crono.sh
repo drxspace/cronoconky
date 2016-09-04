@@ -22,7 +22,7 @@ pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
 			$(${KillSnd}); exit 1;
 		}
 	}
-	rm -f /opt/cronograph_blk/yahooweather/*_cond;
+#	[[ -d "${HOME}/.config/cronograph_blk" ]] && rm -f "${HOME}"/.config/cronograph_blk/*_cond;
 	sh "/opt/cronograph_blk/yahooweather/forecasts.sh"
 	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc && {
 		sleep 2; notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK was restarted." -i face-smile;
