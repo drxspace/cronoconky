@@ -19,7 +19,7 @@
 scriptDir="$(dirname "$0")"
 
 # Store temporary data in this directory...
-cacheDir="$HOME/.cache/cronograph"
+cacheDir="/tmp/cronograph"
 # ...but first make sure that it's clear
 [[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
 
