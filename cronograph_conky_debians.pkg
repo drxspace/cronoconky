@@ -151,7 +151,7 @@ echo -e "\r\033[${okay_x_col}C[ OK ]"
 # Installing application's icon... anyway
 #if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
 	echo -en "\nInstaling the “${THISAPPNAME}” icon..."
-	sudo cp "${WIZDIR}"/icons/cronograph_256x256.png /usr/share/pixmaps/cronograph.png 2> /dev/null
+	sudo cp -f "${WIZDIR}"/icons/cronograph_256x256.png /usr/share/pixmaps/cronograph.png 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 #fi
 
@@ -160,7 +160,7 @@ echo -e "\r\033[${okay_x_col}C[ OK ]"
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
 	sudo mkdir -p /usr/share/fonts/TTF
 	echo -en "Coping fonts. Please wait a moment..."
-	sudo cp -f "${WIZDIR}"/ttf-cronograph/*.ttf /usr/share/fonts/TTF/ 2> /dev/null
+	sudo cp -fr "${WIZDIR}"/ttf-cronograph /usr/share/fonts/TTF/ 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 
 	if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
@@ -186,14 +186,14 @@ we should provide one."
 in order to start automatically each time we login to our system."
 	read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
 	[[ ${ANS:-Y} == [Yy] ]] && {
-		sudo cp "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart;
+		sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart;
 		echo -e "Setting “${THISAPPNAME}” as a Startup Application...\r\033[${okay_x_col}C[ OK ]";
 	}
 #fi
 
 echo -e "\nThe conky “${THISAPPNAME}” is installed ok!"
 read -p "Do you want to start the conky right now? [Y/n]: " ANS
-[[ ${ANS:-Y} == [Yy] ]] && sudo "${CONKYDIR}"/"${CRONODIR}"/start_crono.sh
+[[ ${ANS:-Y} == [Yy] ]] && start_crono
 
 echo -e "\nIt's \033[1mhighly recommended\033[0m to logout and login back." && sleep 5
 
