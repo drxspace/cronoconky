@@ -32,19 +32,19 @@ TITLE="Setup Cronograph Station Conky BLK"
 
 case "$TERM" in
 	*gnome-terminal)
-		exec "$TERM" --geometry 74x24+0+0 -t "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
+		exec "$TERM" --geometry=74x24+0+0 -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*konsole)
-		exec "$TERM" --geometry 74x24+0+0 --caption "$TITLE" -e /bin/bash "$DIR/$MAININSTALLER"
+		exec "$TERM" --geometry=74x24+0+0 --caption "$TITLE" -e /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*mate-terminal)
-		exec "$TERM" --geometry 74x24+0+0 -t "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
+		exec "$TERM" --geometry=74x24+0+0 -t "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*xfce4-terminal)
-		exec "$TERM" --geometry 74x24+0+0 -T "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
+		exec "$TERM" --geometry=74x24+0+0 -T "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*xterm)
-		exec "$TERM" -geometry 74x24+0+0 -T "$TITLE" -e /bin/bash "$DIR"/"$MAININSTALLER"
+		exec "$TERM" -geometry=74x24+0+0 -T "$TITLE" -e /bin/bash "$DIR"/"$MAININSTALLER"
 	;;
 	*)
 		notify-send "Error" "Unable to install conky.\nNot an known terminal was found to execute the main installation package" -i face-embarrassed

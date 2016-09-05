@@ -29,15 +29,17 @@ installApp () {
 		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 	;;
 	-r) # Reinstall
+		echo -e "Shutting down conky"
+		pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null
 		echo -en "Removing directory "${CONKYDIR}"/"${CRONODIR}""
 		sudo rm -rf "${CONKYDIR}"/"${CRONODIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
 		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 	;;
 	-u) # Update
-		echo -en "Backing up previous version"
-		( cd "${CONKYDIR}"/;
-		  sudo tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; ) && echo -e "\r\033[${okay_x_col}C[ OK ]"
+	#echo -en "Backing up previous version"
+	#cd "${CONKYDIR}"/;
+	#sudo tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 		installApp -r
 	;;
 	esac
@@ -86,16 +88,17 @@ NeedPackages=""
 [[ -x $(which hddtemp) ]] || NeedPackages=$NeedPackages"hddtemp "
 [[ -x $(which sensors) ]] || NeedPackages=$NeedPackages"lm-sensors"
 
+echo -e "\nFollowing processes requires root user privileges.
+Requesting root access if we don't already have it...";
+sudo -v;
+
 if [[ -n $NeedPackages ]]; then
-	echo -e "\nFirst we need to install some packages. This action requires root
-privileges and for this reason we may ask for your root password.
+	echo -e "\nFirst we need to install some packages.
 Packages that would be installed are: \033[1m$NeedPackages\033[0m"
 	read -p "Do you want to continue? [Y/n]: " ANS
 	[[ ${ANS:-Y} != [Yy] ]] && finale 2
 	sudo echo -e "Installing needed packages. Please wait a moment..." || finale 3
 	sudo apt-get -qq install --no-install-recommends $NeedPackages 2> /dev/null || finale 3
-else
-	kill -SIGTERM $(pidof conky) 2>/dev/null
 fi
 
 # Settind the hddtemp service to run as daemon and start the daemon
@@ -180,22 +183,28 @@ we should provide one."
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 #fi
 
+# Creating links for commands to control the conky
+sudo ln -fs /opt/cronograph_blk/start_crono.sh /usr/local/bin/start_crono
+sudo ln -fs /opt/cronograph_blk/restart_crono.sh /usr/local/bin/restart_crono
+sudo ln -fs /opt/cronograph_blk/stop_crono.sh /usr/local/bin/stop_crono
+echo -e "Creating links for commands to control the conky\r\033[${okay_x_col}C[ OK ]";
+
 # Add this conky to the Startup Applications list
 #if [[ ! -f "$HOME"/.config/autostart/cronograph_conky.desktop ]]; then
 	echo -e "\nIt's essential to add this conky to the Startup Applications list
 in order to start automatically each time we login to our system."
-	read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
-	[[ ${ANS:-Y} == [Yy] ]] && {
+	#read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
+	#[[ ${ANS:-Y} == [Yy] ]] && {
 		sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart;
 		echo -e "Setting “${THISAPPNAME}” as a Startup Application...\r\033[${okay_x_col}C[ OK ]";
-	}
+	#}
 #fi
 
-echo -e "\nThe conky “${THISAPPNAME}” is installed ok!"
-read -p "Do you want to start the conky right now? [Y/n]: " ANS
-[[ ${ANS:-Y} == [Yy] ]] && start_crono
+#echo -e "\nThe conky “${THISAPPNAME}” is installed ok!"
+#read -p "Do you want to start the conky right now? [Y/n]: " ANS
+#[[ ${ANS:-Y} == [Yy] ]] && start_crono
 
-echo -e "\nIt's \033[1mhighly recommended\033[0m to logout and login back." && sleep 5
+echo -e "\nIt's \033[1mhighly recommended\033[0m to logout and log back in." && sleep 2
 
 finale 0
 
