@@ -29,7 +29,7 @@ installApp () {
 		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 	;;
 	-r) # Reinstall
-		echo -e "Shutting down conky"
+		echo -e "\nShutting down conky"
 		pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null
 		echo -en "Removing directory "${CONKYDIR}"/"${CRONODIR}""
 		sudo rm -rf "${CONKYDIR}"/"${CRONODIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
@@ -161,9 +161,9 @@ echo -e "\r\033[${okay_x_col}C[ OK ]"
 # Installing needed truetype weather fonts... anyway
 #if [[ -z $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
-	sudo mkdir -p /usr/share/fonts/TTF
+	sudo mkdir -p /usr/share/fonts/truetype
 	echo -en "Coping fonts. Please wait a moment..."
-	sudo cp -fr "${WIZDIR}"/ttf-cronograph /usr/share/fonts/TTF/ 2> /dev/null
+	sudo cp -fr "${WIZDIR}"/ttf-cronograph /usr/share/fonts/truetype/ 2> /dev/null
 	echo -e "\r\033[${okay_x_col}C[ OK ]"
 
 	if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
