@@ -37,9 +37,9 @@ installApp () {
 		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
 	;;
 	-u) # Update
-	#echo -en "Backing up previous version"
-	#cd "${CONKYDIR}"/;
-	#sudo tar czf "${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/ && echo -e "\r\033[${okay_x_col}C[ OK ]"
+	echo -en "Backing up previous version"
+	{ cd "${CONKYDIR}"/;
+	tar czf /tmp/"${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/; } && echo -e "\r\033[${okay_x_col}C[ OK ]"
 		installApp -r
 	;;
 	esac
@@ -72,6 +72,7 @@ echo -e "|                     \e[1;37;44m${THISAPPNAME^^}\e[0;37;44m           
 echo -e "|                           ver. \e[1;31;44m${THISAPPVER}-${THISAPPBLD}\e[37;44m                              |"
 echo -e "|                                                                        |"
 echo -e "|                         \e[1;33;44mINSTALLATION WIZARD\e[37;44m                            |"
+echo -e "|                    \e[3;94;44mfor Debian based distribution\e[0;37;44m                       |"
 echo -e "|                                                                        |"
 echo -e "+------------------------------------------------------------------------+"
 tput sgr0 2>/dev/null
@@ -127,7 +128,7 @@ if [[ -d "${CONKYDIR}"/"${CRONODIR}"/ ]]; then
 			echo -e "\nSeems that an older build of this conky is already installed.
 If you choose to update your version, the previous version will be
 backed up to a file called “${CRONODIR}_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz” and placed
-inside the "${CONKYDIR}" directory."
+inside the /tmp directory."
 			read -p "Do you want to update your version? [Y/n]: " ANS
 			[[ ${ANS:-Y} != [Yy] ]] && finale 5
 			installApp -u
