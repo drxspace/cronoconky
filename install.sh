@@ -18,7 +18,7 @@ DIR="$(dirname "$0")"
 if [[ ${__CNKDISTRO__} =~ ${__CNKDEBIANS__} ]]; then
 	MAININSTALLER="cronograph_conky_debians.pkg"
 else
-	notify-send "Error" "This installer cannot tell that you're using a supported linux distro or not and will now exit." -i face-embarrassed
+	notify-send "Error" "This installer cannot tell if you're using a supported linux distro or not and will now exit." -i face-embarrassed
 	exit
 fi
 
