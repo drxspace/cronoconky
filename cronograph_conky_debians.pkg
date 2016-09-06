@@ -141,14 +141,14 @@ fi
 ### ADDITIONAL TASKS
 
 # Configuring temperature
-echo -e "\nChoose the desired output unit of all objects displaying a temperature.
+echo -e "\nChoose the desired output unit of all the objects displaying a temperature.
 Parameters are either “celsius” or “fahrenheit”.
 The default unit is degree Celsius."
 read -p "Celsius or Fahrenheit? [C/f]: " ANS
 echo -en "Setting the temperature unit..."
 if [[ ${ANS:-C} == [Ff] ]]; then
-	sed -i 's/^--temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
-	sed -i 's/^#temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/yahooweather/forecasts.sh
+	sudo sed -i 's/^--temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/cronorc
+	sudo sed -i 's/^#temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/yahooweather/forecasts.sh
 fi
 echo -e "\r\033[${okay_x_col}C[ OK ]"
 
