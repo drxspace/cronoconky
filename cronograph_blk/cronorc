@@ -139,7 +139,7 @@ ${voffset 20}${alignc +64}${font hooge 05_53:size=10:bold}${execi 10 head -1 "${
 ${alignc +66}${execi 10 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}
 #
 ${voffset -40}${goto 124}${font ConkyWeather:size=38}\
-${if_empty ${execi 10 grep "^DegreesUnits='F'" "${HOME}"/.config/cronograph_blk/forecasts.sh}}\
+${if_empty ${execi 10 grep "^temperature_unit='F'" /opt/cronograph_blk/yahooweather/forecasts.sh}}\
 ${if_match ${execi 10 sed -n '1s/°$//p' "${HOME}"/.config/cronograph_blk/curr_cond} > 36}${color4}${execi 10 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
 ${if_match ${execi 10 sed -n '1s/°$//p' "${HOME}"/.config/cronograph_blk/curr_cond} > 30}${color5}${execi 10 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
 ${if_match ${execi 10 sed -n '1s/°$//p' "${HOME}"/.config/cronograph_blk/curr_cond} < 3}${color1}${execi 10 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
