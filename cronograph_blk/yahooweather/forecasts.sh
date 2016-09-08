@@ -29,7 +29,7 @@ cacheDir="${HOME}"/.cache/cronograph_blk
 # Store temporary RSS Feed in this file
 cacheFile="YahooWeather.xml"
 
-# INFO: Navigate to http://weather.yahoo.com/ enter your or zip code to locate
+# INFO: Navigate to https://www.yahoo.com/news/weather/ enter your or zip code to locate
 #       your place you want to watch and get the WOEID number at url's end e.g.
 #       http://weather.yahoo.com/greece/attica/athens-946738/
 #                                                     ^^^^^^
