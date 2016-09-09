@@ -28,7 +28,7 @@ TERM=$(which gnome-terminal 2>/dev/null) || \
 	TERM=$(which xfce4-terminal 2>/dev/null) || \
 	# ...else fallback to xterm if it's here
 	TERM=${TERM:=$(which xterm 2>/dev/null)}
-TITLE="Setup Cronograph Station Conky BLK"
+TITLE="Setup Cronograph Station Conky BLK (aka “crono”)"
 
 case "$TERM" in
 	*gnome-terminal)
