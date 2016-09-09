@@ -10,7 +10,7 @@
 
 # -----------------------------------------------------------------------------]
 __CNKDISTRO__=$(awk -F'=' '/^ID=/ { thisdistro=$2; } END { print tolower(thisdistro) }' /etc/*release 2>/dev/null)
-__CNKDEBIANS__="debian|ubuntu|netrunner|elementary os|zorin os"
+__CNKDEBIANS__="debian|ubuntu|linuxmint|netrunner|elementary os|zorin os"
 __CNKARCHES__="arch|manjaro|apricity"
 # -----------------------------------------------------------------------------]
 
