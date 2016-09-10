@@ -165,11 +165,9 @@ if [[ ${ANS:-C} == [Ff] ]]; then
 	} && okay || error
 fi
 
-# Installing application's icon... anyway
-#if [[ ! -f "$HOME"/.icon/cronograph.png ]]; then
-	echo -en "\nInstaling the “${THISAPPNAME}” icon..."
-	sudo cp -f "${WIZDIR}"/icons/cronograph_256x256.png /usr/share/pixmaps/cronograph.png 2> /dev/null && okay || error
-#fi
+# Installing application's icon...
+echo -en "\nInstaling the “${THISAPPNAME}” icon..."
+sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph.png 2> /dev/null && okay || error
 
 # Installing needed truetype weather fonts... anyway
 #if [[ -z $(fc-list | grep ConkyWeather) ]]; then
