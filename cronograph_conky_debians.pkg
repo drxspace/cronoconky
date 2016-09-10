@@ -32,8 +32,7 @@ installApp () {
 	-i) # Install
 		echo -e "\nInstalling “${THISAPPNAME}”"
 		echo -en "Creating new directory "${CONKYDIR}"/"
-		umask 077
-		sudo mkdir -p "${CONKYDIR}/" && okay || error
+		sudo mkdir -m 755 -p "${CONKYDIR}/" && okay || error
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
 		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && okay || error
 	;;
@@ -173,8 +172,7 @@ sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph
 # Installing needed truetype weather fonts... anyway
 #if [[ -z $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
-	umask 077
-	sudo mkdir -p /usr/share/fonts/truetype
+	sudo mkdir -m 755 -p /usr/share/fonts/truetype
 	echo -en "Coping fonts. Please wait..."
 	sudo cp -fr "${WIZDIR}"/ttf-cronograph /usr/share/fonts/truetype/ 2> /dev/null && okay || error
 
@@ -184,8 +182,7 @@ sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph
 we should provide one."
 		read -p "Do you want to create a font configuration file? [Y/n]: " ANS
 		[[ ${ANS:-Y} == [Yy] ]] && {
-			umask 077
-			mkdir -p "$HOME"/.config/fontconfig/
+			mkdir -m 755 -p "$HOME"/.config/fontconfig/
 			echo -en "Creating font configuration file. Please wait..."
 			cp -f "${WIZDIR}"/fontconfig/fonts.conf "$HOME"/.config/fontconfig/ && okay || error
 		}
