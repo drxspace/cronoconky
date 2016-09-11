@@ -206,7 +206,10 @@ read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: 
 [[ ${ANS:-Y} == [Yy] ]] && {
 	echo -en "Setting “${THISAPPNAME}” as a Startup Application...";
 	[[ -d /etc/xdg/autostart ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart 2> /dev/null && okay || error
-}
+} || {
+	[[ -d /etc/xdg/autostart ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart 2> /dev/null && \
+		sed -i 's/Hidden=.*/Hidden=true/' /etc/xdg/autostart/cronograph_conky.desktop
+}}
 
 
 echo -e "\nIt's \033[1mhighly recommended\033[0m to logout and log back in." && sleep 2
