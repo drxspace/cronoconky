@@ -37,18 +37,18 @@ installApp () {
 		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && okay || error
 	;;
 	-r) # Reinstall
-		echo -e "\nShutting down conky"
-		pkill -SIGTERM -o -x -f "^conky.*cronorc$" &> /dev/null
+		echo -en "\nShutting down conky..."
+		pkill -SIGTERM -o -x -f "^conky.*cronorc$" &>/dev/null && okay || error
 		echo -en "Removing directory "${CONKYDIR}"/"${CRONODIR}""
-		sudo rm -rf "${CONKYDIR}"/"${CRONODIR}"/ 2> /dev/null && okay || error
+		sudo rm -rf "${CONKYDIR}"/"${CRONODIR}"/ 2>/dev/null && okay || error
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
-		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ 2> /dev/null && okay || error
+		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ 2>/dev/null && okay || error
 	;;
 	-u) # Update
 		echo -en "Backing up previous version"
 		{
 			cd "${CONKYDIR}"/;
-			tar czf /tmp/"${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/ &> /dev/null;
+			tar czf /tmp/"${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/ &>/dev/null;
 		} && okay || error
 		installApp -r
 	;;
@@ -85,7 +85,7 @@ echo -e "          \e[37;44m│                         \e[1;33;44mINSTALLATION 
 echo -e "          \e[37;44m│                    \e[3;94;44mfor Debian based distribution\e[0;37;44m                       ║\e[0m          "
 echo -e "          \e[37;44m│                                                                        ║\e[0m          "
 echo -e "          \e[37;44m╘════════════════════════════════════════════════════════════════════════╝\e[0m          "
-tput sgr0 2> /dev/null
+tput sgr0 2>/dev/null
 
 echo -e "\nThis wizard will help you install the “${THISAPPNAME}”
 conky on your computer."
@@ -109,7 +109,7 @@ Packages that would be installed are: \033[1m$NeedPackages\033[0m"
 	read -p "Do you want to continue? [Y/n]: " ANS
 	[[ ${ANS:-Y} != [Yy] ]] && finale 2
 	sudo echo -e "Installing needed packages. Please wait..." || finale 3
-	sudo apt-get -qq install --no-install-recommends $NeedPackages 2> /dev/null || finale 3
+	sudo apt-get -qq install --no-install-recommends $NeedPackages 2>/dev/null || finale 3
 fi
 
 # Settind the hddtemp service to run as daemon and start the daemon
@@ -122,8 +122,8 @@ ask for your root password."
 	if [[ ${ANS:-Y} == [Yy] ]]; then
 		echo -en "Install the hddtemp service as daemon..."
 		{
-			sudo sed -i '/RUN_DAEMON/s/false/true/' /etc/default/hddtemp &> /dev/null;
-			sudo service hddtemp restart 2> /dev/null;
+			sudo sed -i '/RUN_DAEMON/s/false/true/' /etc/default/hddtemp &>/dev/null;
+			sudo service hddtemp restart 2>/dev/null;
 		} && okay || error
 	fi
 fi
@@ -160,21 +160,21 @@ read -p "Celsius or Fahrenheit? [C/f]: " ANS
 echo -en "Setting the temperature unit..."
 if [[ ${ANS:-C} == [Ff] ]]; then
 	{
-		sudo sed -i 's/^--temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/cronorc 2> /dev/null;
-		sudo sed -i 's/^#temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/yahooweather/forecasts.sh 2> /dev/null;
+		sudo sed -i 's/^--temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/cronorc 2>/dev/null;
+		sudo sed -i 's/^#temperature_unit/temperature_unit/' "${CONKYDIR}"/"${CRONODIR}"/yahooweather/forecasts.sh 2>/dev/null;
 	} && okay || error
 fi
 
 # Installing application's icon...
 echo -en "\nInstaling the “${THISAPPNAME}” icon..."
-sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph.png 2> /dev/null && okay || error
+sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph.png 2>/dev/null && okay || error
 
 # Installing needed truetype weather fonts... anyway
 #if [[ -z $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
 	sudo mkdir -m 755 -p /usr/share/fonts/truetype
 	echo -en "Coping fonts. Please wait..."
-	sudo cp -fr "${WIZDIR}"/ttf-cronograph /usr/share/fonts/truetype/ 2> /dev/null && okay || error
+	sudo cp -fr "${WIZDIR}"/ttf-cronograph /usr/share/fonts/truetype/ 2>/dev/null && okay || error
 
 	if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
 		echo -e "\nFont configuration files aren't present."
@@ -188,15 +188,15 @@ we should provide one."
 		}
 	fi
 	echo -en "Building font information cache files. Please wait..."
-	fc-cache -f &> /dev/null && okay || error
+	fc-cache -f &>/dev/null && okay || error
 #fi
 
 # Creating links for commands to control the conky
 echo -en "Creating links for commands to control the conky...";
 {
-	sudo ln -fs /opt/cronograph_blk/start_crono.sh /usr/local/bin/start_crono 2> /dev/null;
-	sudo ln -fs /opt/cronograph_blk/restart_crono.sh /usr/local/bin/restart_crono 2> /dev/null;
-	sudo ln -fs /opt/cronograph_blk/stop_crono.sh /usr/local/bin/stop_crono 2> /dev/null;
+	sudo ln -fs /opt/cronograph_blk/start_crono.sh /usr/local/bin/start_crono 2>/dev/null;
+	sudo ln -fs /opt/cronograph_blk/restart_crono.sh /usr/local/bin/restart_crono 2>/dev/null;
+	sudo ln -fs /opt/cronograph_blk/stop_crono.sh /usr/local/bin/stop_crono 2>/dev/null;
 } && okay || error
 
 # Add this conky to the Startup Applications list
@@ -205,14 +205,12 @@ in order to start automatically each time we login to our system."
 read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
 [[ ${ANS:-Y} == [Yy] ]] && {
 	echo -en "Setting “${THISAPPNAME}” as a Startup Application...";
-	[[ -d /etc/xdg/autostart ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart 2> /dev/null && okay || error
+	{ [[ -d /etc/xdg/autostart ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart 2>/dev/null && okay; } || error
 } || {
-	[[ -d /etc/xdg/autostart ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart 2> /dev/null && \
+	[[ -d /etc/xdg/autostart ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart 2>/dev/null && \
 		sed -i 's/Hidden=.*/Hidden=true/' /etc/xdg/autostart/cronograph_conky.desktop
-}}
-
+}
 
 echo -e "\nIt's \033[1mhighly recommended\033[0m to logout and log back in." && sleep 2
 
 finale 0
-
