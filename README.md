@@ -22,7 +22,7 @@ Thank you ALL!
 - Ubuntu KDE
 - Linux Mint 15 MATE
 - Linux Mint 16 Cinnamon
-- also works with Arch Linux distros but you need to manually install the files
+- also works with Arch Linux distros but you need to visit my [AUR cronograph-conky] page
 
 
 ## INSTALLATION
@@ -32,6 +32,11 @@ Thank you ALL!
   and follow the instructions in order to type the right WOEID of your
   place/position.
 
+
+### CHANGES in version 6.1
+
+2016-09-11
+· new installer for Debian based releases
 
 ### CHANGES in version 6.0
 
@@ -183,4 +188,6 @@ Thank you ALL!
      On Login section check Start witn an empty session
 - How to enable compositing?
 ---- Visit this http://mylinuxexplore.blogspot.gr/2012/05/solved-docky-issue-in-mintubuntu-how-to.html
+
+[AUR cronograph-conky]:https://aur.archlinux.org/packages/cronograph-conky
 
