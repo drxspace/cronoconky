@@ -9,9 +9,9 @@
 #
 
 # -----------------------------------------------------------------------------]
-__CNKDISTRO__=$(awk -F'=' '/^ID=/ { thisdistro=$2; } END { print tolower(thisdistro) }' /etc/*release 2>/dev/null)
-__CNKDEBIANS__="debian|ubuntu|linuxmint|netrunner|elementary os|zorin os"
-__CNKARCHES__="arch|manjaro|apricity"
+__CNKDISTRO__=$(sed -n '/^ID=/s/ID=//p' /etc/*release 2>/dev/null)
+__CNKDEBIANS__="debian|ubuntu|linuxmint|netrunner|elementary|zorin os"
+__CNKARCHES__="arch|antergos|manjaro|apricity"
 # -----------------------------------------------------------------------------]
 
 DIR="$(dirname "$0")"
@@ -26,6 +26,7 @@ TERM=$(which gnome-terminal 2>/dev/null) || \
 	TERM=$(which konsole 2>/dev/null) || \
 	TERM=$(which mate-terminal 2>/dev/null) || \
 	TERM=$(which xfce4-terminal 2>/dev/null) || \
+	TERM=$(which pantheon-terminal 2>/dev/null) || \
 	# ...else fallback to xterm if it's here
 	TERM=${TERM:=$(which xterm 2>/dev/null)}
 TITLE="Setup Cronograph Station Conky BLK (aka “crono”)"
@@ -41,6 +42,9 @@ case "$TERM" in
 		exec "$TERM" --geometry=94x24+0+0 -t "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*xfce4-terminal)
+		exec "$TERM" --geometry=94x24+0+0 -T "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
+	;;
+	*pantheon-terminal)
 		exec "$TERM" --geometry=94x24+0+0 -T "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*xterm)
