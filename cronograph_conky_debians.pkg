@@ -32,12 +32,11 @@ installApp () {
 	case $1 in
 	-i) # Install
 		echo -e "\nInstalling “${THISAPPNAME}”"
-		echo -en "Creating new directory "${CONKYDIR}"/"
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
-		{
-			sudo mkdir -p "${CONKYDIR}/"/"${CRONODIR}"/ && \
-			sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && sudo chmod 0755 "${CONKYDIR}/"/"${CRONODIR}" 2>/dev/null;
-		} && okay || error
+		sudo mkdir -p "${CONKYDIR}/"/"${CRONODIR}"/ 2>/dev/null && \
+			sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ 2>/dev/null && \
+			sudo chmod 0755 "${CONKYDIR}/"/"${CRONODIR}" 2>/dev/null && \
+		okay || error
 	;;
 	-r) # Reinstall
 		echo -en "\nShutting down conky..."
@@ -45,14 +44,15 @@ installApp () {
 		echo -en "Removing directory "${CONKYDIR}"/"${CRONODIR}""
 		sudo rm -rf "${CONKYDIR}"/"${CRONODIR}"/ 2>/dev/null && okay || error
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
-		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ 2>/dev/null && okay || error
+		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ 2>/dev/null && \
+			sudo chmod 0755 "${CONKYDIR}/"/"${CRONODIR}" 2>/dev/null && \
+		okay || error
 	;;
 	-u) # Update
 		echo -en "Backing up previous version"
-		{
-			cd "${CONKYDIR}"/;
-			tar czf /tmp/"${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/ &>/dev/null;
-		} && okay || error
+		cd "${CONKYDIR}"/  && \
+			tar czf /tmp/"${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/ &>/dev/null && \
+		okay || error
 		installApp -r
 	;;
 	esac
@@ -176,10 +176,9 @@ sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph
 #if [[ -z $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
 	echo -en "Coping fonts. Please wait..."
-	{
-		sudo mkdir -p "${FONTSDIR}/" && sudo chmod 0755 "${FONTSDIR}/" && \
-		sudo cp -f "${WIZDIR}"/ttf-cronograph/* "${FONTSDIR}/" 2>/dev/null;
-	} && okay || error
+	sudo mkdir -p "${FONTSDIR}/" && sudo chmod 0755 "${FONTSDIR}/" && \
+		sudo cp -f "${WIZDIR}"/ttf-cronograph/* "${FONTSDIR}/" 2>/dev/null && \
+	okay || error
 
 	if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
 		echo -e "\nFont configuration files aren't present."
@@ -188,10 +187,9 @@ we should provide one."
 		read -p "Do you want to create a font configuration file? [Y/n]: " ANS
 		[[ ${ANS:-Y} == [Yy] ]] && {
 			echo -en "Creating font configuration file. Please wait..."
-			{
-				mkdir -p "$HOME"/.config/fontconfig/ && chmod 0755 "$HOME"/.config/fontconfig/ && \
-				cp -f "${WIZDIR}"/fontconfig/fonts.conf "$HOME"/.config/fontconfig/ 2>/dev/null;
-			} && okay || error
+			mkdir -p "$HOME"/.config/fontconfig/ && chmod 0755 "$HOME"/.config/fontconfig/ && \
+				cp -f "${WIZDIR}"/fontconfig/fonts.conf "$HOME"/.config/fontconfig/ 2>/dev/null && \
+			okay || error
 		}
 	fi
 	echo -en "Building font information cache files. Please wait..."
