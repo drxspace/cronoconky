@@ -48,7 +48,7 @@ case "$TERM" in
 		exec "$TERM" --geometry=94x24+0+0 -T "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*xterm)
-		exec "$TERM" -geometry=94x24+0+0 -T "$TITLE" -e /bin/bash "$DIR"/"$MAININSTALLER"
+		exec "$TERM" -e /bin/bash "$DIR"/"$MAININSTALLER"
 	;;
 	*)
 		notify-send "Error" "Unable to install conky.\nNot an known terminal was found to execute the main installation package" -i face-embarrassed

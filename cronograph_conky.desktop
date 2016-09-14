@@ -20,4 +20,4 @@ X-KDE-SubstituteUID=false
 X-KDE-Username=
 X-MATE-Autostart-enabled=true
 X-XFCE-Autostart-Override=true
-OnlyShowIn=Unity;GNOME;Cinnamon;KDE;MATE;XFCE;
+OnlyShowIn=Unity;GNOME;Cinnamon;KDE;MATE;XFCE;Pantheon;
