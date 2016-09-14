@@ -12,6 +12,7 @@ WIZDIR="$(cd "$(dirname "$0")" && pwd)"
 
 CONKYDIR=/opt
 CRONODIR="cronograph_blk"
+FONTSDIR="/usr/share/fonts/truetype/ttf-cronograph"
 
 THISAPPNAME="Cronograph Station Conky BLK"
 THISAPPVER=$(cat "${WIZDIR}"/"${CRONODIR}"/.version)
@@ -32,9 +33,11 @@ installApp () {
 	-i) # Install
 		echo -e "\nInstalling “${THISAPPNAME}”"
 		echo -en "Creating new directory "${CONKYDIR}"/"
-		sudo mkdir -m 755 -p "${CONKYDIR}/" && okay || error
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
-		sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && okay || error
+		{
+			sudo mkdir -p "${CONKYDIR}/"/"${CRONODIR}"/ && sudo chmod 755 "${CONKYDIR}/"/"${CRONODIR}" && \
+			sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ 2>/dev/null;
+		} && okay || error
 	;;
 	-r) # Reinstall
 		echo -en "\nShutting down conky..."
@@ -172,9 +175,11 @@ sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph
 # Installing needed truetype weather fonts... anyway
 #if [[ -z $(fc-list | grep ConkyWeather) ]]; then
 	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
-	sudo mkdir -m 755 -p /usr/share/fonts/truetype
 	echo -en "Coping fonts. Please wait..."
-	sudo cp -fr "${WIZDIR}"/ttf-cronograph /usr/share/fonts/truetype/ 2>/dev/null && okay || error
+	{
+		sudo mkdir -p "${FONTSDIR}/" && sudo chmod 0755 "${FONTSDIR}/" && \
+		sudo cp -f "${WIZDIR}"/ttf-cronograph/* "${FONTSDIR}/" 2>/dev/null;
+	} && okay || error
 
 	if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
 		echo -e "\nFont configuration files aren't present."
@@ -182,9 +187,11 @@ sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph
 we should provide one."
 		read -p "Do you want to create a font configuration file? [Y/n]: " ANS
 		[[ ${ANS:-Y} == [Yy] ]] && {
-			mkdir -m 755 -p "$HOME"/.config/fontconfig/
 			echo -en "Creating font configuration file. Please wait..."
-			cp -f "${WIZDIR}"/fontconfig/fonts.conf "$HOME"/.config/fontconfig/ && okay || error
+			{
+				mkdir -p "$HOME"/.config/fontconfig/ && chmod 0755 "$HOME"/.config/fontconfig/ && \
+				cp -f "${WIZDIR}"/fontconfig/fonts.conf "$HOME"/.config/fontconfig/ 2>/dev/null;
+			} && okay || error
 		}
 	fi
 	echo -en "Building font information cache files. Please wait..."
