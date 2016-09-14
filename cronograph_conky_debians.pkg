@@ -35,8 +35,8 @@ installApp () {
 		echo -en "Creating new directory "${CONKYDIR}"/"
 		echo -en "Coping directory "${WIZDIR}"/"${CRONODIR}" to "${CONKYDIR}"/"
 		{
-			sudo mkdir -p "${CONKYDIR}/"/"${CRONODIR}"/ && sudo chmod 755 "${CONKYDIR}/"/"${CRONODIR}" && \
-			sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ 2>/dev/null;
+			sudo mkdir -p "${CONKYDIR}/"/"${CRONODIR}"/ && \
+			sudo cp -r "${WIZDIR}"/"${CRONODIR}"/ "${CONKYDIR}"/ && sudo chmod 0755 "${CONKYDIR}/"/"${CRONODIR}" 2>/dev/null;
 		} && okay || error
 	;;
 	-r) # Reinstall
