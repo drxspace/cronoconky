@@ -101,7 +101,7 @@ NeedPackages=""
 [[ -x $(which curl) ]] || NeedPackages=$NeedPackages"curl "
 [[ -x $(which hddtemp) ]] || NeedPackages=$NeedPackages"hddtemp "
 # conky-all package includes lualib ...but
-[[ -x $(which lua5.3) ]] || NeedPackages=$NeedPackages"lua5.3 "
+#[[ -x $(which lua5.3) ]] || NeedPackages=$NeedPackages"lua5.3 "
 [[ -x $(which sensors) ]] || NeedPackages=$NeedPackages"lm-sensors"
 
 echo -e "\nFollowing processes requires root user privileges.

@@ -45,7 +45,7 @@ case "$TERM" in
 		exec "$TERM" --geometry=94x24+0+0 -T "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*pantheon-terminal)
-		exec "$TERM" --geometry=94x24+0+0 -T "$TITLE" -x /bin/bash "$DIR/$MAININSTALLER"
+		exec "$TERM" -x /bin/bash "$DIR/$MAININSTALLER"
 	;;
 	*xterm)
 		exec "$TERM" -e /bin/bash "$DIR"/"$MAININSTALLER"
