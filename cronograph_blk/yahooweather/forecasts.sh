@@ -201,9 +201,6 @@ echo "${ForeCastScript}: Temporary stoping conky from running." 1>&2
 # Yahoo Weather RSS Feed url
 YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
 
-# Clear the conditions files
-ClearConds
-
 echo "${ForeCastScript}: Contacting the server at url: ${YahooWurl}" 1>&2
 curl -s -N -4 --retry 3 --retry-delay 3 --retry-max-time 30 -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
 	errExit "curl exits with error code: -$?-" 1
@@ -217,6 +214,9 @@ echo "${ForeCastScript}: Processing data." 1>&2
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan
 # http://zagortenay333.deviantart.com/
 # http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
+
+# Clear the conditions files
+#ClearConds
 
 # Write the current weather conditions to file
 echo "$(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1')"° > "${condDir}"/curr_cond
@@ -239,15 +239,14 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 
-echo "${ForeCastScript}: Restarting running the conky." 1>&2
-
-echo "${ForeCastScript}: Forecasts script ends up okay at $(date +%H:%M). Restarting the conky." 1>&2
-
 # We needed to remove the trap at the end or the _trapError function would have
 # been called as we exited, undoing all the script’s hard work.
 trap - EXIT
 
 # Restart the paused conky process
 pkill -SIGCONT -o -x -f "^conky.*cronorc$"
+
+echo "${ForeCastScript}: Restarting running the conky." 1>&2
+echo "${ForeCastScript}: Forecasts script ends up okay at $(date +%H:%M)." 1>&2
 
 exit 0
