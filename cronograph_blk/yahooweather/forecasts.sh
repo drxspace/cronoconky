@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # _________        ____  ____________         _______ ___________________
 # ______  /__________  |/ /___  ____/________ ___    |__  ____/___  ____/
@@ -6,25 +6,33 @@
 # / /_/ /  _  /    _    |   ____/ /  __  /_/ /_  ___ |/ /___   _  /___
 # \__,_/   /_/     /_/|_|  /_____/   _  .___/ /_/  |_|\____/   /_____/
 #                                    /_/           drxspace@gmail.com
-#
 #set -e
+
+ForeCastScript="$(basename $0)"
+
+_trapError () {
+	echo "${ForeCastScript}: Error in line ${1}: ${2:-'Unknown Error'}" 1>&2
+	pkill -SIGCONT -o -x -f "^conky.*cronorc$" # Continue the conky process first
+	exit 1
+}
+
+trap '_trapError ${LINENO} ${$?}' EXIT
 
 ############################ I M P O R T A N T #################################
 #
-# Please, check the 38th line and enter the WOEID of your own location
-# Visit https://www.yahoo.com/news/weather/ and search your location
+# Please, check the 46th line and enter the WOEID of your own location
+# Visit https://www.yahoo.com/news/weather/ and search for your location
 #
 
 # The user's directory this script stores estimated weather condition files
 condDir="${HOME}"/.config/cronograph_blk
 # ...but first make sure it exists
-[[ -d "${condDir}" ]] && rm -f "${condDir}"/* || mkdir -p "${condDir}"
-
+test -d "${condDir}" && rm -f "${condDir}"/* || mkdir -p "${condDir}"
 
 # Store temporary data in this directory...
 cacheDir="${HOME}"/.cache/cronograph_blk
 # ...but first make sure that it's clear
-[[ -d "${cacheDir}" ]] && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
+test -d "${cacheDir}" && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
 
 # Store temporary RSS Feed in this file
 cacheFile="YahooWeather.xml"
@@ -35,7 +43,7 @@ cacheFile="YahooWeather.xml"
 #                                                     ^^^^^^
 #       This is the WOEID (where on Earth ID) number we're talking.
 #       Then replace the following one with the WOEID of your own location.
-WOEID='946738'
+WOEID='12839162'
 
 # Uncomment next line to make use of English units
 #temperature_unit='F'
@@ -154,25 +162,25 @@ getImgChr () {
 
 # ClearConds () function clears the contents of conditions files
 ClearConds () {
-	echo -e "forecasts.sh: Clearing the contents of existing conditions files." >&2
+	echo "${ForeCastScript}: Clearing the contents of existing conditions files." 1>&2
 	cat /dev/null > "${condDir}"/curr_cond
 	cat /dev/null > "${condDir}"/fore_cond
 }
 
 # wrapConds () helper function wraps the given text if it's >15 chars
 wrapConds () {
-	fold -s -w 15 <<< "$*"
+	 echo "$*" | fold -s -w 15
 }
 
 # errExit () function clears the cond files so that nothing would be displayed on
 # the clock, writes an error on the stderr file and then exits the script
 errExit () {
-	echo -e "ERROR: $1" >&2
+	echo "ERROR: $1" 1>&2
 	ClearConds
 	echo "99999" > "${condDir}"/curr_cond
 	echo "error!" >> "${condDir}"/curr_cond
 	echo "$1" >> "${condDir}"/curr_cond
-	if [[ $2 -eq 1 ]]; then
+	if [ $2 -eq 1 ]; then
 		echo "Please, make sure you are connected" >> "${condDir}"/curr_cond
 	else
 		echo "Please, wait a while for retry" >> "${condDir}"/curr_cond
@@ -188,7 +196,7 @@ errExit () {
 
 # Pause the running conky process before
 pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
-echo "forecasts.sh: Temporary stoping conky from running." >&2
+echo "${ForeCastScript}: Temporary stoping conky from running." 1>&2
 
 # Yahoo Weather RSS Feed url
 YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
@@ -196,16 +204,17 @@ YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.c
 # Clear the conditions files
 ClearConds
 
-echo -e "forecasts.sh: Contacting the server at url: ${YahooWurl}" >&2
+echo "${ForeCastScript}: Contacting the server at url: ${YahooWurl}" 1>&2
 curl -s -N -4 --retry 3 --retry-delay 3 --retry-max-time 30 -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
 	errExit "curl exits with error code: -$?-" 1
 
-echo "forecasts.sh: Checking the results." >&2
-[[ -z $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}") ]] &&
+echo "${ForeCastScript}: Checking the results." 1>&2
+if [ -z "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}")" ]; then
 	errExit "Yahoo! weather server did not reply properly" 2
+fi
 
-echo "forecasts.sh: Processing data." >&2
-# Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan 
+echo "${ForeCastScript}: Processing data." 1>&2
+# Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan
 # http://zagortenay333.deviantart.com/
 # http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
 
@@ -230,10 +239,15 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 
+echo "${ForeCastScript}: Restarting running the conky." 1>&2
+
+echo "${ForeCastScript}: Forecasts script ends up okay at $(date +%H:%M). Restarting the conky." 1>&2
+
+# We needed to remove the trap at the end or the _trapError function would have
+# been called as we exited, undoing all the script’s hard work.
+trap - EXIT
+
 # Restart the paused conky process
 pkill -SIGCONT -o -x -f "^conky.*cronorc$"
-echo "forecasts.sh: Restarting running the conky." >&2
-
-echo "forecasts.sh: Forecasts script ends up okay at $(date +%H:%M). Restarting the conky." >&2
 
 exit 0
