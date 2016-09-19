@@ -195,8 +195,8 @@ errExit () {
 #
 
 # Pause the running conky process before
+echo "${ForeCastScript}: Temporary stopping conky from running." 1>&2
 pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
-echo "${ForeCastScript}: Temporary stoping conky from running." 1>&2
 
 # Yahoo Weather RSS Feed url
 YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
@@ -244,9 +244,9 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 trap - EXIT
 
 # Restart the paused conky process
+echo "${ForeCastScript}: Restarting running the conky." 1>&2
 pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 
-echo "${ForeCastScript}: Restarting running the conky." 1>&2
-echo "${ForeCastScript}: Forecasts script ends up okay at $(date +%H:%M)." 1>&2
+echo "${ForeCastScript}: Forecasts script ended up okay at $(date +%H:%M)." 1>&2
 
 exit 0
