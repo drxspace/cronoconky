@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # _________        ____  ____________         _______ ___________________
 # ______  /__________  |/ /___  ____/________ ___    |__  ____/___  ____/
@@ -8,13 +8,12 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-#rm /opt/cronograph_blk/conkyerr.log && $(which conky) -DD -c /opt/cronograph_blk/cronorc &> /opt/cronograph_blk/conkyerr.log &
 # With the background property setted to yes I don't need the &
 [[ "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
 	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
 }
 
-[[ $(pgrep -c -f "^conky.*cronorc$") -eq 0 ]] && {
+[[ "$(pgrep -c -f "^conky.*cronorc$" 2> /dev/null)" ]] && {
 	[[ "$DESKTOP_SESSION" =~ kde*|cinnamon ]] || sleep 12;
 	# Error of failed request:                         ^^
 	# BadWindow (invalid Window parameter)
