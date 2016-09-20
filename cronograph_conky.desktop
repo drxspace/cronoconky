@@ -10,6 +10,7 @@ StartupNotify=true
 Terminal=false
 Hidden=false
 NoDisplay=false
+Categories=GTK;Utility;Clock;
 X-DBUS-ServiceName=
 X-DBUS-StartupType=unique
 X-GNOME-Autostart-Delay=

@@ -34,7 +34,7 @@ else
 	echo "ASD=${ASD}" >> "${appSet}";
 fi
 
-[[ "$(pgrep -c -f "^conky.*cronorc$" 2> /dev/null)" ]] && {
+[[ -z "$(pgrep -c -f "^conky.*cronorc$" 2> /dev/null)" ]] && {
 	[[ "$DESKTOP_SESSION" =~ kde*|cinnamon ]] || sleep ${ASD};
 	# There's also the X-GNOME-Autostart-Delay property in .desktop file
 	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc || {
