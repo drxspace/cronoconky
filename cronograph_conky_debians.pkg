@@ -207,16 +207,21 @@ echo -en "Creating links for commands to control the conky...";
 } && okay || error
 
 # Add this conky to the Startup Applications list
+echo -en "\nCopying “${THISAPPNAME}” to the Applications directory..."
+{ [[ -d /usr/share/applications/ ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /usr/share/applications 2>/dev/null && okay; } || error
+
 echo -e "\nIt's essential to add this conky to the Startup Applications list
 in order to start automatically each time we login to our system."
 read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
 [[ ${ANS:-Y} == [Yy] ]] && {
 	echo -en "Setting “${THISAPPNAME}” as a Startup Application...";
-	{ [[ -d /etc/xdg/autostart ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart 2>/dev/null && okay; } || error
-} || {
-	[[ -d /etc/xdg/autostart ]] && sudo cp -f "${WIZDIR}"/cronograph_conky.desktop /etc/xdg/autostart 2>/dev/null && \
-		sudo sed -i 's/Hidden=.*/Hidden=true/' /etc/xdg/autostart/cronograph_conky.desktop
+	mkdir -p "$HOME"/.config/autostart/ && chmod 0755 "$HOME"/.config/autostart/ && \
+		cp -f "${WIZDIR}"/cronograph_conky.desktop "$HOME"/.config/autostart/cronograph_conky.desktop 2>/dev/null && \
+	okay || error
 }
+
+# Cleaning up old messy
+[[ -f /etc/xdg/autostart/cronograph_conky.desktop ]] && sudo rm -f /etc/xdg/autostart/cronograph_conky.desktop
 
 echo -e "\nIt's \033[1mhighly recommended\033[0m to logout and log back in." && sleep 2
 
