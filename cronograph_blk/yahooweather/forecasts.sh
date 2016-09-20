@@ -6,6 +6,7 @@
 # / /_/ /  _  /    _    |   ____/ /  __  /_/ /_  ___ |/ /___   _  /___
 # \__,_/   /_/     /_/|_|  /_____/   _  .___/ /_/  |_|\____/   /_____/
 #                                    /_/           drxspace@gmail.com
+#
 #set -e
 
 ForeCastScript="$(basename $0)"
@@ -18,32 +19,33 @@ _trapError () {
 
 trap '_trapError ${LINENO} ${$?}' EXIT
 
-############################ I M P O R T A N T #################################
-#
-# Please, check the 46th line and enter the WOEID of your own location
-# Visit https://www.yahoo.com/news/weather/ and search for your location
-#
-
-# The user's directory this script stores estimated weather condition files
-condDir="${HOME}"/.config/cronograph_blk
-# ...but first make sure it exists
-test -d "${condDir}" && rm -f "${condDir}"/* || mkdir -p "${condDir}"
-
-# Store temporary data in this directory...
+# Store temporary data in this directory
 cacheDir="${HOME}"/.cache/cronograph_blk
 # ...but first make sure that it's clear
-test -d "${cacheDir}" && rm -f "${cacheDir}"/* || mkdir -p "${cacheDir}"
-
+test -d "${cacheDir}" || mkdir -p "${cacheDir}"
 # Store temporary RSS Feed in this file
 cacheFile="YahooWeather.xml"
 
-# INFO: Navigate to https://www.yahoo.com/news/weather/ enter your or zip code to locate
-#       your place you want to watch and get the WOEID number at url's end e.g.
-#       http://weather.yahoo.com/greece/attica/athens-946738/
-#                                                     ^^^^^^
-#       This is the WOEID (where on Earth ID) number we're talking.
-#       Then replace the following one with the WOEID of your own location.
-WOEID='12839162'
+# The user's directory this script stores estimated weather condition files
+# plus application settings
+condDir="${HOME}"/.config/cronograph_blk
+# ...but first make sure it exists
+test -d "${condDir}" || mkdir -p "${condDir}"
+
+# Read the application settings
+appSet="${HOME}"/.config/cronograph_blk/cronorc
+if [ -f "${appSet}" ]; then source "${appSet}"; fi
+if [ -z ${WOEID} ]; then
+	WOEID='12839162';
+	echo "
+# Navigate to https://www.yahoo.com/news/weather/ enter your or zip code to locate
+# the place you want to watch and get the WOEID number at url's end e.g.
+# https://www.yahoo.com/news/weather/greece/kalivia/kalivia-12839162
+#                                                           ^^^^^^^^
+" >> "${appSet}";
+	echo "# This is my default WOEID (where on Earth ID). Next, set yours if you'd like." >> "${appSet}";
+	echo "WOEID=${WOEID}" >> "${appSet}";
+fi
 
 # Uncomment next line to make use of English units
 #temperature_unit='F'

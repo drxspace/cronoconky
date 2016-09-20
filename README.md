@@ -33,6 +33,11 @@ Thank you ALL!
   place/position.
 
 
+### CHANGES in version 6.5
+
+2016-09-20
+· user profile settings
+
 ### CHANGES in version 6.1
 
 2016-09-11

@@ -13,12 +13,23 @@
 	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
 }
 
+# Read the application settings
+appSet="${HOME}"/.config/cronograph_blk/cronorc
+if [ -f "${appSet}" ]; then source "${appSet}"; fi
+	
+if [ -z ${ASD} ]; then
+	ASD='10';
+	echo "
+# Due to the error: “Error of failed request/BadWindow (invalid Window parameter)”
+# we must delay the startup of the script for several seconds.
+" >> "${appSet}";
+	echo "# This is my default ASD (Autostart-Delay). Next, set yours if you'd like." >> "${appSet}";
+	echo "ASD=${ASD}" >> "${appSet}";
+fi
+
 [[ "$(pgrep -c -f "^conky.*cronorc$" 2> /dev/null)" ]] && {
-	[[ "$DESKTOP_SESSION" =~ kde*|cinnamon ]] || sleep 12;
-	# Error of failed request:                         ^^
-	# BadWindow (invalid Window parameter)
-	# There's also the X-GNOME-Autostart-Delay=25 property in .desktop file
-	# that can be set in order to handle this situation
+	[[ "$DESKTOP_SESSION" =~ kde*|cinnamon ]] || sleep ${ASD};
+	# There's also the X-GNOME-Autostart-Delay property in .desktop file
 	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc || {
 		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be started." -i face-worried;
 		$(${ErrorSnd}); exit 1;
