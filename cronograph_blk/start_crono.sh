@@ -13,16 +13,23 @@
 	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
 }
 
+# The user's directory this script stores estimated weather condition files
+# plus application settings
+condDir="${HOME}"/.config/cronograph_blk
+# ...but first make sure it exists
+test -d "${condDir}" || mkdir -p "${condDir}"
+
 # Read the application settings
+ASD='10'
 appSet="${HOME}"/.config/cronograph_blk/cronorc
-if [ -f "${appSet}" ]; then source "${appSet}"; fi
-	
-if [ -z ${ASD} ]; then
-	ASD='10';
-	echo "
+if [ -f "${appSet}" ]; then
+	source "${appSet}"
+else
+	echo "# Cronograph Station BLK settings
+
 # Due to the error: “Error of failed request/BadWindow (invalid Window parameter)”
 # we must delay the startup of the script for several seconds.
-" >> "${appSet}";
+" > "${appSet}";
 	echo "# This is my default ASD (Autostart-Delay). Next, set yours if you'd like." >> "${appSet}";
 	echo "ASD=${ASD}" >> "${appSet}";
 fi

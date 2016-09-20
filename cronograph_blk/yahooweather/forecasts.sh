@@ -36,7 +36,7 @@ test -d "${condDir}" || mkdir -p "${condDir}"
 appSet="${HOME}"/.config/cronograph_blk/cronorc
 if [ -f "${appSet}" ]; then source "${appSet}"; fi
 if [ -z ${WOEID} ]; then
-	WOEID='12839162';
+	WOEID='12839162'
 	echo "
 # Navigate to https://www.yahoo.com/news/weather/ enter your or zip code to locate
 # the place you want to watch and get the WOEID number at url's end e.g.
