@@ -12,7 +12,7 @@ WIZDIR="$(cd "$(dirname "$0")" && pwd)"
 
 CONKYDIR=/opt
 CRONODIR="cronograph_blk"
-FONTSDIR="/usr/share/fonts/truetype/ttf-cronograph"
+CRONOFONTSDIR="/usr/share/fonts/truetype/ttf-cronograph"
 
 THISAPPNAME="Cronograph Station Conky BLK"
 THISAPPVER=$(cat "${WIZDIR}"/"${CRONODIR}"/.version)
@@ -176,26 +176,25 @@ sudo cp -f "${WIZDIR}"/icons/cronograph256x256.png /usr/share/pixmaps/cronograph
 
 # Installing needed truetype weather fonts... anyway
 #if [[ -z $(fc-list | grep ConkyWeather) ]]; then
-	echo -e "\nFor this conky to work properly we have to install some truetype fonts."
-	echo -en "Coping fonts. Please wait..."
-	sudo mkdir -p "${FONTSDIR}/" && sudo chmod 0755 "${FONTSDIR}/" && \
-		sudo cp -f "${WIZDIR}"/ttf-cronograph/* "${FONTSDIR}/" 2>/dev/null && \
-	okay || error
-
-	if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
-		echo -e "\nFont configuration files aren't present."
-		echo -e "For this conky to show its elements aligned in the right position
+echo -e "\nFor this conky to work properly we have to install some truetype fonts."
+echo -en "Coping fonts. Please wait..."
+sudo mkdir -p "${CRONOFONTSDIR}/" && sudo chmod 0755 "${CRONOFONTSDIR}/" && \
+	sudo cp -f "${WIZDIR}"/ttf-cronograph/* "${CRONOFONTSDIR}/" 2>/dev/null && \
+okay || error
+if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.conf ]]; then
+	echo -e "\nFont configuration files aren't present."
+	echo -e "For this conky to show its elements aligned in the right position
 we should provide one."
-		read -p "Do you want to create a font configuration file? [Y/n]: " ANS
-		[[ ${ANS:-Y} == [Yy] ]] && {
-			echo -en "Creating font configuration file. Please wait..."
-			mkdir -p "$HOME"/.config/fontconfig/ && chmod 0755 "$HOME"/.config/fontconfig/ && \
-				cp -f "${WIZDIR}"/fontconfig/fonts.conf "$HOME"/.config/fontconfig/ 2>/dev/null && \
-			okay || error
-		}
-	fi
-	echo -en "Building font information cache files. Please wait..."
-	fc-cache -f &>/dev/null && okay || error
+	read -p "Do you want to create a font configuration file? [Y/n]: " ANS
+	[[ ${ANS:-Y} == [Yy] ]] && {
+		echo -en "Creating font configuration file. Please wait..."
+		mkdir -p "$HOME"/.config/fontconfig/ && chmod 0755 "$HOME"/.config/fontconfig/ && \
+			cp -f "${WIZDIR}"/fontconfig/fonts.conf "$HOME"/.config/fontconfig/ 2>/dev/null && \
+		okay || error
+	}
+fi
+echo -en "Building font information cache files. Please wait..."
+fc-cache "${CRONOFONTSDIR}" &>/dev/null && okay || error
 #fi
 
 # Creating links for commands to control the conky
