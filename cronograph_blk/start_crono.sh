@@ -23,7 +23,7 @@ test -d "${condDir}" || mkdir -p "${condDir}"
 ASD='10'
 appSet="${HOME}"/.config/cronograph_blk/cronorc
 if [ -f "${appSet}" ]; then
-	source "${appSet}"
+	source "${appSet}";
 else
 	echo "# Cronograph Station BLK settings
 
@@ -34,16 +34,16 @@ else
 	echo "ASD=${ASD}" >> "${appSet}";
 fi
 
-[[ -z "$(pgrep -c -f "^conky.*cronorc$" 2> /dev/null)" ]] && {
-	[[ "$DESKTOP_SESSION" =~ kde*|cinnamon ]] || sleep ${ASD};
+if [[ "$(pgrep -c -f "^conky.*cronorc$")" = 0 ]]; then
+	if [[ "$DESKTOP_SESSION" =~ kde*|cinnamon ]]; then sleep ${ASD}; fi
 	# There's also the X-GNOME-Autostart-Delay property in .desktop file
 	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc || {
 		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be started." -i face-worried;
 		$(${ErrorSnd}); exit 1;
 	}
-} || {
+else
 	notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK is already on the run." -i face-plain;
 	$(${ErrorSnd}); exit 2;
-}
+fi
 
 exit 0
