@@ -95,16 +95,16 @@ ${voffset 33}${goto 118}${font hooge 05_53:size=6:bold:italic}${if_empty ${batte
 ${voffset 30}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${alignc +64}${uptime_short}
 #
-${voffset -33}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
+${voffset -35}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
 ${font hooge 05_53:size=11:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
 ${voffset 2}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%B" | tr "[:lower:]" "[:upper:]"}
 ${alignc -64}${exec date +"%Y"}
 #
-${voffset -25}${font hooge 05_53:size=5:bold:italic}${alignc}HDD${font}
+${voffset -23}${font hooge 05_53:size=5:bold:italic}${alignc}HDD${font}
 #
 ${voffset 15}${alignc}${color0}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}${color}
 #
-${voffset 30}${goto 62}\
+${voffset 29}${goto 62}\
 #
 ${if_empty ${hwmon 0 temp 1}}${else}\
 ${if_empty ${exec grep "^temperature_unit='F'" /opt/cronograph_blk/yahooweather/forecasts.sh}}\
