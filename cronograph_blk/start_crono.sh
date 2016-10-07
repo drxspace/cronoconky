@@ -11,6 +11,7 @@
 # With the background property setted to yes I don't need the &
 [[ "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
 	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
+	InfoSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-information.oga"
 }
 
 # The user's directory this script stores estimated weather condition files
@@ -34,7 +35,7 @@ else
 	echo "ASD=${ASD}" >> "${appSet}";
 fi
 
-if [[ "$(pgrep -c -f "^conky.*cronorc$")" = 0 ]]; then
+if [[ "$(pgrep -c -f "^conky.*cronorc$")" -eq 0 ]]; then
 	if [[ ! "$DESKTOP_SESSION" =~ kde*|cinnamon ]]; then sleep ${ASD}; fi
 	# There's also the X-GNOME-Autostart-Delay property in .desktop file
 	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc || {
@@ -42,8 +43,12 @@ if [[ "$(pgrep -c -f "^conky.*cronorc$")" = 0 ]]; then
 		$(${ErrorSnd}); exit 1;
 	}
 else
-	notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK is already on the run." -i face-plain;
-	$(${ErrorSnd}); exit 2;
+	notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK is already on the run. I'll try to restart it..." -i face-plain;
+	$(${InfoSnd}); pkill -SIGSTOP -o -x -f "^conky.*cronorc$" 2> /dev/null && sleep 2 && pkill -SIGCONT -o -x -f "^conky.*cronorc$" 2> /dev/null;
+	[[ "$(pgrep -c -f "^conky.*cronorc$")" -ne 0 ]] || {
+		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be started." -i face-worried;
+		$(${ErrorSnd}); exit 2;
+	}
 fi
 
 exit 0

@@ -28,10 +28,12 @@ Thank you ALL!
 ## INSTALLATION
 
 - You can run [in terminal] the "install.sh" script and follow the instructions.
-- Then you should edit the ~/.conky/cronograph_se/yahooweather/forecasts.sh file
-  and follow the instructions in order to type the right WOEID of your
-  place/position.
 
+
+### CHANGES in version 6.6
+
+2016-10-06
+· new startup scripts
 
 ### CHANGES in version 6.5
 

@@ -13,6 +13,7 @@ ForeCastScript="$(basename $0)"
 
 _trapError () {
 	echo "${ForeCastScript}: Error in line ${1}: ${2:-'Unknown Error'}" 1>&2
+	trap - EXIT # We needed to remove the trap
 	pkill -SIGCONT -o -x -f "^conky.*cronorc$" # Continue the conky process first
 	exit 1
 }
@@ -162,6 +163,9 @@ getImgChr () {
 	esac
 }
 
+# Yahoo Weather RSS Feed url
+YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
+
 # ClearConds () function clears the contents of conditions files
 ClearConds () {
 	echo "${ForeCastScript}: Clearing the contents of existing conditions files." 1>&2
@@ -171,24 +175,53 @@ ClearConds () {
 
 # wrapConds () helper function wraps the given text if it's >15 chars
 wrapConds () {
-	 echo "$*" | fold -s -w 15
+	echo "$*" | fold -s -w 15
 }
 
-# errExit () function clears the cond files so that nothing would be displayed on
-# the clock, writes an error on the stderr file and then exits the script
-errExit () {
-	echo "ERROR: $1" 1>&2
-	ClearConds
-	echo "99999" > "${condDir}"/curr_cond
-	echo "error!" >> "${condDir}"/curr_cond
-	echo "$1" >> "${condDir}"/curr_cond
-	if [ $2 -eq 1 ]; then
-		echo "Please, make sure you are connected" >> "${condDir}"/curr_cond
-	else
-		echo "Please, wait a while for retry" >> "${condDir}"/curr_cond
+contactYahoo () {
+	echo "${ForeCastScript}: Contacting the server at url: ${YahooWurl}" 1>&2
+	curl -s -N -4 --retry 3 --retry-delay 3 --retry-max-time 30 -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+}
+
+checkResultsOK () {
+	echo "${ForeCastScript}: Checking the results." 1>&2
+	if [ -z "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}")" ]; then
+		return 1;
 	fi
-	pkill -SIGCONT -o -x -f "^conky.*cronorc$" # Continue the conky process first
-	exit 1
+}
+
+takeAShortLoop () {
+	local LoopCounter=2
+	echo "${ForeCastScript}: Taking a short loop." 1>&2
+	until [[ ${LoopCounter} -eq 0 ]]; do
+		contactYahoo && break;
+		let LoopCounter-=1;
+		sleep 2;
+	done
+	if [[ ${LoopCounter} -gt 0 ]] && checkResultsOK; then
+		return 0;
+	else
+		return 1;
+	fi
+}
+
+# tryOrDie () function clears the cond files so that nothing would be displayed on
+# the clock, writes an error on the stderr file and then tries to exit the script
+# normally
+tryOrDie () {
+	takeAShortLoop || {
+		echo "${ForeCastScript}: ERROR: $1" 1>&2
+		ClearConds
+		echo "99999" > "${condDir}"/curr_cond
+		echo "error!" >> "${condDir}"/curr_cond
+		echo "$1" >> "${condDir}"/curr_cond
+		if [ $2 -eq 1 ]; then
+			echo "Please, make sure you are connected" >> "${condDir}"/curr_cond
+		else
+			echo "Please, wait a while for retry" >> "${condDir}"/curr_cond
+		fi
+		trap - EXIT; exit 2
+	}
 }
 
 ###
@@ -196,29 +229,17 @@ errExit () {
 # Main section
 #
 
+contactYahoo ||	tryOrDie "curl exits with error code: -$?-" 1
+checkResultsOK || tryOrDie "Yahoo! weather server did not reply properly" 2
+
 # Pause the running conky process before
 echo "${ForeCastScript}: Temporary stopping conky from running." 1>&2
 pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
-
-# Yahoo Weather RSS Feed url
-YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
-
-echo "${ForeCastScript}: Contacting the server at url: ${YahooWurl}" 1>&2
-curl -s -N -4 --retry 3 --retry-delay 3 --retry-max-time 30 -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}" ||
-	errExit "curl exits with error code: -$?-" 1
-
-echo "${ForeCastScript}: Checking the results." 1>&2
-if [ -z "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}")" ]; then
-	errExit "Yahoo! weather server did not reply properly" 2
-fi
 
 echo "${ForeCastScript}: Processing data." 1>&2
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan
 # http://zagortenay333.deviantart.com/
 # http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
-
-# Clear the conditions files
-#ClearConds
 
 # Write the current weather conditions to file
 echo "$(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "temp=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1')"° > "${condDir}"/curr_cond
@@ -241,14 +262,14 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 
-# We needed to remove the trap at the end or the _trapError function would have
-# been called as we exited, undoing all the script’s hard work.
-trap - EXIT
-
 # Restart the paused conky process
-echo "${ForeCastScript}: Restarting running the conky." 1>&2
+echo "${ForeCastScript}: Restart running the conky." 1>&2
 pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 
 echo "${ForeCastScript}: Forecasts script ended up okay at $(date +%H:%M)." 1>&2
+
+# We needed to remove the trap at the end or the _trapError function would have
+# been called as we exited, undoing all the script’s hard work.
+trap - EXIT
 
 exit 0

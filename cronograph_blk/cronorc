@@ -84,18 +84,15 @@ lua_draw_hook_post="clock_rings",
 
 
 conky.text = [[
-# Normally, update weather info every (600/60=) 10 minutes
-${execi 600 bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}\
-# but if we had errors do it every 10 seconds ***deprecated***
-# ${if_empty ${exec head -1 "${HOME}"/.config/cronograph_blk/fore_cond}}\
-# ${execi 20 bash -c '/opt/cronograph_blk/forecasts.sh'}${endif}\
+# Update weather info every (600/60=) 10 minutes
+${execi 600 bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}
 #
-${voffset 33}${goto 118}${font hooge 05_53:size=6:bold:italic}${if_empty ${battery}}PWR${else}BAT${endif}${font}:
+${voffset 24}${goto 118}${font hooge 05_53:size=6:bold:italic}${if_empty ${battery}}PWR${else}BAT${endif}${font}:
 #
-${voffset 30}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
+${voffset 28}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
 ${alignc +64}${uptime_short}
 #
-${voffset -35}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
+${voffset -33}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
 ${font hooge 05_53:size=11:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
 ${voffset 2}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%B" | tr "[:lower:]" "[:upper:]"}
 ${alignc -64}${exec date +"%Y"}
