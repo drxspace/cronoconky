@@ -180,7 +180,7 @@ wrapConds () {
 
 contactYahoo () {
 	echo "${ForeCastScript}: Contacting the server at url: ${YahooWurl}" 1>&2
-	curl -s -N -4 --retry 3 --retry-delay 3 --retry-max-time 30 -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+	curl -s -N -4 --retry 2 --retry-delay 1 --retry-max-time 30 -f --anyauth -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
 }
 
 checkResultsOK () {
@@ -196,7 +196,7 @@ takeAShortLoop () {
 	until [[ ${LoopCounter} -eq 0 ]]; do
 		contactYahoo && break;
 		let LoopCounter-=1;
-		sleep 2;
+		sleep 1;
 	done
 	if [[ ${LoopCounter} -gt 0 ]] && checkResultsOK; then
 		return 0;

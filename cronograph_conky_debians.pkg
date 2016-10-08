@@ -48,7 +48,7 @@ installApp () {
 			sudo chmod 0755 "${CONKYDIR}/"/"${CRONODIR}" 2>/dev/null && \
 		okay || error
 	;;
-	-u) # Update
+	-u) # Upgrade
 		echo -en "Backing up previous version"
 		cd "${CONKYDIR}"/  && \
 			tar czf /tmp/"${CRONODIR}"_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz "${CRONODIR}"/ &>/dev/null && \
@@ -92,7 +92,7 @@ tput sgr0 2>/dev/null
 
 echo -e "\nThis wizard will help you install the “${THISAPPNAME}”
 conky on your computer."
-read -p "Do you want to continue? [Y/n]: " ANS
+read -p "Do you want to continue? [Y/n] " ANS
 [[ ${ANS:-Y} != [Yy] ]] && finale 1
 
 # Building needed packages list
@@ -108,22 +108,20 @@ echo -e "\nFollowing processes requires root user privileges.
 Requesting now root access if we don't already have it..."
 sudo -v || finale 3
 
-if [[ -n $NeedPackages ]]; then
+if [[ $NeedPackages ]]; then
 	echo -e "\nFirst we need to install some packages.
 Packages that would be installed are: \033[1m$NeedPackages\033[0m"
-	read -p "Do you want to continue? [Y/n]: " ANS
+	read -p "Do you want to continue? [Y/n] " ANS
 	[[ ${ANS:-Y} != [Yy] ]] && finale 2
 	sudo echo -e "Installing needed packages. Please wait..." || finale 3
 	sudo apt-get -qq install --no-install-recommends $NeedPackages 2>/dev/null || finale 3
 fi
 
-# Settind the hddtemp service to run as daemon and start the daemon
-if [[ -n $(grep '^RUN_DAEMON.*"false"' /etc/default/hddtemp) ]]; then
+# Setting the hddtemp service to run as daemon and start the daemon
+if [[ $(grep '^RUN_DAEMON.*"false"' /etc/default/hddtemp) ]]; then
 	echo -e "\nFor the HDD temperature meter to work we need to set the
-hddtemp service to run as daemon otherwise you'll get a N/A message.
-This action requires root privileges and for this reason we may
-ask for your root password."
-	read -p "Do you want to install the hddtemp service as daemon? [Y/n]: " ANS
+hddtemp service to run as daemon otherwise you'll get a N/A message."
+	read -p "Do you want to install the hddtemp service as daemon? [Y/n] " ANS
 	if [[ ${ANS:-Y} == [Yy] ]]; then
 		echo -en "Install the hddtemp service as daemon..."
 		{
@@ -133,23 +131,21 @@ ask for your root password."
 	fi
 fi
 
-# Update an already installed version
+# Reinstall or upgrade an already installed version
 if [[ -d "${CONKYDIR}"/"${CRONODIR}"/ ]]; then
-	if [[ -f "${CONKYDIR}"/"${CRONODIR}"/.version ]]; then
-		if [[ ${THISAPPBLD} = $(cat "${CONKYDIR}"/"${CRONODIR}"/.build) ]]; then
-			echo -e "\nSeems that a build of this conky is already installed and it's current."
-			read -p "Do you want to reinstall it? [y/N]: " ANS
-			[[ ${ANS:-N} != [yY] ]] && finale 4
-			installApp -r
-		elif [[ ${THISAPPBLD} > $(cat "${CONKYDIR}"/"${CRONODIR}"/.build) ]]; then
-			echo -e "\nSeems that an older build of this conky is already installed.
-If you choose to update your version, the previous version will be
+	if [[ ${THISAPPBLD} -eq $(cat "${CONKYDIR}"/"${CRONODIR}"/.build) ]]; then
+		echo -e "\nSeems that a build of this conky is already installed and it's current."
+		read -p "Do you want to reinstall it? [y/N] " ANS
+		[[ ${ANS:-N} != [yY] ]] && finale 4
+		installApp -r
+	elif [[ ${THISAPPBLD} -gt $(cat "${CONKYDIR}"/"${CRONODIR}"/.build) ]]; then
+		echo -e "\nSeems that an older build of this conky is already installed.
+If you choose to upgrade your version, the previous version will be
 backed up to a file called “${CRONODIR}_$(cat "${CONKYDIR}"/"${CRONODIR}"/.build).tar.gz” and placed
 inside the /tmp directory."
-			read -p "Do you want to update your version? [Y/n]: " ANS
-			[[ ${ANS:-Y} != [Yy] ]] && finale 5
-			installApp -u
-		fi
+		read -p "Do you want to upgrade your version? [Y/n] " ANS
+		[[ ${ANS:-Y} != [Yy] ]] && finale 5
+		installApp -u
 	fi
 else # New installation
 	installApp -i
@@ -161,7 +157,7 @@ fi
 echo -e "\nChoose the desired output unit of all the objects displaying a temperature.
 Parameters are either “celsius” or “fahrenheit”.
 The default unit is degree Celsius."
-read -p "Celsius or Fahrenheit? [C/f]: " ANS
+read -p "Celsius or Fahrenheit? [C/f] " ANS
 echo -en "Setting the temperature unit..."
 if [[ ${ANS:-C} == [Ff] ]]; then
 	{
@@ -185,7 +181,7 @@ if [[ ! -f "$HOME"/.config/fontconfig/fonts.conf ]] && [[ ! -f "$HOME"/.fonts.co
 	echo -e "\nFont configuration files aren't present."
 	echo -e "For this conky to show its elements aligned in the right position
 we should provide one."
-	read -p "Do you want to create a font configuration file? [Y/n]: " ANS
+	read -p "Do you want to create a font configuration file? [Y/n] " ANS
 	[[ ${ANS:-Y} == [Yy] ]] && {
 		echo -en "Creating font configuration file. Please wait..."
 		mkdir -p "$HOME"/.config/fontconfig/ && chmod 0755 "$HOME"/.config/fontconfig/ && \
@@ -211,7 +207,7 @@ echo -en "\nCopying “${THISAPPNAME}” to the Applications directory..."
 
 echo -e "\nIt's essential to add this conky to the Startup Applications list
 in order to start automatically each time we login to our system."
-read -p "Do you want to add this conky to the Startup Applications list? [Y/n]: " ANS
+read -p "Do you want to add this conky to the Startup Applications list? [Y/n] " ANS
 [[ ${ANS:-Y} == [Yy] ]] && {
 	echo -en "Setting “${THISAPPNAME}” as a Startup Application...";
 	mkdir -p "$HOME"/.config/autostart/ && chmod 0755 "$HOME"/.config/autostart/ && \
