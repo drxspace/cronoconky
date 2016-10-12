@@ -302,6 +302,7 @@ local function draw_clock_hands(cr,xc,yc)
 	local secs,mins,hours,secs_arc,mins_arc,hours_arc
 	local xh,yh,xm,ym,xs,ys
 	local xxh,yyh,xxm,yym,xxs,yys
+	local saved_lc
 
 	secs=os.date("%S")
 	mins=os.date("%M")
@@ -311,6 +312,7 @@ local function draw_clock_hands(cr,xc,yc)
 	mins_arc=(2*math.pi/60)*mins+secs_arc/60
 	hours_arc=(2*math.pi/12)*hours+mins_arc/12
 
+	saved_lc=cairo_get_line_cap (cr);
 	cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND)
 
 	-- Draw hour hand
@@ -373,6 +375,9 @@ local function draw_clock_hands(cr,xc,yc)
 	cairo_set_line_width(cr,3)
 	cairo_arc(cr,xc,yc,1,0,360)
 	cairo_stroke(cr)
+
+	-- Restore line cap
+	cairo_set_line_cap (cr,saved_lc)
 end
 
 function conky_clock_rings()

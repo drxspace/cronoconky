@@ -381,21 +381,37 @@ local function go_gauge_rings(display)
 end
 
 local function draw_background_circle(display)
+	local saved_lc
+	-- Draw the background circle
 	cairo_set_source_rgba(display,rgb_to_r_g_b(0xE8FAFF,0.8))
 	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
 	cairo_fill (display)
-	-- Draw the shadow ring
-	cairo_set_source_rgba(display,rgb_to_r_g_b(0xFFFFFF,0.4))
+
+	cairo_set_source_rgba (display,rgb_to_r_g_b(0xFFFFFF,0.4))
 	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
-	cairo_clip (display);
+	cairo_clip (display)
 
-	cairo_move_to (display, 300, 300);
-	cairo_line_to (display, 0, 300);
-	cairo_line_to (display, 0, 230);
-	cairo_curve_to (display, 125, 110, 155, 280, 300, 185);
-	cairo_close_path (display);
+	-- Draw the shadow line
+	-- Save line cap
+	saved_lc=cairo_get_line_cap (display)
+	cairo_set_line_cap (display,CAIRO_LINE_CAP_ROUND)
+	cairo_set_line_width (display,54)
+	cairo_move_to (display,0,84)
+	cairo_line_to (display,228,84)
+	cairo_stroke (display)
+	-- Restore line cap
+	cairo_set_line_cap (display,saved_lc)
 
+	-- Draw the shadow scheme
+	cairo_move_to (display, 300, 300)
+	cairo_line_to (display, 0, 300)
+	cairo_line_to (display, 0, 230)
+	cairo_curve_to (display, 125, 110, 155, 280, 300, 185)
+	cairo_close_path (display)
 	cairo_fill (display)
+
+	-- Reset the current clip region to its original
+	cairo_reset_clip (display)
 end
 
 -------------------------------------------------------------------------------

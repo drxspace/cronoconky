@@ -30,6 +30,13 @@ Thank you ALL!
 - You can run [in terminal] the "install.sh" script and follow the instructions.
 
 
+### CHANGES in version 6.8
+
+2016-10-12
+· new startup action
+· changes in yahoo weather script
+· changes in interface look
+
 ### CHANGES in version 6.6
 
 2016-10-06
