@@ -382,6 +382,7 @@ end
 
 local function draw_background_circle(display)
 	local saved_lc
+
 	-- Draw the background circle
 	cairo_set_source_rgba(display,rgb_to_r_g_b(0xE8FAFF,0.8))
 	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
@@ -391,7 +392,7 @@ local function draw_background_circle(display)
 	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
 	cairo_clip (display)
 
-	-- Draw the shadow line
+	-- Draw the shadow top line
 	-- Save line cap
 	saved_lc=cairo_get_line_cap (display)
 	cairo_set_line_cap (display,CAIRO_LINE_CAP_ROUND)
@@ -402,7 +403,7 @@ local function draw_background_circle(display)
 	-- Restore line cap
 	cairo_set_line_cap (display,saved_lc)
 
-	-- Draw the shadow scheme
+	-- Draw the wave shadow
 	cairo_move_to (display, 300, 300)
 	cairo_line_to (display, 0, 300)
 	cairo_line_to (display, 0, 230)

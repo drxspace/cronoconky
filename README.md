@@ -1,4 +1,4 @@
-# Cronograph Station Conky BLK
+# Cronograph Station BLK
 [![ License ](https://img.shields.io/badge/license-GPLv2-blue.svg?style=flat)](LICENSE.GPL)
 
 
@@ -17,24 +17,28 @@ Thank you ALL!
 
 ### Tested (by me) and WORKED under these enviroments
 
-- Ubuntu Unity
-- Ubuntu GNOME
-- Ubuntu KDE
-- Linux Mint 15 MATE
-- Linux Mint 16 Cinnamon
-- also works with Arch Linux distros but you need to visit my [AUR cronograph-conky] page
+- Ubuntu, all flavours
+- ArchLinux
 
 
 ## INSTALLATION
 
-- You can run [in terminal] the "install.sh" script and follow the instructions.
+- Ubuntu, run [in terminal] the "install.sh" script and follow the instructions
+- ArchLinux, you need to visit my [AUR cronograph-conky] page
 
+
+### CHANGES in version 6.9
+
+2016-11-21
+· Changes in the restart_crono script and in the Yahoo! weather script
+· Name changed to “Cronograph Station BLK”
 
 ### CHANGES in version 6.8
 
 2016-10-12
+· restart_crono --verbose
 · new startup action
-· changes in yahoo weather script
+· changes in Yahoo! weather script
 · changes in interface look
 
 ### CHANGES in version 6.6
@@ -142,7 +146,7 @@ Thank you ALL!
 · The restart_crono.sh script has changed in order to remove old *_cond files
 · Changes in the forecasts.sh in order to create an error log file
   Read carefully the info tip inside this script so that you set correctly the
-  accuWurl variable.
+  accuWurl variable
 
 2013-09-03
 · Sudden application shutdown corrected
@@ -162,7 +166,7 @@ Thank you ALL!
 · Changes in the main script: short_units property was added thanks to Sector11
 
 2013-08-17
-· Error correction in the main installer package.
+· Error correction in the main installer package
 
 2013-08-16
 · Changed the N/A state of the HDD temperature meter

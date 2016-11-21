@@ -1,8 +1,8 @@
 [Desktop Entry]
 Version=1.0
-Name=Cronograph Station Conky BLK
-GenericName=Starts or restarts Cronograph Station Conky BLK
-Comment=Cronograph Station Conky BLK is an amazing good-looking clock that displays your local weather on your desktop
+Name=Cronograph Station BLK
+GenericName=Starts or restarts Cronograph Station BLK
+Comment=Cronograph Station BLK is an amazing good-looking clock that displays your local weather on your desktop
 Exec=start_crono
 Icon=cronograph
 Type=Application

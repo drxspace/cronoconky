@@ -1,6 +1,6 @@
 conky.config = {
 --------------------------------------------------------------------------------
--- ----==[ Cronograph Station Conky BLK ]==----
+-- ----==[ Cronograph Station BLK ]==----
 --------------------------------------------------------------------------------
 
 -- ----==[ Conky settings ]==----
@@ -28,7 +28,7 @@ border_outer_margin=0,
 own_window=true,
 own_window_class="WC_Cronograph",
 own_window_hints="undecorated,below,sticky,skip_taskbar,skip_pager",
-own_window_title="Cronograph Station Conky BLK",
+own_window_title="Cronograph Station BLK",
 own_window_argb_visual=true,
 -- If ARGB visual is enabled
 --   sets background opacity to 0%
@@ -52,7 +52,7 @@ default_color="00004D",
 color0="002633",
 color1="0066CC",
 color2="FFFAFA",
-color3="FF7F50",
+color3="FF341D",
 color4="B62222",
 color5="FFB366",
 color6="DCDCDC",
@@ -128,7 +128,7 @@ ${if_match "${exec head -1 "${HOME}"/.config/cronograph_blk/curr_cond}" == "9999
 #
 ${voffset 30}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${font}
 ${alignc}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}
-${alignc}${color1}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
+${alignc}${color3}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
 #
 # Display weather information
 #
@@ -146,7 +146,7 @@ ${if_match ${execi 5 sed -n '1s/°$//p' "${HOME}"/.config/cronograph_blk/curr_co
 ${if_match ${execi 5 sed -n '1s/°$//p' "${HOME}"/.config/cronograph_blk/curr_cond} < 37}${color1}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
 ${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}${endif}${endif}${endif}${endif}${font}
 #
-# Display weather name
+# Display weather description
 #
 ${voffset -26}${alignc -66}\
 ${if_empty ${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}}\

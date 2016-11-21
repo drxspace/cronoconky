@@ -14,7 +14,7 @@ CONKYDIR=/opt
 CRONODIR="cronograph_blk"
 CRONOFONTSDIR="/usr/share/fonts/truetype/ttf-cronograph"
 
-THISAPPNAME="Cronograph Station Conky BLK"
+THISAPPNAME="Cronograph Station BLK"
 THISAPPVER=$(cat "${WIZDIR}"/"${CRONODIR}"/.version)
 THISAPPBLD=$(cat "${WIZDIR}"/"${CRONODIR}"/.build)
 
@@ -81,7 +81,7 @@ clear
 
 echo -e "          \e[37;44m┌────────────────────────────────────────────────────────────────────────╖\e[0m          "
 echo -e "          \e[37;44m│                                                                        ║\e[0m          "
-echo -e "          \e[37;44m│                     \e[1;37;44m${THISAPPNAME^^}\e[0;37;44m                       ║\e[0m          "
+echo -e "          \e[37;44m│                        \e[1;37;44m${THISAPPNAME^^}\e[0;37;44m                          ║\e[0m          "
 echo -e "          \e[37;44m│                           ver. \e[1;31;44m${THISAPPVER}-${THISAPPBLD}\e[0;37;44m                              ║\e[0m          "
 echo -e "          \e[37;44m│                                                                        ║\e[0m          "
 echo -e "          \e[37;44m│                         \e[1;33;44mINSTALLATION WIZARD\e[0;37;44m                            ║\e[0m          "
