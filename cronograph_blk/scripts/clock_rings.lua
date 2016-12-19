@@ -266,7 +266,7 @@ local hours_colour=0x383436
 local mins_colour=0x202020
 local secs_colour=0x830000
 local secs_shd_colour=0x888888
-local secs_shade_off=2
+local secs_shade_off=3
 local clock_alpha=0.7
 
 -- Do you want to show the seconds hand?

@@ -101,10 +101,7 @@ ${voffset -24}${font hooge 05_53:size=5:bold:italic}${alignc}HDD${font}
 #
 ${voffset 15}${alignc}${color0}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}${color}
 #
-#-------------------------------------------------------------------------------
-# CPU - MEM
-#-------------------------------------------------------------------------------
-${voffset 29}${goto 62}\
+${voffset 30}${goto 62}\
 #
 ${if_empty ${hwmon 0 temp 1}}${else}\
 ${if_empty ${exec grep "^temperature_unit='F'" /opt/cronograph_blk/yahooweather/forecasts.sh}}\

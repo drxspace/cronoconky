@@ -184,7 +184,7 @@ wrapConds () {
 
 contactYahoo () {
 	dispMesg "Contacting the server at url: ${YahooWurl}"
-	nice curl -s -N -4 --retry 2 --retry-max-time 2 --retry-delay 1 --max-time 5 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+	nice curl -s -N -4 --retry 2 --retry-max-time 5 --retry-delay 1 --max-time 12 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
 }
 
 checkResultsOK () {
