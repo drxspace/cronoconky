@@ -15,17 +15,21 @@
 
 pkill -SIGCONT -o -x -f "^conky.*cronorc$" 2> /dev/null
 pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
+	# Verbose?
+	if [[ $# -ge 1 ]] && [[ "$1" == @(-v|--verbose) ]]; then
+		bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh';
+		sleep 3;
+	fi
 	sleep 2;
 	pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
 		pkill -SIGKILL -o -x -f "^conky.*cronorc$" 2> /dev/null && {
-			notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be restarted so it was killed." -i face-worried;
+			notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK couldn't be restarted so it was killed." -i face-worried;
 			$(${KillSnd}); exit 1;
 		}
 	}
-	# Verbose?
-	if [[ $# -ge 1 ]] && [[ "$1" == @(-v|--verbose) ]]; then bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh'; fi
 	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc && {
-		sleep 5; notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK was restarted.\nYou may have to wait for a few seconds." -i face-smile;
+		sleep 10;
+		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK was restarted.\nYou may have to wait for a few seconds." -i face-smile;
 		$(${RestartSnd});
 	}
 } || {

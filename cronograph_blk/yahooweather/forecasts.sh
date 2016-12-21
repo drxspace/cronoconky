@@ -172,7 +172,7 @@ YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.c
 
 # ClearConds () function clears the contents of conditions files
 ClearConds () {
-	dispMesg "Clearing the contents of existing conditions files."
+	dispMesg "Clearing the contents of existing conditions files"
 	cat /dev/null > "${condDir}"/curr_cond
 	cat /dev/null > "${condDir}"/fore_cond
 }
@@ -184,27 +184,33 @@ wrapConds () {
 
 contactYahoo () {
 	dispMesg "Contacting the server at url: ${YahooWurl}"
-	nice curl -s -N -4 --retry 2 --retry-max-time 5 --retry-delay 1 --max-time 12 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+	# --retry-connrefused Added in 7.52.0.
+	nice curl -s -N -4 --connect-timeout 10 --retry 2 --retry-max-time 10 --retry-delay 5 --max-time 30 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
 }
 
 checkResultsOK () {
-	dispMesg "Checking the results."
+	dispMesg "Checking the results..."
 	if [ -z "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}")" ]; then
+		dispMesg " ~> yweather:forecast wasn't found in the file ${cacheFile}"
 		return 1;
+	else
+		dispMesg " ~> Results OK"
+		return 0;
 	fi
 }
 
 takeAShortLoop () {
 	local LoopCounter=2
-	dispMesg "Taking a short loop of attempts to contact the server."
+	dispMesg "Taking a short loop of attempts to contact the server..."
 	until [[ ${LoopCounter} -eq 0 ]]; do
 		contactYahoo && checkResultsOK && break;
 		let LoopCounter-=1;
 	done
 	if [[ ${LoopCounter} -gt 0 ]]; then
+		dispMesg "==> Loop OK"
 		return 0;
 	else
-		dispMesg "The server did not respond in time."
+		dispMesg "==> The server did not respond as expected"
 		return 1;
 	fi
 }
@@ -222,7 +228,7 @@ tryOrDie () {
 		if [ $2 -eq 1 ]; then
 			echo "Please, make sure you are connected" >> "${condDir}"/curr_cond
 		else
-			echo "Please, wait a while for retry" >> "${condDir}"/curr_cond
+			echo "Please, wait a while for retry..." >> "${condDir}"/curr_cond
 		fi
 		trap - EXIT; exit 2
 	}
@@ -233,14 +239,14 @@ tryOrDie () {
 # Main section
 #
 
-contactYahoo ||	tryOrDie "curl exits with error code: -$?-" 1
+contactYahoo ||	tryOrDie "cURL exits with error code: -$?-" 1
 checkResultsOK || tryOrDie "Yahoo! weather server did not reply properly" 2
 
 # Pause the running conky process before
-dispMesg "Temporary stopping conky from running."
+dispMesg "Temporary stopping conky from running"
 pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 
-dispMesg "Processing data."
+dispMesg "Processing data..."
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan
 # http://zagortenay333.deviantart.com/
 # http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
@@ -267,10 +273,10 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 
 # Restart the paused conky process
-dispMesg "Restart running the conky."
+dispMesg "Restart running the conky"
 pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 
-dispMesg "Forecasts script ended up okay at $(date +%H:%M)."
+dispMesg "Forecasts script ended up okay at $(date +%H:%M)"
 
 # We needed to remove the trap at the end or the _trapError function would have
 # been called as we exited, undoing all the script’s hard work.
