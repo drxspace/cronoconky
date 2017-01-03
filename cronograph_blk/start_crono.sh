@@ -29,7 +29,7 @@ else
 	echo "# Cronograph Station BLK settings
 
 # Due to the error: “Error of failed request/BadWindow (invalid Window parameter)”
-# we must delay the startup of the script for several seconds.
+# we need to delay the startup of the script for several seconds.
 " > "${appSet}";
 	echo "# This is my default ASD (Autostart-Delay). Next, set yours if you'd like." >> "${appSet}";
 	echo "ASD=${ASD}" >> "${appSet}";

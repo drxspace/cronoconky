@@ -55,14 +55,6 @@ fi
 # Uncomment next line to make use of English units
 #temperature_unit='F'
 
-# User Agent String from http://www.useragentstring.com
-# Suppose we're using Chrome/30.0.1599.17
-#UserAgent='Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36'
-# Suppose we're using Chrome/41.0.2228.0
-#UserAgent='Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
-# Suppose we're using Firefox/43.0
-UserAgent='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'
-
 # getImgChr () function converts
 # YAHOO! weather icon codes (http://developer.yahoo.com/weather/#codes)
 # to characters for use with the ConkyWeather truetype fonts
@@ -170,23 +162,37 @@ getImgChr () {
 # Yahoo Weather RSS Feed url
 YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
 
-# ClearConds () function clears the contents of conditions files
-ClearConds () {
-	dispMesg "Clearing the contents of existing conditions files"
-	cat /dev/null > "${condDir}"/curr_cond
-	cat /dev/null > "${condDir}"/fore_cond
+# User Agent String from http://www.useragentstring.com
+# Suppose we're using Chrome/30.0.1599.17
+#UserAgent='Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36'
+# Suppose we're using Chrome/41.0.2228.0
+#UserAgent='Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
+# Suppose we're using Firefox/43.0
+UserAgent='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'
+
+# urldecode () function that decodes the given URL string
+urldecode() {
+	local url_encoded="${1//+/ }"
+	printf '%b' "${url_encoded//%/\\x}"
 }
 
-# wrapConds () helper function wraps the given text if it's >15 chars
+# wrapConds () function that wraps the given string if it's >15 chars
 wrapConds () {
 	echo "$*" | fold -s -w 15
 }
 
+# ******************************************************************************
+
+shortLoopCounter=10
+
 contactYahoo () {
-	dispMesg "Contacting the server at url: ${YahooWurl}"
+	dispMesg "Contacting the Yahoo server..."
+#	dispMesg "Contacting the server at url:\n$(urldecode ${YahooWurl})"
 	# --retry-connrefused Added in 7.52.0.
-	nice curl -s -N -4 --connect-timeout 10 --retry 2 --retry-max-time 10 --retry-delay 5 --max-time 30 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+	curl -s -N -4 --connect-timeout 20 --retry 2 --retry-max-time 15 --retry-delay 5 --max-time 55 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
 }
+
+# ******************************************************************************
 
 checkResultsOK () {
 	dispMesg "Checking the results..."
@@ -200,14 +206,13 @@ checkResultsOK () {
 }
 
 takeAShortLoop () {
-	local LoopCounter=2
-	dispMesg "Taking a short loop of attempts to contact the server..."
-	until [[ ${LoopCounter} -eq 0 ]]; do
-		contactYahoo && checkResultsOK && break;
-		let LoopCounter-=1;
+	dispMesg "Taking a short loop of ${shortLoopCounter} more attempts to contact the server..."
+	until [[ ${shortLoopCounter} -eq 0 ]]; do
+		sleep 2 && contactYahoo && checkResultsOK && break;
+		let shortLoopCounter-=1; # let: -=: syntax error
 	done
-	if [[ ${LoopCounter} -gt 0 ]]; then
-		dispMesg "==> Loop OK"
+	if [[ ${shortLoopCounter} -gt 0 ]]; then
+		dispMesg "==> Loop done OK"
 		return 0;
 	else
 		dispMesg "==> The server did not respond as expected"
@@ -215,21 +220,21 @@ takeAShortLoop () {
 	fi
 }
 
-# tryOrDie () function clears the cond files so that nothing would be displayed on
+# retryOrDie () function clears the cond files so that nothing would be displayed on
 # the clock, writes an error on the stderr file and then tries to exit the script
 # normally
-tryOrDie () {
+retryOrDie () {
 	takeAShortLoop || {
+		pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 		dispMesg "ERROR: $1"
-		ClearConds
+		dispMesg "Clearing the contents of existing conditions files"
+		cat /dev/null > "${condDir}"/curr_cond
+		cat /dev/null > "${condDir}"/fore_cond
 		echo "99999" > "${condDir}"/curr_cond
 		echo "error!" >> "${condDir}"/curr_cond
 		echo "$1" >> "${condDir}"/curr_cond
-		if [ $2 -eq 1 ]; then
-			echo "Please, make sure you are connected" >> "${condDir}"/curr_cond
-		else
-			echo "Please, wait a while for retry..." >> "${condDir}"/curr_cond
-		fi
+		echo "Please, wait a while for a retry attempt..." >> "${condDir}"/curr_cond
+		pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 		trap - EXIT; exit 2
 	}
 }
@@ -239,8 +244,7 @@ tryOrDie () {
 # Main section
 #
 
-contactYahoo ||	tryOrDie "cURL exits with error code: -$?-" 1
-checkResultsOK || tryOrDie "Yahoo! weather server did not reply properly" 2
+{ contactYahoo && checkResultsOK; } ||	retryOrDie "Yahoo! weather server did not reply properly"
 
 # Pause the running conky process before
 dispMesg "Temporary stopping conky from running"
