@@ -183,13 +183,14 @@ wrapConds () {
 
 # ******************************************************************************
 
-shortLoopCounter=10
+shortLoopCounter=9
 
 contactYahoo () {
 	dispMesg "Contacting the Yahoo server..."
 #	dispMesg "Contacting the server at url:\n$(urldecode ${YahooWurl})"
-	# --retry-connrefused Added in 7.52.0.
-	curl -s -N -4 --connect-timeout 20 --retry 2 --retry-max-time 15 --retry-delay 5 --max-time 55 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+	# --retry-connrefused Added in 7.52.0
+	# --retry 2 --retry-max-time 5 --retry-delay 2 --max-time 35
+	curl -s -N -4 --connect-timeout 5 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
 }
 
 # ******************************************************************************
@@ -226,14 +227,15 @@ takeAShortLoop () {
 retryOrDie () {
 	takeAShortLoop || {
 		pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
-		dispMesg "ERROR: $1"
+		dispMesg "ERROR: Yahoo! weather server did not reply properly"
 		dispMesg "Clearing the contents of existing conditions files"
 		cat /dev/null > "${condDir}"/curr_cond
 		cat /dev/null > "${condDir}"/fore_cond
 		echo "99999" > "${condDir}"/curr_cond
 		echo "error!" >> "${condDir}"/curr_cond
-		echo "$1" >> "${condDir}"/curr_cond
-		echo "Please, wait a while for a retry attempt..." >> "${condDir}"/curr_cond
+		echo "Yahoo! weather server did not reply properly" >> "${condDir}"/curr_cond
+		echo "Connection was tried 10 times but failed" >> "${condDir}"/curr_cond
+		echo "Please, wait a while for a retry attempt" >> "${condDir}"/curr_cond
 		pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 		trap - EXIT; exit 2
 	}
@@ -244,7 +246,7 @@ retryOrDie () {
 # Main section
 #
 
-{ contactYahoo && checkResultsOK; } ||	retryOrDie "Yahoo! weather server did not reply properly"
+{ contactYahoo && checkResultsOK; } || retryOrDie
 
 # Pause the running conky process before
 dispMesg "Temporary stopping conky from running"

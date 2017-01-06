@@ -27,6 +27,12 @@ Thank you ALL!
 - ArchLinux, you need to visit my [AUR cronograph-conky] page
 
 
+### CHANGES in version 7.0
+
+2017-01-06
+· new startup action
+· changes in Yahoo! weather script
+
 ### CHANGES in version 6.9
 
 2016-11-21

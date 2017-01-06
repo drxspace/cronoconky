@@ -79,7 +79,7 @@ short_units=true,
 --------------------------------------------------------------------------------
 lua_load="/opt/cronograph_blk/scripts/multi_rings.lua /opt/cronograph_blk/scripts/clock_rings.lua",
 lua_draw_hook_pre="multi_rings",
-lua_draw_hook_post="clock_rings",
+lua_draw_hook_post="clock_rings"
 };
 
 
@@ -127,8 +127,9 @@ ${if_match "${exec head -1 "${HOME}"/.config/cronograph_blk/curr_cond}" == "9999
 # Display an error message
 #
 ${voffset 30}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${font}
-${alignc}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}
-${alignc}${color3}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
+${voffset 2}${alignc}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}
+${alignc}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}
+${voffset 1}${alignc}${color3}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
 #
 # Display weather information
 #
@@ -176,11 +177,11 @@ ${voffset -20}${alignc -52}${execi 5 sed -n '9p' "${HOME}"/.config/cronograph_bl
 ${if_empty ${battery}}
 # At first, we assume that there's no battery so the led is always green
 ${image /opt/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 60}${image /opt/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 45}${image /opt/cronograph_blk/images/Green.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 30}${image /opt/cronograph_blk/images/Yellow.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 20}${image /opt/cronograph_blk/images/Orange.png -p 134,22 -s 30x30}
-${else}${if_match ${battery_percent BAT1} > 15}${image /opt/cronograph_blk/images/Purple.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT0} > 60}${image /opt/cronograph_blk/images/Dark_Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT0} > 45}${image /opt/cronograph_blk/images/Green.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT0} > 30}${image /opt/cronograph_blk/images/Yellow.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT0} > 20}${image /opt/cronograph_blk/images/Orange.png -p 134,22 -s 30x30}
+${else}${if_match ${battery_percent BAT0} > 15}${image /opt/cronograph_blk/images/Purple.png -p 134,22 -s 30x30}
 ${else}${image /opt/cronograph_blk/images/Red.png -p 134,22 -s 30x30}${endif}${endif}${endif}${endif}${endif}
 ${endif}
 #${execpi 1 cat /opt/cronograph_blk/scripts/blinkingLED}
