@@ -125,14 +125,15 @@ ${voffset 6}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${f
 ${if_match "${exec head -1 "${HOME}"/.config/cronograph_blk/curr_cond}" == "99999"}\
 #
 # Display an error message
-#
-${voffset 30}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${font}
+#-------------------------------------------------------------------------------
+${voffset 24}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${font}
 ${voffset 2}${alignc}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}
 ${alignc}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}
-${voffset 1}${alignc}${color3}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
+${voffset 1}${alignc}${color3}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}
+${alignc}${execi 5 sed -n '6p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
 #
 # Display weather information
-#
+#-------------------------------------------------------------------------------
 ${voffset 20}${alignc +64}${font hooge 05_53:size=10:bold}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/curr_cond}${font}
 ${alignc +66}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}
 #
@@ -148,7 +149,7 @@ ${if_match ${execi 5 sed -n '1s/°$//p' "${HOME}"/.config/cronograph_blk/curr_co
 ${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}${endif}${endif}${endif}${endif}${font}
 #
 # Display weather description
-#
+#-------------------------------------------------------------------------------
 ${voffset -26}${alignc -66}\
 ${if_empty ${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}}\
 ${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}${voffset -5}

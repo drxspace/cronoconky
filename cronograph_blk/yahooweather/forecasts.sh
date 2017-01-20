@@ -183,14 +183,14 @@ wrapConds () {
 
 # ******************************************************************************
 
-shortLoopCounter=9
+shortLoopCounter=4
 
 contactYahoo () {
 	dispMesg "Contacting the Yahoo server..."
 #	dispMesg "Contacting the server at url:\n$(urldecode ${YahooWurl})"
 	# --retry-connrefused Added in 7.52.0
 	# --retry 2 --retry-max-time 5 --retry-delay 2 --max-time 35
-	curl -s -N -4 --connect-timeout 5 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+	curl -s -N -4 --connect-timeout 10 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
 }
 
 # ******************************************************************************
@@ -209,11 +209,13 @@ checkResultsOK () {
 takeAShortLoop () {
 	dispMesg "Taking a short loop of ${shortLoopCounter} more attempts to contact the server..."
 	until [[ ${shortLoopCounter} -eq 0 ]]; do
-		sleep 2 && contactYahoo && checkResultsOK && break;
+		contactYahoo && checkResultsOK && break;
+		sleep 2;
 		let shortLoopCounter-=1; # let: -=: syntax error
 	done
 	if [[ ${shortLoopCounter} -gt 0 ]]; then
 		dispMesg "==> Loop done OK"
+		sleep 2;
 		return 0;
 	else
 		dispMesg "==> The server did not respond as expected"
@@ -232,10 +234,11 @@ retryOrDie () {
 		cat /dev/null > "${condDir}"/curr_cond
 		cat /dev/null > "${condDir}"/fore_cond
 		echo "99999" > "${condDir}"/curr_cond
-		echo "error!" >> "${condDir}"/curr_cond
+		echo "weather error" >> "${condDir}"/curr_cond
 		echo "Yahoo! weather server did not reply properly" >> "${condDir}"/curr_cond
-		echo "Connection was tried 10 times but failed" >> "${condDir}"/curr_cond
-		echo "Please, wait a while for a retry attempt" >> "${condDir}"/curr_cond
+		echo "Connection was tried 5 times but failed" >> "${condDir}"/curr_cond
+		echo "Please, check your Internet connection" >> "${condDir}"/curr_cond
+		echo "or wait a while for a retry attempt" >> "${condDir}"/curr_cond
 		pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 		trap - EXIT; exit 2
 	}

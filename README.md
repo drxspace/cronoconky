@@ -7,8 +7,8 @@
 
 #Some words
 So many things should go here but I'm so sorry that I can't do it with my two
-plus one fingers that ms left me...
-Anyway, if you like it as I do drop me a "letter" telling me that :)
+plus one fingers that ms disease left me...
+Anyways, if you like it as I do, drop me a "letter" telling me that :)
 Have fun love and joy ...and don't forget... anything else...
 put it on the weather :-)
 
@@ -26,6 +26,12 @@ Thank you ALL!
 - Ubuntu, run [in terminal] the "install.sh" script and follow the instructions
 - ArchLinux, you need to visit my [AUR cronograph-conky] page
 
+
+### CHANGES in version 7.1
+
+2017-01-06
+· 
+· 
 
 ### CHANGES in version 7.0
 
