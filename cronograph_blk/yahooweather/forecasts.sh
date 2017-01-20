@@ -167,8 +167,10 @@ YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.c
 #UserAgent='Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36'
 # Suppose we're using Chrome/41.0.2228.0
 #UserAgent='Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'
-# Suppose we're using Firefox/43.0
-UserAgent='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'
+# Suppose we're using Firefox/40.1
+#UserAgent='Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1'
+# Suppose we're using cURL/7.9.8
+UserAgent='curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpenSSL 0.9.6b) (ipv6 enabled)'
 
 # urldecode () function that decodes the given URL string
 urldecode() {
