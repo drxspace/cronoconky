@@ -23,7 +23,7 @@ Thank you ALL!
 
 ## INSTALLATION
 
-- Ubuntu, run [in terminal] the "install.sh" script and follow the instructions
+- Ubuntu, run [in terminal] the "debians_install.sh" script and follow the instructions
 - ArchLinux, you need to visit my [AUR cronograph-conky] page
 
 
