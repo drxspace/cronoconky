@@ -29,7 +29,7 @@ Thank you ALL!
 
 ### CHANGES in version 7.1
 
-2017-01-06
+2017-01-21
 · 
 · 
 
