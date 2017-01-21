@@ -187,7 +187,7 @@ wrapConds () {
 
 # ******************************************************************************
 
-shortLoopCounter=4
+shortLoopCounter=14
 
 contactYahoo () {
 	dispMesg "Contacting the Yahoo server..."
@@ -240,7 +240,7 @@ retryOrDie () {
 		echo "99999" > "${condDir}"/curr_cond
 		echo "weather error" >> "${condDir}"/curr_cond
 		echo "Yahoo! weather server did not reply properly" >> "${condDir}"/curr_cond
-		echo "Connection was tried 5 times but failed" >> "${condDir}"/curr_cond
+		echo "Connection was tried 15! times but failed" >> "${condDir}"/curr_cond
 		echo "Please, check your Internet connection" >> "${condDir}"/curr_cond
 		echo "or wait a while for a retry attempt" >> "${condDir}"/curr_cond
 		pkill -SIGCONT -o -x -f "^conky.*cronorc$"
