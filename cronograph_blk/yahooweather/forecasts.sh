@@ -214,7 +214,7 @@ takeAShortLoop () {
 	dispMesg "Taking a short loop of ${shortLoopCounter} more attempts to contact the server..."
 	until [[ ${shortLoopCounter} -eq 0 ]]; do
 		contactYahoo && checkResultsOK && break;
-		sleep 2;
+		wait; sleep 1;
 		let shortLoopCounter-=1; # let: -=: syntax error
 	done
 	if [[ ${shortLoopCounter} -gt 0 ]]; then
