@@ -38,20 +38,13 @@ fi
 if [[ "$(pgrep -c -f "^conky.*cronorc$")" -eq 0 ]]; then
 	if [[ ! "$DESKTOP_SESSION" =~ kde*|cinnamon ]]; then sleep ${ASD}; fi
 	# There's also the X-GNOME-Autostart-Delay property in .desktop file
-	nice -n 5 conky -d -q -c /opt/cronograph_blk/cronorc || {
+	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc || {
 		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be started." -i face-worried;
 		$(${ErrorSnd}); exit 1;
 	}
 else
 	notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK is already on the run. I'll try to restart it..." -i face-plain; $(${InfoSnd});
 	restart_crono
-#	pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
-#		nice -n 5 conky -d -q -c /opt/cronograph_blk/cronorc
-#	}
-#	[[ "$(pgrep -c -f "^conky.*cronorc$")" -ne 0 ]] || {
-#		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be restarted." -i face-worried;
-#		$(${ErrorSnd}); exit 2;
-#	}
 fi
 
 exit 0
