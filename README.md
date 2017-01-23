@@ -29,6 +29,10 @@ Thank you ALL!
 
 ### CHANGES in version 7.1
 
+2017-01-23
+· do not demonize
+· more persistent
+
 2017-01-21
 · 
 · 
