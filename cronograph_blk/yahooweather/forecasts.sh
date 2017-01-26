@@ -187,7 +187,7 @@ wrapConds () {
 
 # ******************************************************************************
 
-shortLoopCounter=14
+shortLoopCounter=4
 
 contactYahoo () {
 	dispMesg "Contacting the Yahoo server..."
@@ -214,7 +214,7 @@ takeAShortLoop () {
 	dispMesg "Taking a short loop of ${shortLoopCounter} more attempts to contact the server..."
 	until [[ ${shortLoopCounter} -eq 0 ]]; do
 		contactYahoo && checkResultsOK && break;
-		wait; sleep 1;
+		wait; sleep 2;
 		let shortLoopCounter-=1; # let: -=: syntax error
 	done
 	if [[ ${shortLoopCounter} -gt 0 ]]; then
@@ -234,15 +234,15 @@ retryOrDie () {
 	takeAShortLoop || {
 		pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 		dispMesg "ERROR: Yahoo! weather server did not reply properly"
-		dispMesg "Clearing the contents of existing conditions files"
-		cat /dev/null > "${condDir}"/curr_cond
-		cat /dev/null > "${condDir}"/fore_cond
-		echo "99999" > "${condDir}"/curr_cond
-		echo "weather error" >> "${condDir}"/curr_cond
-		echo "Yahoo! weather server did not reply properly" >> "${condDir}"/curr_cond
-		echo "Connection was tried 15! times but failed" >> "${condDir}"/curr_cond
-		echo "Please, check your Internet connection" >> "${condDir}"/curr_cond
-		echo "or wait a while for a retry attempt" >> "${condDir}"/curr_cond
+#		dispMesg "Clearing the contents of existing conditions files"
+#		cat /dev/null > "${condDir}"/curr_cond
+#		cat /dev/null > "${condDir}"/fore_cond
+#		echo "99999" > "${condDir}"/curr_cond
+#		echo "weather error" >> "${condDir}"/curr_cond
+#		echo "Yahoo! weather server did not reply properly" >> "${condDir}"/curr_cond
+#		echo "Connection was tried 15! times but failed" >> "${condDir}"/curr_cond
+#		echo "Please, check your Internet connection" >> "${condDir}"/curr_cond
+#		echo "or wait a while for a retry attempt" >> "${condDir}"/curr_cond
 		pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 		trap - EXIT; exit 2
 	}

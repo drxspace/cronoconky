@@ -27,6 +27,11 @@ Thank you ALL!
 - ArchLinux, you need to visit my [AUR cronograph-conky] page
 
 
+### CHANGES in version 7.5
+
+2017-01-26
+· do not show the weather error
+
 ### CHANGES in version 7.1
 
 2017-01-23
@@ -34,8 +39,8 @@ Thank you ALL!
 · more persistent
 
 2017-01-21
-· 
-· 
+· I can not type
+· I can not type
 
 ### CHANGES in version 7.0
 

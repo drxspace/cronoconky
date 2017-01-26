@@ -122,15 +122,15 @@ ${voffset 6}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${f
 # Today's weather
 #-------------------------------------------------------------------------------
 #
-${if_match "${exec head -1 "${HOME}"/.config/cronograph_blk/curr_cond}" == "99999"}\
+#${if_match "${exec head -1 "${HOME}"/.config/cronograph_blk/curr_cond}" == "99999"}\
 #
 # Display an error message
 #-------------------------------------------------------------------------------
-${voffset 24}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${font}
-${voffset 2}${alignc}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}
-${alignc}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}
-${voffset 1}${alignc}${color3}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}
-${alignc}${execi 5 sed -n '6p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
+#${voffset 24}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${font}
+#${voffset 2}${alignc}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}
+#${alignc}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}
+#${voffset 1}${alignc}${color3}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}
+#${alignc}${execi 5 sed -n '6p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
 #
 # Display weather information
 #-------------------------------------------------------------------------------
@@ -155,13 +155,13 @@ ${if_empty ${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}}\
 ${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}${voffset -5}
 ${else}${voffset -5}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}
 ${alignc -65}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}${endif}
-${endif}
+#${endif}
 #
 #-------------------------------------------------------------------------------
 # Three days forecasts
 #-------------------------------------------------------------------------------
 #
-${font ConkyWeather:size=16}${goto 88}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/fore_cond}
+${voffset  10}${font ConkyWeather:size=16}${goto 88}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/fore_cond}
 ${voffset  -9}${goto 139}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/fore_cond}
 ${voffset -31}${goto 192}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/fore_cond}${font}
 #
