@@ -10,7 +10,7 @@ total_run_times=0,
 background=true,
 double_buffer=true,
 -- Imlib2 image cache size, in bytes. Set to 0 to disable the image cache
-imlib_cache_size=0,
+--imlib_cache_size=0,
 no_buffers=true,
 --temperature_unit="fahrenheit",
 
@@ -48,7 +48,7 @@ draw_shades=false,
 
 -- ----==[ Color settings ]==----
 --------------------------------------------------------------------------------
-default_color="00004D",
+default_color="00000D",
 color0="002633",
 color1="0066CC",
 color2="FFFAFA",
@@ -84,8 +84,11 @@ lua_draw_hook_post="clock_rings"
 
 
 conky.text = [[
-# Update weather info every (600/60=) 10 minutes
-${execi 600 bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}
+#
+${image /opt/cronograph_blk/images/bg.png -p 0,0 -s 300x300}\
+#
+# Update weather info every (300/60=) 5 minutes
+${execi 300 bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}
 #
 ${voffset 24}${goto 118}${font hooge 05_53:size=6:bold:italic}${if_empty ${battery}}PWR${else}BAT${endif}${font}:
 #
@@ -97,9 +100,9 @@ ${font hooge 05_53:size=11:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; d
 ${voffset 2}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%B" | tr "[:lower:]" "[:upper:]"}
 ${alignc -64}${exec date +"%Y"}
 #
-${voffset -24}${font hooge 05_53:size=5:bold:italic}${alignc}HDD${font}
+${voffset -23}${font hooge 05_53:size=5:bold:italic}${alignc}HDD${font}
 #
-${voffset 15}${alignc}${color0}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}${color}
+${voffset 14}${alignc}${color0}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}${color}
 #
 ${voffset 30}${goto 62}\
 #
@@ -122,19 +125,15 @@ ${voffset 6}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${f
 # Today's weather
 #-------------------------------------------------------------------------------
 #
-#${if_match "${exec head -1 "${HOME}"/.config/cronograph_blk/curr_cond}" == "99999"}\
+${if_match "${execi 5 tail -1 ${HOME}/.config/cronograph_blk/fore_cond}" == "1"}\
 #
-# Display an error message
+# Display an info message
 #-------------------------------------------------------------------------------
-#${voffset 24}${alignc}${font hooge 05_53:size=10:bold:italic}${color8}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${font}
-#${voffset 2}${alignc}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}
-#${alignc}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/curr_cond}
-#${voffset 1}${alignc}${color3}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}
-#${alignc}${execi 5 sed -n '6p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
+${voffset 28}${alignc -4}${font hooge 05_53:size=10:bold:italic}${color5}POSSIBLY INACCURACY!!!${color}${font}${else}${voffset 33}${endif}
 #
 # Display weather information
 #-------------------------------------------------------------------------------
-${voffset 20}${alignc +64}${font hooge 05_53:size=10:bold}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/curr_cond}${font}
+${voffset -18}${alignc +64}${font hooge 05_53:size=10:bold}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/curr_cond}${font}
 ${alignc +66}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}
 #
 ${voffset -40}${goto 124}${font ConkyWeather:size=38}\
@@ -148,7 +147,7 @@ ${if_match ${execi 5 sed -n '1s/°$//p' "${HOME}"/.config/cronograph_blk/curr_co
 ${if_match ${execi 5 sed -n '1s/°$//p' "${HOME}"/.config/cronograph_blk/curr_cond} < 37}${color1}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}${color}${else}\
 ${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/curr_cond}${endif}${endif}${endif}${endif}${font}
 #
-# Display weather description
+# Display weather description split long lines
 #-------------------------------------------------------------------------------
 ${voffset -26}${alignc -66}\
 ${if_empty ${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}}\
@@ -161,17 +160,17 @@ ${alignc -65}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/curr_cond}${
 # Three days forecasts
 #-------------------------------------------------------------------------------
 #
-${voffset  10}${font ConkyWeather:size=16}${goto 88}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/fore_cond}
-${voffset  -9}${goto 139}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/fore_cond}
-${voffset -31}${goto 192}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/fore_cond}${font}
+${voffset   8}${font ConkyWeather:size=16}${goto 88}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/fore_cond}
+${voffset  -5}${goto 139}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/fore_cond}
+${voffset -35}${goto 192}${execi 5 sed -n '3p' "${HOME}"/.config/cronograph_blk/fore_cond}${font}
 #
 ${voffset  -3}${alignc +52}${execi 5 sed -n '4p' "${HOME}"/.config/cronograph_blk/fore_cond}
-${voffset   2}${alignc}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/fore_cond}
-${voffset -20}${alignc -52}${execi 5 sed -n '6p' "${HOME}"/.config/cronograph_blk/fore_cond}
+${voffset   6}${alignc}${execi 5 sed -n '5p' "${HOME}"/.config/cronograph_blk/fore_cond}
+${voffset -24}${alignc -52}${execi 5 sed -n '6p' "${HOME}"/.config/cronograph_blk/fore_cond}
 #
-${voffset  -3}${alignc +52}${execi 5 sed -n '7p' "${HOME}"/.config/cronograph_blk/fore_cond}
-${voffset   2}${alignc}${execi 5 sed -n '8p' "${HOME}"/.config/cronograph_blk/fore_cond}
-${voffset -20}${alignc -52}${execi 5 sed -n '9p' "${HOME}"/.config/cronograph_blk/fore_cond}
+${voffset  -2}${alignc +52}${execi 5 sed -n '7p' "${HOME}"/.config/cronograph_blk/fore_cond}
+${voffset   5}${alignc}${execi 5 sed -n '8p' "${HOME}"/.config/cronograph_blk/fore_cond}
+${voffset -23}${alignc -52}${execi 5 sed -n '9p' "${HOME}"/.config/cronograph_blk/fore_cond}
 #
 #
 #
@@ -186,4 +185,5 @@ ${else}${if_match ${battery_percent BAT0} > 15}${image /opt/cronograph_blk/image
 ${else}${image /opt/cronograph_blk/images/Red.png -p 134,22 -s 30x30}${endif}${endif}${endif}${endif}${endif}
 ${endif}
 #${execpi 1 cat /opt/cronograph_blk/scripts/blinkingLED}
+${voffset -300}
 ]]

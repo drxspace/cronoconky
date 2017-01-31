@@ -24,10 +24,10 @@ local clock_h = {
 		txt_radius=100,
 		txt_weight=1, txt_size=10.0,
 		txt_fg_colour=0xFFFFFF, txt_fg_alpha=0.0,
-		graduation_radius=127,
+		graduation_radius=128,
 		graduation_thickness=10, graduation_mark_thickness=2,
 		graduation_unit_angle=30,
-		graduation_fg_colour=0x000000, graduation_fg_alpha=0.6
+		graduation_fg_colour=0x333333, graduation_fg_alpha=0.6
 	},
 }
 --[[
@@ -142,7 +142,8 @@ local gauge = {
 
 -- Use these settings to define the origin and extent of your clock.
 local clock_r=128
-local clock_r_in=133 -- 133 or 147?
+local clock_r_in=133
+-- 133 or 147?
 
 -- "clock_x" and "clock_y" are the coordinates of the centre of the clock, in pixels, from the top left of the Conky window.
 local clock_x=150
@@ -380,40 +381,45 @@ local function go_gauge_rings(display)
 	end
 end
 
+--[[ High CPU usage issue
 local function draw_background_circle(display)
-	local saved_lc
+	local saved_lc=nil
 
 	-- Draw the background circle
 	cairo_set_source_rgba(display,rgb_to_r_g_b(0xE8FAFF,0.8))
-	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
-	cairo_fill (display)
+	cairo_set_line_width(display, clock_r_in)
+	cairo_arc (display, clock_x, clock_y, clock_r_in/2, 0, 360)
+	cairo_stroke (display)
 
-	cairo_set_source_rgba (display,rgb_to_r_g_b(0xFFFFFF,0.4))
-	cairo_arc (display, clock_x, clock_y, clock_r_in, 0, 360)
 	cairo_clip (display)
 
-	-- Draw the shadow top line
-	-- Save line cap
+	-- Save/Set line cap
 	saved_lc=cairo_get_line_cap (display)
 	cairo_set_line_cap (display,CAIRO_LINE_CAP_ROUND)
-	cairo_set_line_width (display,54)
+
+	-- Draw the shadow top line
 	cairo_move_to (display,0,84)
-	cairo_line_to (display,228,84)
+	cairo_line_to (display,224,84)
+	cairo_set_line_width (display,54)
+	cairo_set_source_rgba (display,rgb_to_r_g_b(0xFFFFFF,0.6))
 	cairo_stroke (display)
-	-- Restore line cap
-	cairo_set_line_cap (display,saved_lc)
 
 	-- Draw the wave shadow
 	cairo_move_to (display, 300, 300)
 	cairo_line_to (display, 0, 300)
 	cairo_line_to (display, 0, 230)
-	cairo_curve_to (display, 125, 110, 155, 280, 300, 185)
+	cairo_curve_to (display, 126, 110, 155, 280, 300, 186)
 	cairo_close_path (display)
 	cairo_fill (display)
+
+	-- Restore line cap
+	cairo_set_line_cap (display,saved_lc)
+	saved_lc=nil
 
 	-- Reset the current clip region to its original
 	cairo_reset_clip (display)
 end
+]]
 
 -------------------------------------------------------------------------------
 --                                                            conky_multi_rings
@@ -435,7 +441,8 @@ function conky_multi_rings()
 	cairo_surface_destroy(cs)
 	cs = nil
 
-	draw_background_circle(cr)
+	-- High CPU usage issue
+	--draw_background_circle(cr)
 
 	go_clock_rings(cr)
 	go_gauge_rings(cr)
@@ -446,7 +453,7 @@ function conky_multi_rings()
 	-- #419 memory leak when calling top objects with conky_parse in lua
 	-- http://sourceforge.net/p/conky/bugs/419/
 	-- done in clock_rings why do it again in here?
-	-- collectgarbage()
+	collectgarbage()
 
 	return
 end

@@ -187,7 +187,7 @@ wrapConds () {
 
 # ******************************************************************************
 
-shortLoopCounter=4
+shortLoopCounter=10
 
 contactYahoo () {
 	dispMesg "Contacting the Yahoo server..."
@@ -214,12 +214,11 @@ takeAShortLoop () {
 	dispMesg "Taking a short loop of ${shortLoopCounter} more attempts to contact the server..."
 	until [[ ${shortLoopCounter} -eq 0 ]]; do
 		contactYahoo && checkResultsOK && break;
-		wait; sleep 2;
+		wait;
 		let shortLoopCounter-=1; # let: -=: syntax error
 	done
 	if [[ ${shortLoopCounter} -gt 0 ]]; then
 		dispMesg "==> Loop done OK"
-		sleep 2;
 		return 0;
 	else
 		dispMesg "==> The server did not respond as expected"
@@ -233,6 +232,7 @@ takeAShortLoop () {
 retryOrDie () {
 	takeAShortLoop || {
 		pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
+		[[ $(tail -1 "${condDir}"/fore_cond) -eq 1 ]] || echo "1" >> "${condDir}"/fore_cond
 		dispMesg "ERROR: Yahoo! weather server did not reply properly"
 #		dispMesg "Clearing the contents of existing conditions files"
 #		cat /dev/null > "${condDir}"/curr_cond

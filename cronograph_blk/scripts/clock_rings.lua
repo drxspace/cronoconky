@@ -42,17 +42,17 @@ local settings_table = {
 		-- "max" is the maximum value of the ring. If the Conky variable outputs a percentage, use 100.
 		max=12,
 		-- "bg_colour" is the colour of the base ring.
-		bg_colour=0x777777,
+		bg_colour=0x333333,
 		-- "bg_alpha" is the alpha value of the base ring.
 		bg_alpha=0.6,
 		-- "fg_colour" is the colour of the indicator part of the ring.
 		fg_colour=0x000000,
 		-- "fg_alpha" is the alpha value of the indicator part of the ring.
-		fg_alpha=0.5,
+		fg_alpha=0.9,
 		-- "x" and "y" are the x and y coordinates of the centre of the ring, relative to the top left corner of the Conky window.
 		x=150, y=150,
 		-- "radius" is the radius of the ring.
-		radius=135,
+		radius=145,
 		-- "thickness" is the thickness of the ring, centred around the radius.
 		thickness=4,
 		-- "start_angle" is the starting angle of the ring, in degrees, clockwise from top. Value can be either positive or negative.
@@ -76,10 +76,10 @@ local settings_table = {
 		name='time',
 		arg='%S',
 		max=60,
-		bg_colour=0x333333, bg_alpha=0.6,
-		fg_colour=0x000000, fg_alpha=0.9,
+		bg_colour=0x777777, bg_alpha=0.6,
+		fg_colour=0x000000, fg_alpha=0.5,
 		x=150, y=150,
-		radius=145,
+		radius=135,
 		thickness=4,
 		start_angle=0,
 		end_angle=360
