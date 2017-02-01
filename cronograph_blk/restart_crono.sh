@@ -27,7 +27,7 @@ pkill -SIGTERM -o -x -f "^conky.*cronorc$" 2> /dev/null && {
 			$(${KillSnd}); exit 1;
 		}
 	}
-	nice -n 5 conky -q -c /opt/cronograph_blk/cronorc && {
+	nice -n 5 conky -q -d -c /opt/cronograph_blk/cronorc && {
 		sleep 4;
 		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK was restarted.\nYou may have to wait for a few seconds." -i face-smile;
 		$(${RestartSnd});

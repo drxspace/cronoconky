@@ -187,7 +187,7 @@ wrapConds () {
 
 # ******************************************************************************
 
-shortLoopCounter=10
+shortLoopCounter=4
 
 contactYahoo () {
 	dispMesg "Contacting the Yahoo server..."
@@ -214,7 +214,7 @@ takeAShortLoop () {
 	dispMesg "Taking a short loop of ${shortLoopCounter} more attempts to contact the server..."
 	until [[ ${shortLoopCounter} -eq 0 ]]; do
 		contactYahoo && checkResultsOK && break;
-		wait;
+		wait; sleep 5;
 		let shortLoopCounter-=1; # let: -=: syntax error
 	done
 	if [[ ${shortLoopCounter} -gt 0 ]]; then
