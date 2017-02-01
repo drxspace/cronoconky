@@ -24,10 +24,10 @@ local clock_h = {
 		txt_radius=100,
 		txt_weight=1, txt_size=10.0,
 		txt_fg_colour=0xFFFFFF, txt_fg_alpha=0.0,
-		graduation_radius=128,
-		graduation_thickness=10, graduation_mark_thickness=2,
+		graduation_radius=130,
+		graduation_thickness=8, graduation_mark_thickness=3,
 		graduation_unit_angle=30,
-		graduation_fg_colour=0x333333, graduation_fg_alpha=0.6
+		graduation_fg_colour=0x333333, graduation_fg_alpha=0.5
 	},
 }
 --[[
