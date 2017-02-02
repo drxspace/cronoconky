@@ -10,7 +10,7 @@ total_run_times=0,
 background=true,
 double_buffer=true,
 -- Imlib2 image cache size, in bytes. Set to 0 to disable the image cache
---imlib_cache_size=0,
+imlib_cache_size=4096,
 no_buffers=true,
 --temperature_unit="fahrenheit",
 
@@ -55,7 +55,7 @@ color2="FFFAFA",
 color3="FF341D",
 color4="B62222",
 color5="FFB366",
-color6="DCDCDC",
+color6="D8C672",
 color7="FFFFFF",
 color8="B30000",
 color9="FF1A1A",
@@ -88,7 +88,7 @@ conky.text = [[
 ${image /opt/cronograph_blk/images/bg.png -p 0,0 -s 300x300}\
 #
 # Update weather info every (300/60=) 5 minutes
-${execi 300 bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}
+${texeci 300 bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}
 #
 ${voffset 23}${goto 118}${font hooge 05_53:size=6:bold:italic}${if_empty ${battery}}PWR${else}BAT${endif}${font}:
 #
@@ -129,11 +129,12 @@ ${if_match "${execi 5 tail -1 ${HOME}/.config/cronograph_blk/fore_cond}" == "1"}
 #
 # Display an info message
 #-------------------------------------------------------------------------------
-${voffset 28}${alignc -4}${font hooge 05_53:size=10:bold:italic}${color5}POSSIBLY INACCURACY!!!${color}${font}${else}${voffset 33}${endif}
+${voffset 22}${alignc -4}${font hooge 05_53:size=10:bold:italic}${color5}POSSIBLY INACCURACY!!!${color}${font}
+${voffset 1}${alignc}${font hooge 05_53:size=6:bold:italic}${color6}Yahoo!  weather  server did not  reply properly${color}${font}${else}${voffset 35}${endif}
 #
 # Display weather information
 #-------------------------------------------------------------------------------
-${voffset -18}${alignc +64}${font hooge 05_53:size=10:bold}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/curr_cond}${font}
+${voffset -20}${alignc +64}${font hooge 05_53:size=10:bold}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/curr_cond}${font}
 ${alignc +66}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}
 #
 ${voffset -40}${goto 124}${font ConkyWeather:size=38}\
