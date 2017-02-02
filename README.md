@@ -27,6 +27,14 @@ Thank you ALL!
 - ArchLinux, you need to visit my [AUR cronograph-conky] page
 
 
+### CHANGES in version 8.0
+
+2017-02-02
+· high CPU usage issue
+· demonize again
+· better rings
+· cleanex
+
 ### CHANGES in version 7.5
 
 2017-01-26
