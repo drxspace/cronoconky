@@ -136,12 +136,12 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xA0A0A0,
-		bg_alpha=0.2,
+		bg_colour=0xF3F9FF,
+		bg_alpha=0.33,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=85, y=150,
-		radius=15,
+		radius=16,
 		thickness=27,
 		start_angle=0,
 		end_angle=360
@@ -181,12 +181,12 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xA0A0A0,
-		bg_alpha=0.2,
+		bg_colour=0xF3F9FF,
+		bg_alpha=0.33,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=215, y=150,
-		radius=15,
+		radius=16,
 		thickness=27,
 		start_angle=0,
 		end_angle=360
@@ -208,7 +208,7 @@ local settings_table = {
 	},
 	{
 
-		-- hd outline
+		-- hdd outline
 		name='',
 		arg='',
 		max=100,
@@ -223,22 +223,22 @@ local settings_table = {
 		end_angle=360
 	},
 	{
-		-- hd inside
+		-- hdd inside
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0xA0A0A0,
-		bg_alpha=0.2,
+		bg_colour=0xF3FFFF,
+		bg_alpha=0.33,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=75,
-		radius=13,
+		radius=14,
 		thickness=22,
 		start_angle=0,
 		end_angle=360
 	},
 	{
-		-- hd inside dot
+		-- hdd inside dot
 		name='',
 		arg='',
 		max=100,
