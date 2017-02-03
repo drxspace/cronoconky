@@ -10,7 +10,7 @@ total_run_times=0,
 background=true,
 double_buffer=true,
 -- Imlib2 image cache size, in bytes. Set to 0 to disable the image cache
-imlib_cache_size=4096,
+imlib_cache_size=5120,
 no_buffers=true,
 --temperature_unit="fahrenheit",
 

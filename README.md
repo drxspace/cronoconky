@@ -29,6 +29,10 @@ Thank you ALL!
 
 ### CHANGES in version 8.0
 
+2017-02-03
+· texeci
+· shade
+
 2017-02-02
 · high CPU usage issue
 · demonize again
