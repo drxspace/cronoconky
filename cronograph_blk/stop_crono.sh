@@ -7,7 +7,7 @@
 # \__,_/   /_/     /_/|_|  /_____/   _  .___/ /_/  |_|\____/   /_____/
 #                                    /_/           drxspace@gmail.com
 #
-[[ "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
+[[ -x "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
 	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
 	KillSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/trash-empty.oga"
 	StopSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/device-removed.oga"

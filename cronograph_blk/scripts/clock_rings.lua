@@ -335,7 +335,7 @@ local function draw_clock_hands(cr,xc,yc)
 	-- and minute backhand
 	xxm=xc-0.20*clock_r*math.sin(mins_arc)
 	yym=yc+0.20*clock_r*math.cos(mins_arc)
-	cairo_set_line_width(cr,6)
+	cairo_set_line_width(cr,7)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(mins_colour,clock_alpha))
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xm,ym)

@@ -9,7 +9,7 @@
 #
 
 # With the background property setted to yes I don't need the &
-[[ "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
+[[ -x "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
 	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
 	InfoSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-information.oga"
 }

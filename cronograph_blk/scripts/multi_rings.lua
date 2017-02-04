@@ -143,7 +143,6 @@ local gauge = {
 -- Use these settings to define the origin and extent of your clock.
 local clock_r=128
 local clock_r_in=133
--- 133 or 147?
 
 -- "clock_x" and "clock_y" are the coordinates of the centre of the clock, in pixels, from the top left of the Conky window.
 local clock_x=150

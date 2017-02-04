@@ -55,7 +55,7 @@ color2="FFFAFA",
 color3="FF341D",
 color4="B62222",
 color5="FFB366",
-color6="D8C672",
+color6="FFEDDC",
 color7="FFFFFF",
 color8="B30000",
 color9="FF1A1A",
@@ -127,14 +127,14 @@ ${voffset 6}${goto 76}${font hooge 05_53:size=6:bold:italic}CPU${goto 205}MEM${f
 #
 ${if_match "${execi 5 tail -1 ${HOME}/.config/cronograph_blk/fore_cond}" == "1"}\
 #
-# Display an info message
+# Display a warning
 #-------------------------------------------------------------------------------
-${voffset 22}${alignc -4}${font hooge 05_53:size=10:bold:italic}${color5}POSSIBLY INACCURACY!!!${color}${font}
-${voffset 1}${alignc}${font hooge 05_53:size=6:bold:italic}${color6}Yahoo!  weather  server did not  reply properly${color}${font}${else}${voffset 35}${endif}
+${voffset 25}${alignc -4}${font hooge 05_53:size=10:bold:italic}${color5}POSSIBLY INACCURACY!!!${color}${font}
+${voffset 1}${alignc -2}${font hooge 05_53:size=6}${color6}Yahoo! weather server did  not  reply  properly${color}${font}${else}${voffset 38}${endif}
 #
 # Display weather information
 #-------------------------------------------------------------------------------
-${voffset -20}${alignc +64}${font hooge 05_53:size=10:bold}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/curr_cond}${font}
+${voffset -23}${alignc +64}${font hooge 05_53:size=10:bold}${execi 5 head -1 "${HOME}"/.config/cronograph_blk/curr_cond}${font}
 ${alignc +66}${execi 5 sed -n '2p' "${HOME}"/.config/cronograph_blk/curr_cond}
 #
 ${voffset -40}${goto 124}${font ConkyWeather:size=38}\
