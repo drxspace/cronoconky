@@ -321,7 +321,7 @@ local function draw_clock_hands(cr,xc,yc)
 	-- and hour backhand
 	xxh=xc-0.15*clock_r*math.sin(hours_arc)
 	yyh=yc+0.15*clock_r*math.cos(hours_arc)
-	cairo_set_line_width(cr,9)
+	cairo_set_line_width(cr,11)
 	cairo_set_source_rgba(cr,rgb_to_r_g_b(hours_colour,clock_alpha))
 	cairo_move_to(cr,xc,yc)
 	cairo_line_to(cr,xh,yh)
