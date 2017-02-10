@@ -56,7 +56,7 @@ color3="FF341D",
 color4="B62222",
 color5="FFB366",
 color6="FFEDDC",
-color7="FFFFFF",
+color7="E0F3FD",
 color8="B30000",
 color9="FF1A1A",
 
@@ -92,13 +92,13 @@ ${texeci 300 bash -c '/opt/cronograph_blk/yahooweather/forecasts.sh'}
 #
 ${voffset 23}${goto 118}${font hooge 05_53:size=6:bold:italic}${if_empty ${battery}}PWR${else}BAT${endif}${font}:
 #
-${voffset 29}${font hooge 05_53:size=11:bold}${alignc +64}${time %H:%M}${font}
-${alignc +64}${uptime_short}
+${voffset 29}${alignc +68}${color7}${font hooge 05_53:size=11:bold:italic}${time %H:%M}${font}${color}
+${alignc +68}${color7}${uptime_short}${color}
 #
-${voffset -33}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
-${font hooge 05_53:size=11:bold}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
+${voffset -33}${alignc -64}${color8}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
+${alignc -64}${font hooge 05_53:size=11:bold}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
 ${voffset 2}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%B" | tr "[:lower:]" "[:upper:]"}
-${alignc -64}${exec date +"%Y"}
+${alignc -64}${exec date +"%Y"}${color}
 #
 ${voffset -23}${font hooge 05_53:size=5:bold:italic}${alignc}HDD${font}
 #
