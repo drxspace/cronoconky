@@ -51,7 +51,7 @@ draw_shades=false,
 default_color="00000D",
 color0="002633",
 color1="0066CC",
-color2="FFFAFA",
+color2="FF3366",
 color3="FF341D",
 color4="B62222",
 color5="FFB366",
@@ -95,12 +95,12 @@ ${voffset 23}${goto 118}${font hooge 05_53:size=6:bold:italic}${if_empty ${batte
 ${voffset 29}${alignc +68}${color7}${font hooge 05_53:size=11:bold:italic}${time %H:%M}${font}${color}
 ${alignc +68}${color7}${uptime_short}${color}
 #
-${voffset -33}${alignc -64}${color8}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
+${voffset -36}${alignc -64}${color2}${exec export LC_TIME=en_US.utf8; date +"%A" | tr "[:lower:]" "[:upper:]"}
 ${alignc -64}${font hooge 05_53:size=11:bold}${exec export LC_TIME=en_US.utf8; date +"%d"}${font}
 ${voffset 2}${alignc -64}${exec export LC_TIME=en_US.utf8; date +"%B" | tr "[:lower:]" "[:upper:]"}
 ${alignc -64}${exec date +"%Y"}${color}
 #
-${voffset -23}${font hooge 05_53:size=5:bold:italic}${alignc}HDD${font}
+${voffset -20}${font hooge 05_53:size=5:bold:italic}${alignc}HDD${font}
 #
 ${voffset 14}${alignc}${color0}${fs_used}/${fs_size}${if_match "${hddtemp}" != "N/A"}/${hddtemp}°${endif}${color}
 #
