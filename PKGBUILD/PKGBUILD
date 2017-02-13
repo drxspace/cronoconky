@@ -13,7 +13,7 @@ depends=('conky-lua-archers-git' 'curl' 'lm_sensors')
 makedepends=('git' 'fontconfig')
 optdepends=('hddtemp: https://wiki.archlinux.org/index.php/Hddtemp')
 source=("https://github.com/drxspace/cronoconky/releases/download/${pkgver}/v${pkgver}.tar.gz")
-sha1sums=('0e0b9bbc090db7ac976ec5885df8e36f5004f172')
+sha1sums=('6e129b069fd3a5119770638eeb5e99bd286708d7')
 install='cronograph-conky.install'
 options=(!strip !docs !emptydirs !optipng !debug)
 
