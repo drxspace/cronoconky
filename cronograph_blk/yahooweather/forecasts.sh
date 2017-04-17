@@ -11,6 +11,12 @@
 
 ForeCastScript="$(basename $0)"
 
+for pid in $(pidof -x "${ForeCastScript}"); do
+	if [ $pid != $$ ]; then
+		exit 69;
+	fi
+done
+
 dispMesg () {
 	echo -e "${ForeCastScript}: ${1}" 1>&2;
 	return;
@@ -18,8 +24,8 @@ dispMesg () {
 
 _trapError () {
 	dispMesg "Error in line ${1}: ${2:-'Unknown Error'}"
-	trap - EXIT # We needed to remove the trap
-	pkill -SIGCONT -o -x -f "^conky.*cronorc$" # Continue the conky process first
+	trap - EXIT # We needed to remove the trap first
+	#pkill -SIGCONT -o -x -f "^conky.*cronorc$" # Continue the conky process first
 	exit 1
 }
 
@@ -162,7 +168,7 @@ getImgChr () {
 }
 
 # YAHOO! weather RSS Feed url
-YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+3%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
+YahooWurl="http://query.yahooapis.com/v1/public/yql?format%3Dxml&q=select+item.condition%2C+item.forecast%0D%0Afrom+weather.forecast%0D%0Awhere+woeid+%3D+${WOEID}%0D%0Aand+u+%3D+%27${temperature_unit:-C}%27%0D%0Alimit+4%0D%0A|%0D%0Asort%28field%3D%22item.forecast.date%22%2C+descending%3D%22false%22%29%0D%0A%3B"
 
 # User Agent String from http://www.useragentstring.com
 # Suppose we're using Chrome/41.0.2228.0
@@ -196,7 +202,7 @@ shortLoopCounter=4
 contactYahoo () {
 	dispMesg "Contacting the YAHOO! weather server..."
 #	dispMesg "Contacting the server at url:\n\n$(urldecode ${YahooWurl})\n"
-#	dispMesg "Contacting the server at url:\n\n${YahooWurl}\n"
+	dispMesg "Contacting the server at url:\n\n${YahooWurl}\n"
 	# --retry-connrefused Added in 7.52.0
 	# --retry 2 --retry-max-time 5 --retry-delay 2 --max-time 35
 	curl -s -N -4 --connect-timeout 10 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
@@ -237,7 +243,7 @@ takeAShortLoop () {
 # normally
 retryOrDie () {
 	takeAShortLoop || {
-		pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
+		#pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 		[[ $(tail -1 "${condDir}"/fore_cond) -eq 1 ]] || echo "1" >> "${condDir}"/fore_cond
 		dispMesg "ERROR: YAHOO! weather server did not reply properly"
 #		dispMesg "Clearing the contents of existing conditions files"
@@ -249,7 +255,7 @@ retryOrDie () {
 #		echo "Connection was tried 15! times but failed" >> "${condDir}"/curr_cond
 #		echo "Please, check your Internet connection" >> "${condDir}"/curr_cond
 #		echo "or wait a while for a retry attempt" >> "${condDir}"/curr_cond
-		pkill -SIGCONT -o -x -f "^conky.*cronorc$"
+		#pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 		trap - EXIT; exit 2
 	}
 }
@@ -263,7 +269,7 @@ retryOrDie () {
 
 # Pause the running conky process before
 dispMesg "Temporary stopping conky from running"
-pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
+#pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 
 dispMesg "Processing data..."
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan
@@ -278,22 +284,22 @@ getImgChr $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "co
 wrapConds $(grep "yweather:condition" "${cacheDir}"/"${cacheFile}" | grep -o "text=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z]') >> "${condDir}"/curr_cond
 
 # Write the next three days weather predictions to file
-getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2') > "${condDir}"/fore_cond
-getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4') >> "${condDir}"/fore_cond
+getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4') > "${condDir}"/fore_cond
 getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==6') >> "${condDir}"/fore_cond
-echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1')°/\
-$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z')°" >> "${condDir}"/fore_cond
+getImgChr $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "code=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==8') >> "${condDir}"/fore_cond
 echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2')°/\
-$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2')°" >> "${condDir}"/fore_cond
+$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z')°" >> "${condDir}"/fore_cond
 echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3')°/\
 $(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3')°" >> "${condDir}"/fore_cond
-grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==1' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
+echo "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "low=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4')°/\
+$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "high=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4')°" >> "${condDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==2' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
+grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 
 # Restart the paused conky process
 dispMesg "Restart running the conky"
-pkill -SIGCONT -o -x -f "^conky.*cronorc$"
+#pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 
 dispMesg "Forecasts script ended up okay at $(date +%H:%M)"
 
