@@ -13,19 +13,18 @@ ForeCastScript="$(basename $0)"
 
 for pid in $(pidof -x "${ForeCastScript}"); do
 	if [ $pid != $$ ]; then
-		exit 69;
+		exit 69
 	fi
 done
 
-dispMesg () {
-	echo -e "${ForeCastScript}: ${1}" 1>&2;
-	return;
+dspMsg () {
+	echo -e "${ForeCastScript}: ${1}" 1>&2
+	return
 }
 
 _trapError () {
-	dispMesg "Error in line ${1}: ${2:-'Unknown Error'}"
+	dspMsg "Error in line ${1}: ${2:-'Unknown Error'}"
 	trap - EXIT # We needed to remove the trap first
-	#pkill -SIGCONT -o -x -f "^conky.*cronorc$" # Continue the conky process first
 	exit 1
 }
 
@@ -54,9 +53,9 @@ if [ -z ${WOEID} ]; then
 # the place you want to watch and get the WOEID number at url's end e.g.
 # https://www.yahoo.com/news/weather/greece/kalivia/kalivia-12839162
 #                                                           ^^^^^^^^
-" >> "${appSet}";
-	echo "# This is my default WOEID (where on Earth ID). Next, set yours if you'd like." >> "${appSet}";
-	echo "WOEID=${WOEID}" >> "${appSet}";
+" >> "${appSet}"
+	echo "# This is my default WOEID (where on Earth ID). Next, set yours if you'd like." >> "${appSet}"
+	echo "WOEID=${WOEID}" >> "${appSet}"
 fi
 
 # Uncomment next line to make use of English units
@@ -164,7 +163,7 @@ getImgChr () {
 			echo -
 		;;
 	esac
-	return;
+	return
 }
 
 # YAHOO! weather RSS Feed url
@@ -186,55 +185,55 @@ UserAgent='curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpenSSL 0.9.6b) (ipv6 e
 urldecode() {
 	local url_encoded="${1//+/ }"
 	printf '%b' "${url_encoded//%/\\x}"
-	return;
+	return
 }
 
 # wrapConds () function that wraps the given string if it's >15 chars
 wrapConds () {
 	echo "$*" | fold -s -w 15
-	return;
+	return
 }
 
 # ******************************************************************************
 
-shortLoopCounter=4
-
 contactYahoo () {
-	dispMesg "Contacting the YAHOO! weather server..."
-#	dispMesg "Contacting the server at url:\n\n$(urldecode ${YahooWurl})\n"
-	dispMesg "Contacting the server at url:\n\n${YahooWurl}\n"
+#	dspMsg "Contacting the YAHOO! weather server at url:\n\n$(urldecode ${YahooWurl})\n"
+	dspMsg "Contacting the YAHOO! weather server at url:\n\n${YahooWurl}\n"
 	# --retry-connrefused Added in 7.52.0
-	# --retry 2 --retry-max-time 5 --retry-delay 2 --max-time 35
-	curl -s -N -4 --connect-timeout 10 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
-	return;
+	# --max-time 35
+	curl -s -N -4 --retry 2 --retry-max-time 5 --retry-delay 2 --connect-timeout 10 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+	sleep 1.5
+	return
 }
 
 # ******************************************************************************
 
 checkResultsOK () {
-	dispMesg "Checking the results..."
+	dspMsg "Checking the results..."
 	if [ -z "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}")" ]; then
-		dispMesg " ~> yweather:forecast wasn't found in the file ${cacheFile}"
-		return 1;
+		dspMsg " ~> yweather:forecast wasn't found in the file ${cacheFile}"
+		echo 1>&2
+		return 1
 	else
-		dispMesg " ~> Results OK"
-		return 0;
+		dspMsg " ~> Results OK"
+		return 0
 	fi
 }
 
+shortLoopCounter=10
+
 takeAShortLoop () {
-	dispMesg "Taking a short loop of ${shortLoopCounter} more attempts to contact the server..."
 	until [[ ${shortLoopCounter} -eq 0 ]]; do
-		contactYahoo && checkResultsOK && break;
-		wait; sleep 5;
-		let shortLoopCounter-=1; # let: -=: syntax error
+		dspMsg "Taking a short loop of ${shortLoopCounter} more attempts to contact the YAHOO! weather server..."
+		contactYahoo && checkResultsOK && break
+		let shortLoopCounter-=1;
 	done
 	if [[ ${shortLoopCounter} -gt 0 ]]; then
-		dispMesg "==> Loop done OK"
-		return 0;
+		dspMsg "==> Loop done OK"
+		return 0
 	else
-		dispMesg "==> The server did not respond as expected"
-		return 1;
+		dspMsg "==> The server did not respond as expected"
+		return 1
 	fi
 }
 
@@ -243,10 +242,9 @@ takeAShortLoop () {
 # normally
 retryOrDie () {
 	takeAShortLoop || {
-		#pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
 		[[ $(tail -1 "${condDir}"/fore_cond) -eq 1 ]] || echo "1" >> "${condDir}"/fore_cond
-		dispMesg "ERROR: YAHOO! weather server did not reply properly"
-#		dispMesg "Clearing the contents of existing conditions files"
+		dspMsg "ERROR: YAHOO! weather server did not reply properly"
+#		dspMsg "Clearing the contents of existing conditions files"
 #		cat /dev/null > "${condDir}"/curr_cond
 #		cat /dev/null > "${condDir}"/fore_cond
 #		echo "99999" > "${condDir}"/curr_cond
@@ -255,7 +253,6 @@ retryOrDie () {
 #		echo "Connection was tried 15! times but failed" >> "${condDir}"/curr_cond
 #		echo "Please, check your Internet connection" >> "${condDir}"/curr_cond
 #		echo "or wait a while for a retry attempt" >> "${condDir}"/curr_cond
-		#pkill -SIGCONT -o -x -f "^conky.*cronorc$"
 		trap - EXIT; exit 2
 	}
 }
@@ -265,13 +262,12 @@ retryOrDie () {
 # Main section
 #
 
+dspMsg "Clearing the contents of existing cache file"
+cat /dev/null > "${cacheDir}"/"${cacheFile}"
+
 { contactYahoo && checkResultsOK; } || retryOrDie
 
-# Pause the running conky process before
-dispMesg "Temporary stopping conky from running"
-#pkill -SIGSTOP -o -x -f "^conky.*cronorc$"
-
-dispMesg "Processing data..."
+dspMsg "Processing data..."
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan
 # http://zagortenay333.deviantart.com/
 # http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
@@ -297,11 +293,7 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 
-# Restart the paused conky process
-dispMesg "Restart running the conky"
-#pkill -SIGCONT -o -x -f "^conky.*cronorc$"
-
-dispMesg "Forecasts script ended up okay at $(date +%H:%M)"
+dspMsg "Forecasts script ended up okay at $(date +%H:%M)"
 
 # We needed to remove the trap at the end or the _trapError function would have
 # been called as we exited, undoing all the script’s hard work.
