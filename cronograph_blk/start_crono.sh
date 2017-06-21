@@ -8,7 +8,6 @@
 #                                    /_/           drxspace@gmail.com
 #
 
-# With the background property setted to yes I don't need the &
 [[ -x "$(which paplay)" ]] && [[ -d /usr/share/sounds/freedesktop/stereo/ ]] && {
 	ErrorSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
 	InfoSnd="$(which paplay) /usr/share/sounds/freedesktop/stereo/dialog-information.oga"
@@ -25,20 +24,12 @@ ASD='10'
 appSet="${HOME}"/.config/cronograph_blk/cronorc
 if [ -f "${appSet}" ]; then
 	source "${appSet}";
-else
-	echo "# Cronograph Station BLK settings
-
-# Due to the error: “Error of failed request/BadWindow (invalid Window parameter)”
-# we need to delay the startup of the script for several seconds.
-" > "${appSet}";
-	echo "# This is my default ASD (Autostart-Delay). Next, set yours if you'd like." >> "${appSet}";
-	echo "ASD=${ASD}" >> "${appSet}";
 fi
 
 if [[ "$(pgrep -c -f "^conky.*cronorc$")" -eq 0 ]]; then
 	if [[ ! "$DESKTOP_SESSION" =~ kde*|cinnamon ]]; then sleep ${ASD}; fi
 	# There's also the X-GNOME-Autostart-Delay property in .desktop file
-	nice -n 5 conky -q -d -c /opt/cronograph_blk/cronorc || {
+	conky -q -d -c /opt/cronograph_blk/cronorc || {
 		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be started." -i face-worried;
 		$(${ErrorSnd}); exit 1;
 	}

@@ -84,6 +84,7 @@ local settings_table = {
 		start_angle=0,
 		end_angle=360
 	},
+	--[[ -- due to background circle image
 	{
 		-- Watch inside drawing
 		name='',
@@ -92,7 +93,7 @@ local settings_table = {
 		--bg_colour=0x404040,
 		--bg_alpha=0.2,
 		bg_colour=0xFFFFFF,
-		bg_alpha=0.0, -- due to background circle
+		bg_alpha=0.0,
 		fg_colour=0xFFFFFF,
 		fg_alpha=0.0,
 		x=150, y=150,
@@ -106,16 +107,16 @@ local settings_table = {
 		name='',
 		arg='',
 		max=100,
-		bg_colour=0x909090,
-		bg_alpha=0.6,
-		fg_colour=0xFFFFFF,
-		fg_alpha=1.0,
+		bg_colour=0xFFD700,
+		bg_alpha=0.3,
+		fg_colour=0x000000,
+		fg_alpha=0.0,
 		x=150, y=150,
 		radius=1,
-		thickness=25,
+		thickness=40,
 		start_angle=0,
 		end_angle=360
-	},
+	},]]
 	{
 		-- cpu outline
 		name='',
@@ -286,9 +287,10 @@ local function draw_ring(cr,t,pt)
 	local angle_f=ea*(2*math.pi/360)-math.pi/2
 	local t_arc=t*(angle_f-angle_0)
 
-	-- Draw background ring
-	cairo_set_source_rgba(cr,rgb_to_r_g_b(bgc,bga))
 	cairo_set_line_width(cr,ring_w)
+
+	-- Draw ring
+	cairo_set_source_rgba(cr,rgb_to_r_g_b(bgc,bga))
 	cairo_arc(cr,xc,yc,ring_r,angle_0,angle_f)
 	cairo_stroke(cr)
 
@@ -393,6 +395,8 @@ function conky_clock_rings()
 			str=conky_parse(str)
 			value = tonumber(str)
 		end
+		if (pt['arg'] == '%I' and value > 12) then value = value - 12
+		elseif ((pt['arg'] == '%M' or pt['arg'] == '%S') and value == 0) then value = 60 end
 		pct=value/pt['max']
 		draw_ring(cr,pct,pt)
 	end

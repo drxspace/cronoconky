@@ -8,25 +8,44 @@
 #                                    /_/           drxspace@gmail.com
 #
 #set -e
+#set -x
 
-ForeCastScript="$(basename $0)"
+msg () {
+	local foreCastScriptName="$(basename ${0})"
+	echo -e "${foreCastScriptName}: ${1}" 1>&2
+	return
+}
 
-for pid in $(pidof -x "${ForeCastScript}"); do
-	if [ $pid != $$ ]; then
-		exit 69
-	fi
-done
+# The user's directory this script stores estimated weather condition files
+# plus application's settings
+condDir="${HOME}"/.config/cronograph_blk
+# ...but first make sure it exists
+test -d "${condDir}" || mkdir -p "${condDir}"
 
-dspMsg () {
-	echo -e "${ForeCastScript}: ${1}" 1>&2
+inaccurate () {
+	[[ $(tail -1 "${condDir}"/fore_cond) -eq 1 ]] || echo "1" >> "${condDir}"/fore_cond
 	return
 }
 
 _trapError () {
-	dspMsg "Error in line ${1}: ${2:-'Unknown Error'}"
+	inaccurate
+	msg "Error in line ${1}: ${2:-'Unknown Error'}"
 	trap - EXIT # We needed to remove the trap first
 	exit 1
 }
+
+for pid in $(pidof -x "${0}"); do
+	if [ $pid != $$ ]; then
+		msg "This script is already running"
+		exit 69
+	fi
+done
+
+if ! ping -q -c 1 -W 1 google.com &> /dev/null; then
+	inaccurate
+	msg "There is no Internet connection"
+	exit 70
+fi
 
 trap '_trapError ${LINENO} ${$?}' EXIT
 
@@ -37,25 +56,24 @@ test -d "${cacheDir}" || mkdir -p "${cacheDir}"
 # Store temporary RSS Feed in this file
 cacheFile="YahooWeather.xml"
 
-# The user's directory this script stores estimated weather condition files
-# plus application settings
-condDir="${HOME}"/.config/cronograph_blk
-# ...but first make sure it exists
-test -d "${condDir}" || mkdir -p "${condDir}"
-
-# Read the application settings
-appSet="${HOME}"/.config/cronograph_blk/cronorc
-if [ -f "${appSet}" ]; then source "${appSet}"; fi
+# Read/Set the application settings
+applSettings="${HOME}"/.config/cronograph_blk/cronorc
+if [ -f "${applSettings}" ]; then source "${applSettings}"; fi
 if [ -z ${WOEID} ]; then
 	WOEID='12839162'
-	echo "
+	echo "# Cronograph Station BLK Settings
+
+# Due to the error: “Error of failed request/BadWindow (invalid Window parameter)”
+# we need to delay the startup of the script for several seconds.
+# This is my default ASD (Autostart-Delay). Next, set yours if you'd like.
+ASD=10
+
 # Navigate to https://www.yahoo.com/news/weather/ enter your or zip code to locate
 # the place you want to watch and get the WOEID number at url's end e.g.
 # https://www.yahoo.com/news/weather/greece/kalivia/kalivia-12839162
 #                                                           ^^^^^^^^
-" >> "${appSet}"
-	echo "# This is my default WOEID (where on Earth ID). Next, set yours if you'd like." >> "${appSet}"
-	echo "WOEID=${WOEID}" >> "${appSet}"
+# This is my default WOEID (where on Earth ID). Next, set yours if you'd like.
+WOEID=${WOEID}" >> "${applSettings}"
 fi
 
 # Uncomment next line to make use of English units
@@ -197,11 +215,11 @@ wrapConds () {
 # ******************************************************************************
 
 contactYahoo () {
-#	dspMsg "Contacting the YAHOO! weather server at url:\n\n$(urldecode ${YahooWurl})\n"
-	dspMsg "Contacting the YAHOO! weather server at url:\n\n${YahooWurl}\n"
+	# msg "Contacting the YAHOO! weather server at url:\n\n$(urldecode ${YahooWurl})\n"
+	msg "Contacting the YAHOO! weather server at url:\n\n${YahooWurl}\n"
 	# --retry-connrefused Added in 7.52.0
-	# --max-time 35
-	curl -s -N -4 --retry 2 --retry-max-time 5 --retry-delay 2 --connect-timeout 10 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
+	# --retry 2 --retry-max-time 5 --retry-delay 2 --max-time 35
+	curl -s -N -4 --connect-timeout 10 --retry 2 --retry-max-time 5 --retry-delay 2 -f -A "${UserAgent}" -o "${cacheDir}"/"${cacheFile}" "${YahooWurl}"
 	sleep 1.5
 	return
 }
@@ -209,30 +227,29 @@ contactYahoo () {
 # ******************************************************************************
 
 checkResultsOK () {
-	dspMsg "Checking the results..."
+	msg "Checking the results..."
 	if [ -z "$(grep "yweather:forecast" "${cacheDir}"/"${cacheFile}")" ]; then
-		dspMsg " ~> yweather:forecast wasn't found in the file ${cacheFile}"
+		msg " ~> yweather:forecast wasn't found in the file ${cacheFile}"
 		echo 1>&2
 		return 1
 	else
-		dspMsg " ~> Results OK"
+		msg " ~> Results OK"
 		return 0
 	fi
 }
 
-shortLoopCounter=10
-
 takeAShortLoop () {
+	local shortLoopCounter=9
 	until [[ ${shortLoopCounter} -eq 0 ]]; do
-		dspMsg "Taking a short loop of ${shortLoopCounter} more attempts to contact the YAHOO! weather server..."
+		msg "Taking a short loop of ${shortLoopCounter} more attempts to contact the YAHOO! weather server..."
 		contactYahoo && checkResultsOK && break
 		let shortLoopCounter-=1;
 	done
 	if [[ ${shortLoopCounter} -gt 0 ]]; then
-		dspMsg "==> Loop done OK"
+		msg "==> Loop done OK"
 		return 0
 	else
-		dspMsg "==> The server did not respond as expected"
+		msg "==> The server did not respond as expected"
 		return 1
 	fi
 }
@@ -242,9 +259,9 @@ takeAShortLoop () {
 # normally
 retryOrDie () {
 	takeAShortLoop || {
-		[[ $(tail -1 "${condDir}"/fore_cond) -eq 1 ]] || echo "1" >> "${condDir}"/fore_cond
-		dspMsg "ERROR: YAHOO! weather server did not reply properly"
-#		dspMsg "Clearing the contents of existing conditions files"
+		inaccurate
+		msg "ERROR: YAHOO! weather server did not reply properly"
+#		msg "Clearing the contents of existing conditions files"
 #		cat /dev/null > "${condDir}"/curr_cond
 #		cat /dev/null > "${condDir}"/fore_cond
 #		echo "99999" > "${condDir}"/curr_cond
@@ -253,7 +270,8 @@ retryOrDie () {
 #		echo "Connection was tried 15! times but failed" >> "${condDir}"/curr_cond
 #		echo "Please, check your Internet connection" >> "${condDir}"/curr_cond
 #		echo "or wait a while for a retry attempt" >> "${condDir}"/curr_cond
-		trap - EXIT; exit 2
+		trap - EXIT # We needed to remove the trap first
+		exit 2
 	}
 }
 
@@ -262,12 +280,14 @@ retryOrDie () {
 # Main section
 #
 
-dspMsg "Clearing the contents of existing cache file"
+msg "Clearing the contents of existing cache file"
 cat /dev/null > "${cacheDir}"/"${cacheFile}"
 
-{ contactYahoo && checkResultsOK; } || retryOrDie
+{ contactYahoo && checkResultsOK; } || {
+	retryOrDie
+}
 
-dspMsg "Processing data..."
+msg "Processing data..."
 # Following commands are inspired or even totally taken from zagortenay333's Conky-Harmattan
 # http://zagortenay333.deviantart.com/
 # http://zagortenay333.deviantart.com/art/Conky-Harmattan-426662366
@@ -293,7 +313,9 @@ grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\""
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==3' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 grep "yweather:forecast" "${cacheDir}"/"${cacheFile}" | grep -o "day=\"[^\"]*\"" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | awk 'NR==4' | tr '[a-z]' '[A-Z]' >> "${condDir}"/fore_cond
 
-dspMsg "Forecasts script ended up okay at $(date +%H:%M)"
+sync
+
+msg "Forecasts script ended up okay at $(date +%H:%M)"
 
 # We needed to remove the trap at the end or the _trapError function would have
 # been called as we exited, undoing all the script’s hard work.
