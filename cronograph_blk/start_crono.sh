@@ -27,9 +27,10 @@ if [ -f "${appSet}" ]; then
 fi
 
 if [[ "$(pgrep -c -f "^conky.*cronorc$")" -eq 0 ]]; then
+	"$(dirname "$0")"/yahooweather/forecasts.sh &>/dev/null
 	if [[ ! "$DESKTOP_SESSION" =~ kde*|cinnamon ]]; then sleep ${ASD}; fi
 	# There's also the X-GNOME-Autostart-Delay property in .desktop file
-	conky -q -d -c /opt/cronograph_blk/cronorc || {
+	hash conky && conky -q -d -c /opt/cronograph_blk/cronorc || {
 		notify-send "Cronograph Station BLK" "Conky Cronograph Station BLK cannot be started." -i face-worried;
 		$(${ErrorSnd}); exit 1;
 	}
